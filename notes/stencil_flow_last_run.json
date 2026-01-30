@@ -1,0 +1,31 @@
+{
+  "timestamp": "20260127_212335",
+  "output_path": "data/runs/stencil_flow_20260127_212335.json",
+  "generated_total": 1000,
+  "survivors_total": 913,
+  "survivors_by_best_fit_k": {
+    "0": 913,
+    "1": 0,
+    "2": 0
+  },
+  "params": {
+    "m_values": [
+      2,
+      3
+    ],
+    "num": 500,
+    "N0": 64,
+    "seed": 0,
+    "stability_threshold": 0.25,
+    "leibniz_threshold": 0.5,
+    "boundary_mode": "clipped",
+    "alignment_mode": "even_index",
+    "test_family": [
+      "const",
+      "lin",
+      "quad",
+      "sin",
+      "exp"
+    ]
+  }
+}

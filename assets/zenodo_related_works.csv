@@ -1,0 +1,10 @@
+relation,identifier,scheme,resource_type,bibkey,title
+Cites,978-0-521-78451-1,ISBN,publication-book,DaveyPriestley2002,Introduction to Lattices and Order
+Cites,10.1103/PhysRev.87.410,DOI,publication-article,LeeYang1952,Statistical Theory of Equations of State and Phase Transitions. II. Lattice Gas and Ising Model
+Cites,10.1137/1.9780898717839,DOI,publication-book,LeVeque2007,Finite Difference Methods for Ordinary and Partial Differential Equations: Steady-State and Time-Dependent Problems
+Cites,10.1145/3372885.3373824,DOI,publication-conferencepaper,mathlib2020lean,The {Lean
+Cites,10.1007/978-3-030-79876-5_37,DOI,publication-conferencepaper,moura2021lean4,The {Lean
+Cites,10.5281/zenodo.18365949,DOI,other,SixBirdsFramework,Six Birds: Foundations of Emergence Calculus
+Cites,https://stacks.math.columbia.edu/tag/00RM,URL,other,StacksProject00RM,"The Stacks Project, Section 10.131: Differentials (Tag 00RM)"
+Cites,0-19-853369-1,ISBN,publication-book,Titchmarsh1986,The Theory of the Riemann Zeta-Function
+Cites,10.1007/BF00276494,DOI,publication-article,Willems1972II,Dissipative dynamical systems Part {II

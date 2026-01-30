@@ -1,0 +1,163 @@
+\section{Exhibit A-1: calculus as a stable closure}
+\label{sec:exhibit-calculus}
+
+This exhibit instantiates the \SBT closure lens in the most familiar mathematical setting:
+how the differential and integral calculus appear as the stable closure of discrete protocols under refinement.
+Our emphasis is not on definitions but on \emph{feasibility}:
+which compressions remain coherent as the stage parameter refines.
+
+\subsection{Discrete substrate and staging}
+Fix a step size $h>0$ and consider functions on a one-dimensional grid (or, more generally, any set with a notion of translation by $h$).
+The discrete substrate supplies:
+\begin{itemize}
+  \item a \emph{shift} operator $T_h$ defined by $(T_h f)(x)=f(x+h)$;
+  \item a \emph{difference} operator $\Delta_h := T_h-I$;
+  \item the \emph{scaled difference} (difference quotient)
+  \[
+    \delta_h f(x)\;:=\;\frac{f(x+h)-f(x)}{h},
+  \]
+  which is the simplest instance of \Pone\ operator rewriting: the $h^{-1}$ rescaling that keeps the update comparable across stages.
+\end{itemize}
+
+In \SBT terms, $h\downarrow 0$ is \Pfour\ staging.
+Any proposed macro-law (``derivative'', ``generator'', ``flow'') is a packaged object only if its induced defect ledger remains feasible under refinement (\Psix\ accounting), and only if it respects the coherence constraints imposed at the packaged layer (\Ptwo\ constraints).
+
+\subsection{The accounting ledger: exact discrete Leibniz identity}
+At the discrete level, the difference quotient is not a derivation:
+multiplicative coherence fails by a remainder term that can be written \emph{exactly}.
+This remainder is the canonical \Psix\ ledger term for the passage from differences to derivatives.
+
+\begin{lemma}[Finite-difference Leibniz identity]\label{lem:finite-diff-leibniz}
+Let $F$ be a field, let $h\in F$ with $h\neq 0$, and let $f,g:F\to F$.
+Define $\delta_h f(x):=(f(x+h)-f(x))/h$.
+Then for all $x\in F$,
+\[
+\delta_h(fg)(x)
+\;=\;
+\delta_h f(x)\, g(x)
+\;+
+\;f(x)\, \delta_h g(x)
+\;+
+\;h\,\delta_h f(x)\,\delta_h g(x).
+\]
+\end{lemma}
+
+\begin{remark}[Machine-checked anchor]\label{rem:lean-leibniz}
+Lemma~\ref{lem:finite-diff-leibniz} is formalized in Lean/mathlib in this repository as
+\texttt{Diff.delta\_mul\_leibniz} (file \texttt{lean/Diff/FiniteDifference.lean}) \cite{moura2021lean4,mathlib2020lean}.
+\end{remark}
+
+The key point for closure is not the identity itself but the structure of the ledger term:
+\[
+\underbrace{h\,\delta_h f\,\delta_h g}_{\text{ledger term}}
+\]
+is explicitly proportional to the stage parameter $h$.
+Thus, in any refinement regime where $\delta_h f$ and $\delta_h g$ remain bounded (a feasibility condition measured by \Psix),
+the ledger term vanishes as $h\downarrow 0$ and multiplicative coherence emerges at the packaged layer.
+
+\subsection{Packaging: quotient by vanishing defect yields derivations}
+The previous subsection suggests a general closure template.
+A discrete operator family $L_h$ (or a protocol that composes many micro-steps) is admissible as a ``law'' in the packaged layer only after specifying:
+\begin{enumerate}
+  \item a staging parameter $h$ (\Pfour);
+  \item a ledger that tracks closure defects, such as Leibniz residuals, consistency across refinement, and stability bounds (\Psix);
+  \item an identification rule ``equal up to vanishing defect as $h\downarrow 0$'' that packages families into an equivalence class (\Pfive).
+\end{enumerate}
+
+Demanding multiplicative coherence is a \Ptwo\ constraint.
+For difference quotients it is satisfied only \emph{approximately} at finite $h$ and becomes exact in the packaged limit because the ledger term in Lemma~\ref{lem:finite-diff-leibniz} vanishes.
+The packaged limit of feasible difference-quotient families therefore satisfies the Leibniz rule:
+\[
+D(fg) \;=\; (Df)\,g + f\,(Dg),
+\]
+i.e.\ it is a \emph{derivation}.
+In one dimension, further invariance/normalization choices single out the usual derivative, but the closure point is more general:
+\emph{derivations are what survives after enforcing multiplicative coherence under refinement.}
+
+\subsection{Algebraic uniqueness anchor on polynomials}
+The previous discussion is analytic and asymptotic.
+To anchor the ``derivation as closure fixed point'' motif in a fully algebraic setting, we use polynomial rings where derivations have a clean universal property.
+
+\begin{theorem}[Derivations on $R\lbrack X\rbrack$ are determined by $D(X)$]\label{thm:derivation-determined-by-X}
+Let $R$ be a commutative semiring and let $A:=R[X]$ be the polynomial ring.
+An $R$-derivation $D:\mathrm{Derivation}(R,A,A)$ is uniquely determined by its value on the indeterminate $X\in A$.
+Equivalently, evaluation on $X$ induces an $R$-linear equivalence
+\[
+\mathrm{Derivation}(R,R[X],R[X]) \;\simeq_{\ell[R]}\; R[X],
+\qquad
+D \longmapsto D(X),
+\]
+with inverse given (schematically) by ``multiply the formal derivative by a polynomial''.
+\end{theorem}
+
+\begin{remark}[Machine-checked anchors]\label{rem:lean-derivation-poly}
+Theorem~\ref{thm:derivation-determined-by-X} is formalized in Lean/mathlib in this repository as:
+\path{Derivations.derivation_ext_X} (uniqueness) and
+\path{Derivations.polynomialDerivationEquiv} (explicit $R$-linear equivalence),
+in file \path{lean/Derivations/Polynomial.lean}.
+The Lean type of the equivalence is
+\path{Derivation R (Polynomial R) (Polynomial R)} $\simeq_{\ell[R]}$ \path{Polynomial R}.
+The evaluation-at-$X$ interface is exposed by
+\path{Derivations.polynomialDerivationEquiv_apply_X} and
+\path{Derivations.polynomialDerivationEquiv_symm_apply_X}.
+These are re-exported/instantiated from mathlib with small glue lemmas. \cite{moura2021lean4,mathlib2020lean}
+\end{remark}
+
+Classically, this computation is expressed via Kähler differentials, e.g.\ $\Omega_{R[X]/R} \cong R[X]\cdot dX$; see \cite{StacksProject00RM}.
+
+For the purposes of this paper, the takeaway is structural:
+once the Leibniz rule is imposed as a coherence constraint, the space of admissible operators collapses to a small, rigid family.
+In polynomial land this rigidity is literal and exact (determined by $D(X)$);
+in analytic settings it is mediated by the defect ledger and the chosen packaging rule.
+
+\subsection{Falsification-first diagnostics: stencil selection under feasibility}
+To complement the algebraic anchors, we implemented a numerical experiment that samples a population of candidate operators and filters them by feasibility gates.
+We sample local linear stencil operators and apply gates that instantiate \Pfour--\Psix:
+stability under refinement, decreasing route mismatch, and (optionally) decreasing multiplicative (Leibniz) defect.
+
+\subsection{Numerical protocol details (stencils)}
+We emphasize that the stencil experiments are \emph{diagnostics}, not a uniqueness theorem.
+A candidate local operator is a clipped-boundary stencil of half-width $m$,
+\[
+  (L f)_i := \sum_{j=-m}^{m} c_j\, f_{i+j},
+  \qquad i=m,\dots,N-m-1,
+\]
+evaluated only on interior points to avoid boundary-condition artifacts.
+To compare across refinements $N,2N,4N$ (step sizes $h, h/2, h/4$), we align outputs by restricting the finer-grid interior outputs to even-index centers.
+The refinement-consistency defects $E_{01},E_{12}$ used in the feasibility gate are relative $\ell^2$ mismatches on this aligned interior, maximized over a fixed smooth test family (polynomials plus $\sin$ and $\exp$).
+
+The ``order'' label $k\in\{0,1,2\}$ is chosen by best-fit against analytic templates on the finest grid:
+after the renormalization $h^{-k}$ (an instance of \Pone\ operator rewriting), we select the $k$ whose output is closest (up to an overall scalar) to $f$, $f'$, or $f''$ on the test family.
+
+In the recorded runs, the baseline grid size is $N_0=\StencilNZero$ and the Leibniz-gated experiment uses half-width $m=\StencilMLeibniz$ with gate thresholds $D_2<\StencilGateDTwo$ and ratio gate $\mathrm{gate\_ratio}=\StencilGateRatio$.
+For standard background on finite-difference stencils, consistency, and stability, see \cite{LeVeque2007}.
+
+\paragraph{Disclosure of the \Pone\ step in the Leibniz-gated run.}
+In the Leibniz-gated experiment we additionally apply a moment-normalization step to candidate coefficient vectors $(c_j)$ before auditing them.
+Concretely, we project to a ``first-order'' class by enforcing the discrete moment constraints
+$\sum_j c_j=0$ and $\sum_j j\,c_j = 1$, and we optionally suppress low-order contamination by setting higher moments (e.g.\ $\sum_j j^2 c_j$, $\sum_j j^3 c_j$) near zero.
+In \SBT terms this is not the conclusion but the \emph{operator rewrite} (\Pone) that makes families comparable across scale and avoids trivial $k=0$ closures.
+The empirical point of Table~\ref{tab:stencil-leibniz} is therefore conditional:
+\emph{within the normalized first-order class, imposing a shrinking Leibniz defect selects derivative-like closures.}
+
+Two regimes illustrate the role of constraints.
+
+\paragraph{Stability-only filtering.}
+If we impose only refinement stability/consistency without demanding multiplicative coherence, then the surviving operators overwhelmingly behave as order-$0$ closures (approximately scalar multiplication).
+In the current run, \StencilSurvivorsTotal\ out of \StencilGeneratedTotal\ sampled stencils survive under the stability gate, and the survivors are classified as best-fit order $k=0$
+(Table~\ref{tab:stencil-stability}).
+
+\paragraph{Leibniz-gated filtering.}
+If we additionally demand that the Leibniz defect improves with refinement (a direct numerical analog of Lemma~\ref{lem:finite-diff-leibniz} having a vanishing ledger term), then the surviving operators collapse to derivative-like (order-$1$) closures.
+In the current run, the Leibniz-gated filter produces \StencilLeibnizSurvivorsTotal\ survivors and all survivors are classified as best-fit order $k=1$
+(Table~\ref{tab:stencil-leibniz}).
+
+These experiments do not prove uniqueness of the derivative in full generality.
+They serve as \emph{diagnostics} aligned with the \SBT program:
+when a closure is feasible, defects shrink under refinement; when it is not, defects persist or blow up.
+Here, enforcing multiplicative coherence is the decisive feasibility pressure that selects derivation-like operators from a large population of local discrete rules.
+
+% --- Auto-generated artifacts (tables/figure) ---
+\input{generated/stencil_stability_table}
+\input{generated/stencil_leibniz_table}
+\input{generated/stencil_leibniz_top_table}

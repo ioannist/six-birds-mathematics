@@ -1,0 +1,56 @@
+{
+  "timestamp": "20260127_212336",
+  "output_path": "data/runs/holonomy_rm_20260127_212336.json",
+  "figure_path": "figures/holonomy_rm_last_run.svg",
+  "figure_png_path": "figures/holonomy_rm_last_run.png",
+  "fit_p": 1.4638055029257755,
+  "fit_r2": 0.9878080057170051,
+  "table": [
+    [
+      0.015625,
+      0.00476218
+    ],
+    [
+      0.0078125,
+      0.00132002
+    ],
+    [
+      0.00390625,
+      0.00049099
+    ],
+    [
+      0.00195312,
+      0.00022498
+    ]
+  ],
+  "null_table": [
+    [
+      0.015625,
+      0.0
+    ],
+    [
+      0.0078125,
+      0.0
+    ],
+    [
+      0.00390625,
+      0.0
+    ],
+    [
+      0.00195312,
+      0.0
+    ]
+  ],
+  "null_rm_max": 0.0,
+  "null_rm_at_smallest_h": 0.0,
+  "params": {
+    "eps": 0.05,
+    "N_list": [
+      64,
+      128,
+      256,
+      512
+    ],
+    "seed": 0
+  }
+}

@@ -1,0 +1,58 @@
+\section{Introduction}
+\label{sec:introduction}
+
+\subsection{From counting to closure}
+A familiar way to ``count a stone'' is to apply a tiny, discrete action many times: tick marks, steps along a line, repeated updates of a running total.
+A familiar way to \emph{do calculus} is to replace that large discrete composition by a compressed law: a differential equation for the limit of many tiny updates, or an integral for the limit of many tiny accumulations.
+This paper takes that replacement seriously as a \emph{closure problem}.
+The central question is not ``how do we define derivatives?'' but:
+\emph{which compressions of discrete protocols remain coherent as we refine the stage parameter toward a continuum limit?}
+
+In the \SBT dictionary (reviewed in Section~2), refinement is \Pfour\ staging; the defect budget carried by a compression is \Psix\ accounting; and the limit object is \Pfive\ packaging.
+On this view, the basic moves of analysis are forced by feasibility: only those operators and equivalence relations whose defects stabilize under refinement become admissible ``laws'' at the packaged layer.
+The same lens applies beyond calculus, whenever one attempts to compress a complicated discrete structure into a continuous or spectral object.
+
+\subsection{Paper contract: what this paper is (and is not)}
+This document is a concrete instantiation of the general \SBT framework of \cite{SixBirdsFramework} in the domain of mathematics, and it treats the core toolkit as an \emph{emergence calculus} for stable closure under refinement.
+
+\paragraph{This paper \emph{is}:}
+\begin{itemize}
+  \item a worked translation of the \SBT primitives into standard mathematical practice: limits, completions, renormalizations, and compatibility constraints;
+  \item a validation-first report in which key claims are supported either by machine-checked lemmas (Lean) or by falsification-oriented numerical diagnostics (Python);
+  \item a proposal for how ``higher'' mathematical layers can be treated as \emph{closures} of discrete protocol algebras under refinement, rather than as isolated definitions.
+\end{itemize}
+
+\paragraph{This paper \emph{is not}:}
+\begin{itemize}
+  \item a replacement for standard foundations or a proposal of new axioms;
+  \item a proof of the Riemann Hypothesis or a claim that the diagnostics in Exhibits~B-1/B-2 settle classical conjectures;
+  \item an attempt to reduce all of mathematics to a single mechanism.
+\end{itemize}
+
+The intended reading is pragmatic: \SBT is used here as a \emph{dictionary} for organizing constructions and for designing tests that can fail.
+When the diagnostics fail (as they sometimes do), we treat the failure as information about missing feasibility conditions rather than as a defect to be hidden.
+
+\subsection{Contributions and artifacts}
+The paper contributes a small set of concrete, reusable ``exhibits'':
+
+\begin{itemize}
+  \item \textbf{Exhibit A-1 (calculus closure).} We isolate the exact discrete Leibniz identity for finite differences (with its explicit remainder term) and use it as an accounting ledger: demanding that the remainder vanish in a packaged limit forces the derivation (product rule) structure. We also record an algebraic uniqueness anchor for derivations on polynomial rings in Lean/mathlib \cite{moura2021lean4,mathlib2020lean}.
+  \item \textbf{Exhibit A-2 (protocol holonomy).} We quantify route mismatch between two natural refinement protocols under a small coordinate change, treating the mismatch as a \Pthree\ holonomy-style defect that decays with refinement.
+  \item \textbf{Exhibit B-1 (prime closure diagnostics).} We compare staged additive and multiplicative closures (Dirichlet truncations versus Euler-product truncations) under prototype packaging maps, and we separate a convergence control regime from the critical strip where naive staging is unstable.
+  \item \textbf{Exhibit B-2 (passivity toy).} We show, in a self-dual toy family with a positivity constraint, that tightening feasibility can confine zeros to a symmetry locus---a pattern that motivates (but does not prove) ``passivity ledger'' interpretations of zero confinement.
+\end{itemize}
+
+A key implementation choice is that reported numbers and tables are not hand-copied: the TeX paper inputs generated tables and macros produced from snapshot-visible ``last run'' pointers in \texttt{notes/}.
+This makes the draft internally consistent with the repository state.
+
+\paragraph{Code availability.}
+The math-instantiation repository is available at:
+\begin{itemize}[noitemsep,topsep=2pt]
+\item \url{https://github.com/ioannist/six-birds-mathematics}
+\end{itemize}
+
+\subsection{Roadmap}
+Section~2 recalls the \SBT dictionary in the minimal form needed for this instantiation.
+Section~3 formulates the discrete-to-packaged ``closure engine'' for mathematics.
+Sections~4--7 present the four exhibits: A-1 (calculus closure), A-2 (protocol holonomy), B-1 (prime closure diagnostics), and B-2 (passivity toy).
+Section~8 documents the artifact pipeline and reproduction commands, and Section~9 discusses limitations and next steps.

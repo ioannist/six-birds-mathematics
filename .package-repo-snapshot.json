@@ -1,0 +1,50 @@
+{
+  "allowed_roots": {
+    "data": {
+      "extensions": [".json", ".csv", ".txt", ".md"]
+    },
+    "experiments": {
+      "extensions": [".py", ".sh", ".md", ".txt", ".json"]
+    },
+    "figures": {
+      "extensions": [".png", ".pdf", ".svg", ".eps"]
+    },
+    "lean": {
+      "extensions": [".lean", ".toml"],
+      "filenames": ["lean-toolchain", "lakefile.lean", "lakefile.toml"]
+    },
+    "notes": {
+      "extensions": [".md", ".txt", ".json"]
+    },
+    "python": {
+      "extensions": [".py", ".txt", ".ini", ".toml", ".md"]
+    },
+    "scripts": {
+      "extensions": [".sh", ".py", ".txt"]
+    },
+    "tex": {
+      "extensions": [".tex", ".bib", ".sty", ".cls"]
+    }
+  },
+  "allowed_root_files": [
+    "README.md",
+    "six-birds-paper.tex",
+    ".package-repo-snapshot.json",
+    ".gitignore",
+    "requirements.txt"
+  ],
+  "exclude_dirs": [
+    ".git",
+    ".lake",
+    ".venv",
+    "venv",
+    "__pycache__",
+    ".mypy_cache",
+    ".pytest_cache",
+    ".ruff_cache",
+    ".ipynb_checkpoints",
+    "build",
+    "runs",
+    "tmp"
+  ]
+}

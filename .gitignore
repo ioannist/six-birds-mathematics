@@ -1,0 +1,42 @@
+# Lean
+.lake/
+lake-packages/
+*.olean
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+*.egg-info/
+.mypy_cache/
+.ipynb_checkpoints/
+
+# Generated Artifacts
+data/runs/
+data/tmp/
+logs/*.log
+logs/*.txt
+figures/generated/
+figures/tmp/
+
+# TeX
+tex/**/build/
+*.aux
+*.log
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.out
+*.toc
+*.lof
+*.lot
+
+# OS/editor
+.DS_Store
+
+# Repo snapshots (generated)
+*_snapshot_v*.zip
+*.zip
+.package-repo-snapshot-version

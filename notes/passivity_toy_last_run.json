@@ -1,0 +1,55 @@
+{
+  "timestamp": "20260127_212343",
+  "output_path": "data/runs/passivity_toy_20260127_212343.json",
+  "figure_path": "figures/passivity_toy_last_run.svg",
+  "figure_png_path": "figures/passivity_toy_last_run.png",
+  "table": [
+    [
+      1.0,
+      0.87169354,
+      7.10508878
+    ],
+    [
+      0.7,
+      0.58006786,
+      4.26785665
+    ],
+    [
+      0.4,
+      0.34952484,
+      2.26657293
+    ],
+    [
+      0.2,
+      0.20051341,
+      1.21606142
+    ],
+    [
+      0.1,
+      0.09468919,
+      0.71825583
+    ],
+    [
+      0.0,
+      0.00030292,
+      0.00090919
+    ]
+  ],
+  "trend_summary": "mean_dev decreased in 5/5 steps as lambda\u21920",
+  "params": {
+    "n": 12,
+    "beta": 0.7,
+    "graph": "cycle",
+    "p": 0.25,
+    "J_scale": 0.5,
+    "lambda_list": [
+      1.0,
+      0.7,
+      0.4,
+      0.2,
+      0.1,
+      0.0
+    ],
+    "seed": 0
+  }
+}

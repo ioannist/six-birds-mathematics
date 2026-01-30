@@ -1,0 +1,43 @@
+\documentclass[11pt]{article}
+\input{preamble}
+
+\title{To Count a Stone with Six Birds: A Mathematics is A Theory}
+\author{Ioannis Tsiokos\\\texttt{ioannis@automorph.io}}
+\date{28 January 2026}
+
+\begin{document}
+\maketitle
+\thispagestyle{firstpage}
+
+\input{generated/macros}
+\begin{abstract}
+Many ``higher'' mathematical objects are introduced as definitions (limits, completions, analytic continuations), but it is often unclear \emph{when} a large discrete protocol admits a stable continuous closure and \emph{how} to test that stability without overclaiming.
+This question matters because premature or untested closure claims can propagate errors through dependent results.
+We instantiate the Six-Birds Theory (\SBT) framework of \cite{SixBirdsFramework}---which provides a general audit methodology for validating compressions of discrete data into continuous or idealized objects---as a closure-and-audit method for mathematics: a discrete substrate is staged by refinement, compressions are assessed by an explicit defect ledger, and a packaged object is accepted only when defects shrink or stabilize under refinement.
+
+Operationally, we (i) formalize two anchor statements in Lean/mathlib \cite{moura2021lean4,mathlib2020lean}---the exact finite-difference Leibniz identity with its explicit remainder term and an algebraic uniqueness anchor for derivations on $R[X]$---and (ii) implement falsification-first Python diagnostics that compare competing closure routes under matched controls and an artifact contract (tables and macros are generated from snapshot-visible pointer JSONs).
+
+Across four exhibits we observe controlled, checkable separations.
+First, stability-only stencil filtering selects order-$0$ closures, while adding a Leibniz-defect gate selects derivative-like order-$1$ closures.
+Second, route mismatch (RM, measuring disagreement between closure paths) under a small coordinate change decays with refinement (power-law fit exponent $p\approx 1.46$).
+Third, for prime-based closures in a convergence control regime $\Re(s)>1$, route mismatch $\mathrm{RM}_2$ decreases with sample size $N$ (e.g.\ $\mathrm{RM}_2(800)\approx 5\times 10^{-2}$), whereas the same diagnostic in the critical strip exhibits mismatch growth by many orders of magnitude under naive staging (e.g.\ $\mathrm{RM}_2(800)\approx 5\times 10^{12}$).
+Fourth, in a self-dual toy family, tightening a positivity constraint sharply confines zeros to the symmetry locus (mean radial deviation drops from $\approx 0.87$ to $\approx 3\times 10^{-4}$).
+
+These results provide a reproducible methodology to separate feasible closures from protocol artifacts and to compare closure proposals across regimes.
+We emphasize that this paper does not establish new theorems about $\zeta$ or zero distributions; we report audit-style diagnostics under explicit controls and document the upgrade points required for stronger claims.
+\end{abstract}
+
+\input{sections/01_introduction}
+\input{sections/02_dictionary}
+\input{sections/03_packaging_engine}
+\input{sections/04_exhibit_calculus}
+\input{sections/05_exhibit_holonomy}
+\input{sections/06_exhibit_prime_rm}
+\input{sections/07_exhibit_passivity_toy}
+\input{sections/08_reproducibility}
+\input{sections/09_discussion}
+
+\bibliographystyle{plainnat}
+\bibliography{bib/refs}
+
+\end{document}

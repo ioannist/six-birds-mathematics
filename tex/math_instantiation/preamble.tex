@@ -1,0 +1,61 @@
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{mathtools}
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{multirow}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage[margin=1in]{geometry}
+\usepackage{float}
+\usepackage[section]{placeins} % Prevent floats from crossing section boundaries
+\usepackage{caption} % For \captionof
+\usepackage{xurl}
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!70!black,
+  citecolor=green!50!black,
+  urlcolor=blue!80!black,
+  bookmarksnumbered=true,
+  pdfauthor={Ioannis Tsiokos},
+  pdftitle={To Count a Stone with Six Birds: A Mathematics is A Theory}
+}
+\usepackage{cleveref}
+\crefname{section}{section}{sections}
+\crefname{table}{table}{tables}
+\crefname{figure}{figure}{figures}
+\usepackage{natbib}
+
+\graphicspath{{../../figures/}}
+
+% Prevent widows and orphans
+\widowpenalty=10000
+\clubpenalty=10000
+\raggedbottom
+
+\newtheorem{definition}{Definition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newtheorem{remark}{Remark}
+
+\newcommand{\SBT}{\textsc{SBT}}
+\newcommand{\Pone}{\textbf{P1}}
+\newcommand{\Ptwo}{\textbf{P2}}
+\newcommand{\Pthree}{\textbf{P3}}
+\newcommand{\Pfour}{\textbf{P4}}
+\newcommand{\Pfive}{\textbf{P5}}
+\newcommand{\Psix}{\textbf{P6}}
+
+\fancypagestyle{firstpage}{%
+  \fancyhf{}
+  \fancyfoot[C]{\scriptsize DOI: \href{https://doi.org/10.5281/zenodo.18402004}{10.5281/zenodo.18402004} \quad \textcopyright\ 2026 Automorph Inc.}
+  \renewcommand{\headrulewidth}{0pt}
+  \renewcommand{\footrulewidth}{0pt}
+}

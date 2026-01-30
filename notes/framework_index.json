@@ -1,0 +1,1089 @@
+{
+  "meta": {
+    "tex_main": "six-birds-paper.tex",
+    "files_parsed_count": 1,
+    "labels_count": 108
+  },
+  "records": [
+    {
+      "label": "app:tk-defects",
+      "file": "six-birds-paper.tex",
+      "line": 1859,
+      "section": "Appendix E: Toolkit theory---defects",
+      "subsection": null,
+      "subsubsection": null,
+      "environment": "document",
+      "env_class": "other"
+    },
+    {
+      "label": "app:zeno",
+      "file": "six-birds-paper.tex",
+      "line": 1646,
+      "section": "Appendix D: Zeno cascades and depth",
+      "subsection": null,
+      "subsubsection": null,
+      "environment": "document",
+      "env_class": "other"
+    },
+    {
+      "label": "cor:closure-saturates",
+      "file": "six-birds-paper.tex",
+      "line": 410,
+      "section": "Order-closure and closure ladders",
+      "subsection": "Closure ladders and saturation",
+      "subsubsection": null,
+      "environment": "corollary",
+      "env_class": "corollary"
+    },
+    {
+      "label": "cor:ect-bal-icap",
+      "file": "six-birds-paper.tex",
+      "line": 2236,
+      "section": "Appendix E: Toolkit theory---defects",
+      "subsection": "Emergent coercivity template via sector compression",
+      "subsubsection": "Dissipative atoms and semigroup decay",
+      "environment": "corollary",
+      "env_class": "corollary"
+    },
+    {
+      "label": "cor:ect-hl1",
+      "file": "six-birds-paper.tex",
+      "line": 2444,
+      "section": "Appendix E: Toolkit theory---defects",
+      "subsection": "Emergent coercivity template via sector compression",
+      "subsubsection": "Mode compression from sectorization (P4) and minimality (P5)",
+      "environment": "corollary",
+      "env_class": "corollary"
+    },
+    {
+      "label": "cor:null-regime",
+      "file": "six-birds-paper.tex",
+      "line": 817,
+      "section": "AUT + REV + ACC regime and graph 1-forms",
+      "subsection": "Cycle integrals, exactness, and the null regime",
+      "subsubsection": null,
+      "environment": "corollary",
+      "env_class": "corollary"
+    },
+    {
+      "label": "cor:strict-language-extension",
+      "file": "six-birds-paper.tex",
+      "line": 1081,
+      "section": "Generic extension and the finite forcing lemma",
+      "subsection": "Finite forcing: generic extensions are non-definable",
+      "subsubsection": null,
+      "environment": "corollary",
+      "env_class": "corollary"
+    },
+    {
+      "label": "def:D-IC-01",
+      "file": "six-birds-paper.tex",
+      "line": 533,
+      "section": "Idempotent endomaps and induced closures",
+      "subsection": "Dynamics-induced empirical endomaps",
+      "subsubsection": null,
+      "environment": "definition",
+      "env_class": "definition"
+    },
+    {
+      "label": "def:D-IC-02",
+      "file": "six-birds-paper.tex",
+      "line": 568,
+      "section": "Idempotent endomaps and induced closures",
+      "subsection": "Dynamics-induced empirical endomaps",
+      "subsubsection": null,
+      "environment": "definition",
+      "env_class": "definition"
+    },
+    {
+      "label": "def:closed-points",
+      "file": "six-birds-paper.tex",
+      "line": 370,
+      "section": "Order-closure and closure ladders",
+      "subsection": "Order-theoretic closure and fixed points",
+      "subsubsection": null,
+      "environment": "definition",
+      "env_class": "definition"
+    },
+    {
+      "label": "def:closure-ladder",
+      "file": "six-birds-paper.tex",
+      "line": 430,
+      "section": "Order-closure and closure ladders",
+      "subsection": "Closure ladders and saturation",
+      "subsubsection": null,
+      "environment": "definition",
+      "env_class": "definition"
+    },
+    {
+      "label": "def:closure-operator",
+      "file": "six-birds-paper.tex",
+      "line": 358,
+      "section": "Order-closure and closure ladders",
+      "subsection": "Order-theoretic closure and fixed points",
+      "subsubsection": null,
+      "environment": "definition",
+      "env_class": "definition"
+    },
+    {
+      "label": "def:cycle-integral",
+      "file": "six-birds-paper.tex",
+      "line": 757,
+      "section": "AUT + REV + ACC regime and graph 1-forms",
+      "subsection": "Cycle integrals, exactness, and the null regime",
+      "subsubsection": null,
+      "environment": "definition",
+      "env_class": "definition"
+    },
+    {
+      "label": "def:ect-atom",
+      "file": "six-birds-paper.tex",
+      "line": 2129,
+      "section": "Appendix E: Toolkit theory---defects",
+      "subsection": "Emergent coercivity template via sector compression",
+      "subsubsection": "Summary: slots and divergence consequence",
+      "environment": "definition",
+      "env_class": "definition"
+    },
+    {
+      "label": "def:ect-atom-ss",
+      "file": "six-birds-paper.tex",
+      "line": 2142,
+      "section": "Appendix E: Toolkit theory---defects",
+      "subsection": "Emergent coercivity template via sector compression",
+      "subsubsection": "Dissipative atoms and semigroup decay",
+      "environment": "definition",
+      "env_class": "definition"
+    },
+    {
+      "label": "def:ect-bal",
+      "file": "six-birds-paper.tex",
+      "line": 2156,
+      "section": "Appendix E: Toolkit theory---defects",
+      "subsection": "Emergent coercivity template via sector compression",
+      "subsubsection": "Dissipative atoms and semigroup decay",
+      "environment": "definition",
+      "env_class": "definition"
+    },
+    {
+      "label": "def:ect-cap",
+      "file": "six-birds-paper.tex",
+      "line": 2166,
+      "section": "Appendix E: Toolkit theory---defects",
+      "subsection": "Emergent coercivity template via sector compression",
+      "subsubsection": "Dissipative atoms and semigroup decay",
+      "environment": "definition",
+      "env_class": "definition"
+    },
+    {
+      "label": "def:ect-gate",
+      "file": "six-birds-paper.tex",
+      "line": 2313,
+      "section": "Appendix E: Toolkit theory---defects",
+      "subsection": "Emergent coercivity template via sector compression",
+      "subsubsection": "Coercivity from feasibility gating (P2)",
+      "environment": "definition",
+      "env_class": "definition"
+    },
+    {
+      "label": "def:ect-p4-idx",
+      "file": "six-birds-paper.tex",
+      "line": 2423,
+      "section": "Appendix E: Toolkit theory---defects",
+      "subsection": "Emergent coercivity template via sector compression",
+      "subsubsection": "Mode compression from sectorization (P4) and minimality (P5)",
+      "environment": "definition",
+      "env_class": "definition"
+    },
+    {
+      "label": "def:ect-p5min",
+      "file": "six-birds-paper.tex",
+      "line": 2393,
+      "section": "Appendix E: Toolkit theory---defects",
+      "subsection": "Emergent coercivity template via sector compression",
+      "subsubsection": "Mode compression from sectorization (P4) and minimality (P5)",
+      "environment": "definition",
+      "env_class": "definition"
+    },
+    {
+      "label": "def:ect-sectorization",
+      "file": "six-birds-paper.tex",
+      "line": 2381,
+      "section": "Appendix E: Toolkit theory---defects",
+      "subsection": "Emergent coercivity template via sector compression",
+      "subsubsection": "Mode compression from sectorization (P4) and minimality (P5)",
+      "environment": "definition",
+      "env_class": "definition"
+    },
+    {
+      "label": "def:edge-one-form",
+      "file": "six-birds-paper.tex",
+      "line": 733,
+      "section": "AUT + REV + ACC regime and graph 1-forms",
+      "subsection": "Bidirected support and the log-ratio 1-form",
+      "subsubsection": null,
+      "environment": "definition",
+      "env_class": "definition"
+    },
+    {
+      "label": "def:exact-one-form",
+      "file": "six-birds-paper.tex",
+      "line": 766,
+      "section": "AUT + REV + ACC regime and graph 1-forms",
+      "subsection": "Cycle integrals, exactness, and the null regime",
+      "subsubsection": null,
+      "environment": "definition",
+      "env_class": "definition"
+    },
+    {
+      "label": "def:meta-bnd",
+      "file": "six-birds-paper.tex",
+      "line": 1122,
+      "section": "Why the primitives are unavoidable",
+      "subsection": null,
+      "subsubsection": null,
+      "environment": "definition",
+      "env_class": "definition"
+    },
+    {
+      "label": "def:meta-lens",
+      "file": "six-birds-paper.tex",
+      "line": 1108,
+      "section": "Why the primitives are unavoidable",
+      "subsection": null,
+      "subsubsection": null,
+      "environment": "definition",
+      "env_class": "definition"
+    },
+    {
+      "label": "def:meta-proc",
+      "file": "six-birds-paper.tex",
+      "line": 1103,
+      "section": "Why the primitives are unavoidable",
+      "subsection": null,
+      "subsubsection": null,
+      "environment": "definition",
+      "env_class": "definition"
+    },
+    {
+      "label": "def:meta-ref",
+      "file": "six-birds-paper.tex",
+      "line": 1114,
+      "section": "Why the primitives are unavoidable",
+      "subsection": null,
+      "subsubsection": null,
+      "environment": "definition",
+      "env_class": "definition"
+    },
+    {
+      "label": "def:strictly-stronger",
+      "file": "six-birds-paper.tex",
+      "line": 425,
+      "section": "Order-closure and closure ladders",
+      "subsection": "Closure ladders and saturation",
+      "subsubsection": null,
+      "environment": "definition",
+      "env_class": "definition"
+    },
+    {
+      "label": "def:tk-bridge-ports",
+      "file": "six-birds-paper.tex",
+      "line": 1975,
+      "section": "Appendix E: Toolkit theory---defects",
+      "subsection": "Bridge objects: ports, passivity, and integrated throughput",
+      "subsubsection": null,
+      "environment": "definition",
+      "env_class": "definition"
+    },
+    {
+      "label": "def:tk-icap",
+      "file": "six-birds-paper.tex",
+      "line": 2005,
+      "section": "Appendix E: Toolkit theory---defects",
+      "subsection": "Bridge objects: ports, passivity, and integrated throughput",
+      "subsubsection": null,
+      "environment": "definition",
+      "env_class": "definition"
+    },
+    {
+      "label": "def:tk-passive-storage",
+      "file": "six-birds-paper.tex",
+      "line": 1994,
+      "section": "Appendix E: Toolkit theory---defects",
+      "subsection": "Bridge objects: ports, passivity, and integrated throughput",
+      "subsubsection": null,
+      "environment": "definition",
+      "env_class": "definition"
+    },
+    {
+      "label": "def:tk-theory-package",
+      "file": "six-birds-paper.tex",
+      "line": 262,
+      "section": "Conventions and notation",
+      "subsection": "A unified theory package viewpoint",
+      "subsubsection": null,
+      "environment": "definition",
+      "env_class": "definition"
+    },
+    {
+      "label": "eq:align",
+      "file": "six-birds-paper.tex",
+      "line": 1737,
+      "section": "Appendix D: Zeno cascades and depth",
+      "subsection": "Integrated throughput (ICAP) and feasibility \\texorpdfstring{$\\Rightarrow$}{=>} latency bound",
+      "subsubsection": null,
+      "environment": "displaymath",
+      "env_class": "equation"
+    },
+    {
+      "label": "eq:feas",
+      "file": "six-birds-paper.tex",
+      "line": 1729,
+      "section": "Appendix D: Zeno cascades and depth",
+      "subsection": "Integrated throughput (ICAP) and feasibility \\texorpdfstring{$\\Rightarrow$}{=>} latency bound",
+      "subsubsection": null,
+      "environment": "displaymath",
+      "env_class": "equation"
+    },
+    {
+      "label": "eq:icap",
+      "file": "six-birds-paper.tex",
+      "line": 1723,
+      "section": "Appendix D: Zeno cascades and depth",
+      "subsection": "Integrated throughput (ICAP) and feasibility \\texorpdfstring{$\\Rightarrow$}{=>} latency bound",
+      "subsubsection": null,
+      "environment": "displaymath",
+      "env_class": "equation"
+    },
+    {
+      "label": "eq:passive-storage",
+      "file": "six-birds-paper.tex",
+      "line": 1680,
+      "section": "Appendix D: Zeno cascades and depth",
+      "subsection": "Storage-based activity and the WORK quantum (Option B)",
+      "subsubsection": null,
+      "environment": "displaymath",
+      "env_class": "equation"
+    },
+    {
+      "label": "eq:tk-audit-def",
+      "file": "six-birds-paper.tex",
+      "line": 2471,
+      "section": "Appendix E: Toolkit theory---defects",
+      "subsection": "Emergent coercivity template via sector compression",
+      "subsubsection": "Mode compression from sectorization (P4) and minimality (P5)",
+      "environment": "displaymath",
+      "env_class": "equation"
+    },
+    {
+      "label": "eq:tk-icap",
+      "file": "six-birds-paper.tex",
+      "line": 2011,
+      "section": "Appendix E: Toolkit theory---defects",
+      "subsection": "Bridge objects: ports, passivity, and integrated throughput",
+      "subsubsection": null,
+      "environment": "displaymath",
+      "env_class": "equation"
+    },
+    {
+      "label": "eq:tk-idem-def",
+      "file": "six-birds-paper.tex",
+      "line": 1873,
+      "section": "Appendix E: Toolkit theory---defects",
+      "subsection": "Defects as quantitative relaxations of exact laws",
+      "subsubsection": null,
+      "environment": "displaymath",
+      "env_class": "equation"
+    },
+    {
+      "label": "eq:tk-passivity",
+      "file": "six-birds-paper.tex",
+      "line": 2001,
+      "section": "Appendix E: Toolkit theory---defects",
+      "subsection": "Bridge objects: ports, passivity, and integrated throughput",
+      "subsubsection": null,
+      "environment": "displaymath",
+      "env_class": "equation"
+    },
+    {
+      "label": "eq:tk-rm",
+      "file": "six-birds-paper.tex",
+      "line": 1893,
+      "section": "Appendix E: Toolkit theory---defects",
+      "subsection": "Defects as quantitative relaxations of exact laws",
+      "subsubsection": null,
+      "environment": "displaymath",
+      "env_class": "equation"
+    },
+    {
+      "label": "eq:tk-route-capacity",
+      "file": "six-birds-paper.tex",
+      "line": 1938,
+      "section": "Appendix E: Toolkit theory---defects",
+      "subsection": "Defects as quantitative relaxations of exact laws",
+      "subsubsection": "Route dependence, capacity, and a one-step control inequality",
+      "environment": "displaymath",
+      "env_class": "equation"
+    },
+    {
+      "label": "lem:closed-antitone",
+      "file": "six-birds-paper.tex",
+      "line": 382,
+      "section": "Order-closure and closure ladders",
+      "subsection": "Order-theoretic closure and fixed points",
+      "subsubsection": null,
+      "environment": "lemma",
+      "env_class": "lemma"
+    },
+    {
+      "label": "lem:closure-iterate-stabilizes",
+      "file": "six-birds-paper.tex",
+      "line": 397,
+      "section": "Order-closure and closure ladders",
+      "subsection": "Closure ladders and saturation",
+      "subsubsection": null,
+      "environment": "lemma",
+      "env_class": "lemma"
+    },
+    {
+      "label": "lem:count-definable",
+      "file": "six-birds-paper.tex",
+      "line": 1026,
+      "section": "Generic extension and the finite forcing lemma",
+      "subsection": "Counting lemma: definable predicates are rare",
+      "subsubsection": null,
+      "environment": "lemma",
+      "env_class": "lemma"
+    },
+    {
+      "label": "lem:ect-bal-kmass",
+      "file": "six-birds-paper.tex",
+      "line": 2181,
+      "section": "Appendix E: Toolkit theory---defects",
+      "subsection": "Emergent coercivity template via sector compression",
+      "subsubsection": "Dissipative atoms and semigroup decay",
+      "environment": "lemma",
+      "env_class": "lemma"
+    },
+    {
+      "label": "lem:ect-coer-feas",
+      "file": "six-birds-paper.tex",
+      "line": 2331,
+      "section": "Appendix E: Toolkit theory---defects",
+      "subsection": "Emergent coercivity template via sector compression",
+      "subsubsection": "Coercivity from feasibility gating (P2)",
+      "environment": "lemma",
+      "env_class": "lemma"
+    },
+    {
+      "label": "lem:ect-fmem",
+      "file": "six-birds-paper.tex",
+      "line": 2205,
+      "section": "Appendix E: Toolkit theory---defects",
+      "subsection": "Emergent coercivity template via sector compression",
+      "subsubsection": "Dissipative atoms and semigroup decay",
+      "environment": "lemma",
+      "env_class": "lemma"
+    },
+    {
+      "label": "lem:ect-mech",
+      "file": "six-birds-paper.tex",
+      "line": 2261,
+      "section": "Appendix E: Toolkit theory---defects",
+      "subsection": "Emergent coercivity template via sector compression",
+      "subsubsection": "Dissipative atoms and semigroup decay",
+      "environment": "lemma",
+      "env_class": "lemma"
+    },
+    {
+      "label": "lem:ect-mode-ub",
+      "file": "six-birds-paper.tex",
+      "line": 2405,
+      "section": "Appendix E: Toolkit theory---defects",
+      "subsection": "Emergent coercivity template via sector compression",
+      "subsubsection": "Mode compression from sectorization (P4) and minimality (P5)",
+      "environment": "lemma",
+      "env_class": "lemma"
+    },
+    {
+      "label": "lem:ect-qsize",
+      "file": "six-birds-paper.tex",
+      "line": 2434,
+      "section": "Appendix E: Toolkit theory---defects",
+      "subsection": "Emergent coercivity template via sector compression",
+      "subsubsection": "Mode compression from sectorization (P4) and minimality (P5)",
+      "environment": "lemma",
+      "env_class": "lemma"
+    },
+    {
+      "label": "lem:ect-shrink",
+      "file": "six-birds-paper.tex",
+      "line": 2354,
+      "section": "Appendix E: Toolkit theory---defects",
+      "subsection": "Emergent coercivity template via sector compression",
+      "subsubsection": "Coercivity from feasibility gating (P2)",
+      "environment": "lemma",
+      "env_class": "lemma"
+    },
+    {
+      "label": "lem:exact-zero-cycles",
+      "file": "six-birds-paper.tex",
+      "line": 776,
+      "section": "AUT + REV + ACC regime and graph 1-forms",
+      "subsection": "Cycle integrals, exactness, and the null regime",
+      "subsubsection": null,
+      "environment": "lemma",
+      "env_class": "lemma"
+    },
+    {
+      "label": "lem:latency-lb",
+      "file": "six-birds-paper.tex",
+      "line": 1733,
+      "section": "Appendix D: Zeno cascades and depth",
+      "subsection": "Integrated throughput (ICAP) and feasibility \\texorpdfstring{$\\Rightarrow$}{=>} latency bound",
+      "subsubsection": null,
+      "environment": "lemma",
+      "env_class": "lemma"
+    },
+    {
+      "label": "lem:tk-causal-compose",
+      "file": "six-birds-paper.tex",
+      "line": 2022,
+      "section": "Appendix E: Toolkit theory---defects",
+      "subsection": "Bridge objects: ports, passivity, and integrated throughput",
+      "subsubsection": null,
+      "environment": "lemma",
+      "env_class": "lemma"
+    },
+    {
+      "label": "lem:tk-parallel-add",
+      "file": "six-birds-paper.tex",
+      "line": 2033,
+      "section": "Appendix E: Toolkit theory---defects",
+      "subsection": "Bridge objects: ports, passivity, and integrated throughput",
+      "subsubsection": null,
+      "environment": "lemma",
+      "env_class": "lemma"
+    },
+    {
+      "label": "lem:tk-route-capacity",
+      "file": "six-birds-paper.tex",
+      "line": 1922,
+      "section": "Appendix E: Toolkit theory---defects",
+      "subsection": "Defects as quantitative relaxations of exact laws",
+      "subsubsection": "Route dependence, capacity, and a one-step control inequality",
+      "environment": "lemma",
+      "env_class": "lemma"
+    },
+    {
+      "label": "lem:work-quantum",
+      "file": "six-birds-paper.tex",
+      "line": 1696,
+      "section": "Appendix D: Zeno cascades and depth",
+      "subsection": "Storage-based activity and the WORK quantum (Option B)",
+      "subsubsection": null,
+      "environment": "lemma",
+      "env_class": "lemma"
+    },
+    {
+      "label": "rem:ect-div",
+      "file": "six-birds-paper.tex",
+      "line": 2287,
+      "section": "Appendix E: Toolkit theory---defects",
+      "subsection": "Emergent coercivity template via sector compression",
+      "subsubsection": "Dissipative atoms and semigroup decay",
+      "environment": "remark",
+      "env_class": "remark"
+    },
+    {
+      "label": "rem:ect-nonimplication",
+      "file": "six-birds-paper.tex",
+      "line": 2115,
+      "section": "Appendix E: Toolkit theory---defects",
+      "subsection": "Emergent coercivity template via sector compression",
+      "subsubsection": "Summary: slots and divergence consequence",
+      "environment": "remark",
+      "env_class": "remark"
+    },
+    {
+      "label": "rem:ect-p5-fmem",
+      "file": "six-birds-paper.tex",
+      "line": 2254,
+      "section": "Appendix E: Toolkit theory---defects",
+      "subsection": "Emergent coercivity template via sector compression",
+      "subsubsection": "Dissipative atoms and semigroup decay",
+      "environment": "remark",
+      "env_class": "remark"
+    },
+    {
+      "label": "rem:ect-route",
+      "file": "six-birds-paper.tex",
+      "line": 2302,
+      "section": "Appendix E: Toolkit theory---defects",
+      "subsection": "Emergent coercivity template via sector compression",
+      "subsubsection": "Dissipative atoms and semigroup decay",
+      "environment": "remark",
+      "env_class": "remark"
+    },
+    {
+      "label": "rem:ect-shrink-examples",
+      "file": "six-birds-paper.tex",
+      "line": 2372,
+      "section": "Appendix E: Toolkit theory---defects",
+      "subsection": "Emergent coercivity template via sector compression",
+      "subsubsection": "Coercivity from feasibility gating (P2)",
+      "environment": "remark",
+      "env_class": "remark"
+    },
+    {
+      "label": "rem:ect-slots",
+      "file": "six-birds-paper.tex",
+      "line": 2458,
+      "section": "Appendix E: Toolkit theory---defects",
+      "subsection": "Emergent coercivity template via sector compression",
+      "subsubsection": "Mode compression from sectorization (P4) and minimality (P5)",
+      "environment": "remark",
+      "env_class": "remark"
+    },
+    {
+      "label": "rem:hl-p2-core",
+      "file": "six-birds-paper.tex",
+      "line": 2346,
+      "section": "Appendix E: Toolkit theory---defects",
+      "subsection": "Emergent coercivity template via sector compression",
+      "subsubsection": "Coercivity from feasibility gating (P2)",
+      "environment": "remark",
+      "env_class": "remark"
+    },
+    {
+      "label": "rem:lean-closure",
+      "file": "six-birds-paper.tex",
+      "line": 448,
+      "section": "Order-closure and closure ladders",
+      "subsection": "Closure ladders and saturation",
+      "subsubsection": null,
+      "environment": "remark",
+      "env_class": "remark"
+    },
+    {
+      "label": "rem:tk-bridge-to-primitives",
+      "file": "six-birds-paper.tex",
+      "line": 2066,
+      "section": "Appendix E: Toolkit theory---defects",
+      "subsection": "Bridge objects: ports, passivity, and integrated throughput",
+      "subsubsection": null,
+      "environment": "remark",
+      "env_class": "remark"
+    },
+    {
+      "label": "rem:tk-extreme-points",
+      "file": "six-birds-paper.tex",
+      "line": 1877,
+      "section": "Appendix E: Toolkit theory---defects",
+      "subsection": "Defects as quantitative relaxations of exact laws",
+      "subsubsection": null,
+      "environment": "remark",
+      "env_class": "remark"
+    },
+    {
+      "label": "rem:tk-holonomy-no-teleology",
+      "file": "six-birds-paper.tex",
+      "line": 1959,
+      "section": "Appendix E: Toolkit theory---defects",
+      "subsection": "Defects as quantitative relaxations of exact laws",
+      "subsubsection": "Route dependence, capacity, and a one-step control inequality",
+      "environment": "remark",
+      "env_class": "remark"
+    },
+    {
+      "label": "rem:tk-interoperability",
+      "file": "six-birds-paper.tex",
+      "line": 71,
+      "section": "Introduction",
+      "subsection": null,
+      "subsubsection": null,
+      "environment": "remark",
+      "env_class": "remark"
+    },
+    {
+      "label": "rem:tk-serial-note",
+      "file": "six-birds-paper.tex",
+      "line": 2056,
+      "section": "Appendix E: Toolkit theory---defects",
+      "subsection": "Bridge objects: ports, passivity, and integrated throughput",
+      "subsubsection": null,
+      "environment": "remark",
+      "env_class": "remark"
+    },
+    {
+      "label": "rem:tk-theory-instantiations",
+      "file": "six-birds-paper.tex",
+      "line": 288,
+      "section": "Conventions and notation",
+      "subsection": "A unified theory package viewpoint",
+      "subsubsection": null,
+      "environment": "remark",
+      "env_class": "remark"
+    },
+    {
+      "label": "sec:acc",
+      "file": "six-birds-paper.tex",
+      "line": 710,
+      "section": "AUT + REV + ACC regime and graph 1-forms",
+      "subsection": null,
+      "subsubsection": null,
+      "environment": "document",
+      "env_class": "other"
+    },
+    {
+      "label": "sec:aot",
+      "file": "six-birds-paper.tex",
+      "line": 851,
+      "section": "Arrow-of-time as path reversal asymmetry; data processing; protocol trap",
+      "subsection": null,
+      "subsubsection": null,
+      "environment": "document",
+      "env_class": "other"
+    },
+    {
+      "label": "sec:big-picture",
+      "file": "six-birds-paper.tex",
+      "line": 107,
+      "section": "Introduction",
+      "subsection": "The organizing picture: a three-certificate loop",
+      "subsubsection": null,
+      "environment": "document",
+      "env_class": "other"
+    },
+    {
+      "label": "sec:closure",
+      "file": "six-birds-paper.tex",
+      "line": 350,
+      "section": "Order-closure and closure ladders",
+      "subsection": null,
+      "subsubsection": null,
+      "environment": "document",
+      "env_class": "other"
+    },
+    {
+      "label": "sec:discussion-claims",
+      "file": "six-birds-paper.tex",
+      "line": 1419,
+      "section": "Discussion and scope boundary",
+      "subsection": "What the theory does and does not claim",
+      "subsubsection": null,
+      "environment": "document",
+      "env_class": "other"
+    },
+    {
+      "label": "sec:downward-influence",
+      "file": "six-birds-paper.tex",
+      "line": 1263,
+      "section": "Primitives P1--P6 as closure-changing operations",
+      "subsection": "Downward influence across theories",
+      "subsubsection": null,
+      "environment": "document",
+      "env_class": "other"
+    },
+    {
+      "label": "sec:ect-gating",
+      "file": "six-birds-paper.tex",
+      "line": 2310,
+      "section": "Appendix E: Toolkit theory---defects",
+      "subsection": "Emergent coercivity template via sector compression",
+      "subsubsection": "Coercivity from feasibility gating (P2)",
+      "environment": "document",
+      "env_class": "other"
+    },
+    {
+      "label": "sec:ect-sectorization",
+      "file": "six-birds-paper.tex",
+      "line": 2378,
+      "section": "Appendix E: Toolkit theory---defects",
+      "subsection": "Emergent coercivity template via sector compression",
+      "subsubsection": "Mode compression from sectorization (P4) and minimality (P5)",
+      "environment": "document",
+      "env_class": "other"
+    },
+    {
+      "label": "sec:ect-summary",
+      "file": "six-birds-paper.tex",
+      "line": 2077,
+      "section": "Appendix E: Toolkit theory---defects",
+      "subsection": "Emergent coercivity template via sector compression",
+      "subsubsection": "Summary: slots and divergence consequence",
+      "environment": "document",
+      "env_class": "other"
+    },
+    {
+      "label": "sec:ect-template",
+      "file": "six-birds-paper.tex",
+      "line": 2075,
+      "section": "Appendix E: Toolkit theory---defects",
+      "subsection": "Emergent coercivity template via sector compression",
+      "subsubsection": null,
+      "environment": "document",
+      "env_class": "other"
+    },
+    {
+      "label": "sec:empirical-closure",
+      "file": "six-birds-paper.tex",
+      "line": 524,
+      "section": "Idempotent endomaps and induced closures",
+      "subsection": "Dynamics-induced empirical endomaps",
+      "subsubsection": null,
+      "environment": "document",
+      "env_class": "other"
+    },
+    {
+      "label": "sec:examples",
+      "file": "six-birds-paper.tex",
+      "line": 1336,
+      "section": "Examples",
+      "subsection": null,
+      "subsubsection": null,
+      "environment": "document",
+      "env_class": "other"
+    },
+    {
+      "label": "sec:forcing",
+      "file": "six-birds-paper.tex",
+      "line": 988,
+      "section": "Generic extension and the finite forcing lemma",
+      "subsection": null,
+      "subsubsection": null,
+      "environment": "document",
+      "env_class": "other"
+    },
+    {
+      "label": "sec:idempotent-endo",
+      "file": "six-birds-paper.tex",
+      "line": 461,
+      "section": "Idempotent endomaps and induced closures",
+      "subsection": "Idempotent endomaps",
+      "subsubsection": null,
+      "environment": "document",
+      "env_class": "other"
+    },
+    {
+      "label": "sec:instantiation-recipe",
+      "file": "six-birds-paper.tex",
+      "line": 297,
+      "section": "Conventions and notation",
+      "subsection": "A minimal instantiation recipe",
+      "subsubsection": null,
+      "environment": "document",
+      "env_class": "other"
+    },
+    {
+      "label": "sec:meta-unavoidable",
+      "file": "six-birds-paper.tex",
+      "line": 1101,
+      "section": "Why the primitives are unavoidable",
+      "subsection": null,
+      "subsubsection": null,
+      "environment": "document",
+      "env_class": "other"
+    },
+    {
+      "label": "sec:outlook",
+      "file": "six-birds-paper.tex",
+      "line": 1442,
+      "section": "Discussion and scope boundary",
+      "subsection": "Outlook: forthcoming instantiations",
+      "subsubsection": null,
+      "environment": "document",
+      "env_class": "other"
+    },
+    {
+      "label": "sec:primitives",
+      "file": "six-birds-paper.tex",
+      "line": 1160,
+      "section": "Primitives P1--P6 as closure-changing operations",
+      "subsection": null,
+      "subsubsection": null,
+      "environment": "document",
+      "env_class": "other"
+    },
+    {
+      "label": "sec:related",
+      "file": "six-birds-paper.tex",
+      "line": 150,
+      "section": "Related work",
+      "subsection": null,
+      "subsubsection": null,
+      "environment": "document",
+      "env_class": "other"
+    },
+    {
+      "label": "sec:six-birds-loop",
+      "file": "six-birds-paper.tex",
+      "line": 1224,
+      "section": "Primitives P1--P6 as closure-changing operations",
+      "subsection": "How the primitives compose to generate theory growth",
+      "subsubsection": null,
+      "environment": "document",
+      "env_class": "other"
+    },
+    {
+      "label": "sec:tk-bridge-toolkit",
+      "file": "six-birds-paper.tex",
+      "line": 1967,
+      "section": "Appendix E: Toolkit theory---defects",
+      "subsection": "Bridge objects: ports, passivity, and integrated throughput",
+      "subsubsection": null,
+      "environment": "document",
+      "env_class": "other"
+    },
+    {
+      "label": "sec:tk-defect-calculus",
+      "file": "six-birds-paper.tex",
+      "line": 1860,
+      "section": "Appendix E: Toolkit theory---defects",
+      "subsection": "Defects as quantitative relaxations of exact laws",
+      "subsubsection": null,
+      "environment": "document",
+      "env_class": "other"
+    },
+    {
+      "label": "sec:tk-route-capacity",
+      "file": "six-birds-paper.tex",
+      "line": 1897,
+      "section": "Appendix E: Toolkit theory---defects",
+      "subsection": "Defects as quantitative relaxations of exact laws",
+      "subsubsection": "Route dependence, capacity, and a one-step control inequality",
+      "environment": "document",
+      "env_class": "other"
+    },
+    {
+      "label": "sec:tk-theory-package",
+      "file": "six-birds-paper.tex",
+      "line": 253,
+      "section": "Conventions and notation",
+      "subsection": "A unified theory package viewpoint",
+      "subsubsection": null,
+      "environment": "document",
+      "env_class": "other"
+    },
+    {
+      "label": "subsec:ex:3cycle",
+      "file": "six-birds-paper.tex",
+      "line": 1343,
+      "section": "Examples",
+      "subsection": "A biased three-cycle: a non-exact graph 1-form",
+      "subsubsection": null,
+      "environment": "document",
+      "env_class": "other"
+    },
+    {
+      "label": "subsec:ex:forcing-count",
+      "file": "six-birds-paper.tex",
+      "line": 1405,
+      "section": "Examples",
+      "subsection": "Finite forcing count: definability is exponentially rare",
+      "subsubsection": null,
+      "environment": "document",
+      "env_class": "other"
+    },
+    {
+      "label": "subsec:ex:protocol-trap",
+      "file": "six-birds-paper.tex",
+      "line": 1363,
+      "section": "Examples",
+      "subsection": "Protocol trap: external schedule vs autonomous lifted model",
+      "subsubsection": null,
+      "environment": "document",
+      "env_class": "other"
+    },
+    {
+      "label": "thm:T-IC-01",
+      "file": "six-birds-paper.tex",
+      "line": 659,
+      "section": "Idempotent endomaps and induced closures",
+      "subsection": "Dynamics-induced empirical endomaps",
+      "subsubsection": null,
+      "environment": "theorem",
+      "env_class": "theorem"
+    },
+    {
+      "label": "thm:T-IC-02",
+      "file": "six-birds-paper.tex",
+      "line": 601,
+      "section": "Idempotent endomaps and induced closures",
+      "subsection": "Dynamics-induced empirical endomaps",
+      "subsubsection": null,
+      "environment": "theorem",
+      "env_class": "theorem"
+    },
+    {
+      "label": "thm:cycle-criterion-exact",
+      "file": "six-birds-paper.tex",
+      "line": 791,
+      "section": "AUT + REV + ACC regime and graph 1-forms",
+      "subsection": "Cycle integrals, exactness, and the null regime",
+      "subsubsection": null,
+      "environment": "theorem",
+      "env_class": "theorem"
+    },
+    {
+      "label": "thm:dpi_path",
+      "file": "six-birds-paper.tex",
+      "line": 895,
+      "section": "Arrow-of-time as path reversal asymmetry; data processing; protocol trap",
+      "subsection": "Data processing: coarse-graining cannot create asymmetry",
+      "subsubsection": null,
+      "environment": "theorem",
+      "env_class": "theorem"
+    },
+    {
+      "label": "thm:ect-summary",
+      "file": "six-birds-paper.tex",
+      "line": 2079,
+      "section": "Appendix E: Toolkit theory---defects",
+      "subsection": "Emergent coercivity template via sector compression",
+      "subsubsection": "Summary: slots and divergence consequence",
+      "environment": "theorem",
+      "env_class": "theorem"
+    },
+    {
+      "label": "thm:finite-forcing",
+      "file": "six-birds-paper.tex",
+      "line": 1046,
+      "section": "Generic extension and the finite forcing lemma",
+      "subsection": "Finite forcing: generic extensions are non-definable",
+      "subsubsection": null,
+      "environment": "theorem",
+      "env_class": "theorem"
+    },
+    {
+      "label": "thm:meta-prim",
+      "file": "six-birds-paper.tex",
+      "line": 1129,
+      "section": "Why the primitives are unavoidable",
+      "subsection": null,
+      "subsubsection": null,
+      "environment": "theorem",
+      "env_class": "theorem"
+    },
+    {
+      "label": "thm:no-zeno",
+      "file": "six-birds-paper.tex",
+      "line": 1762,
+      "section": "Appendix D: Zeno cascades and depth",
+      "subsection": "No-Zeno criterion via divergence",
+      "subsubsection": null,
+      "environment": "theorem",
+      "env_class": "theorem"
+    },
+    {
+      "label": "thm:protocol_trap",
+      "file": "six-birds-paper.tex",
+      "line": 946,
+      "section": "Arrow-of-time as path reversal asymmetry; data processing; protocol trap",
+      "subsection": "Protocol trap: apparent stroboscopic arrows and the ``clock audit''",
+      "subsubsection": null,
+      "environment": "theorem",
+      "env_class": "theorem"
+    }
+  ]
+}
