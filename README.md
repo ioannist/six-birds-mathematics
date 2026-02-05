@@ -21,8 +21,6 @@ The mathematics instantiation implements:
 - **Passivity toy model**: demonstrating "feasibility/positivity tightening implies zero confinement to a symmetry locus"
 - **Artifact contract**: paper numbers/tables/figures are generated from snapshot-visible JSON pointers; TeX imports generated macros so the PDF stays consistent with repository state
 
-See also: [six-birds-neural](https://github.com/anthropics/six-birds-neural) for the neural/meta-layer substrate.
-
 ## Scope and limitations
 
 The paper is explicit about what it does and does not establish:
