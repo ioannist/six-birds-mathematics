@@ -16,6 +16,7 @@ INPUTS = {
     "holonomy": Path("notes/holonomy_rm_last_run.json"),
     "prime_closure": Path("notes/prime_closure_rm_last_run.json"),
     "passivity": Path("notes/passivity_toy_last_run.json"),
+    "integration": Path("notes/integration_closure_last_run.json"),
     "framework_summary": Path("notes/framework_index_summary.md"),
 }
 
@@ -121,6 +122,20 @@ def main() -> int:
         lines.append(f"- figure: {sl.get('figure_path', 'figures/stencil_flow_leibniz_last_run.svg')}")
         lines.append(f"- figure_png: {sl.get('figure_png_path', 'figures/stencil_flow_leibniz_last_run.png')}")
     lines.append("")
+    lines.append("### Integration closure")
+    integ = data.get("integration", {})
+    if "_status" in integ:
+        lines.append(f"- {integ['_status']}")
+    else:
+        lines.append(f"- output_path: {integ.get('output_path')}")
+        lines.append(f"- figure_svg: {integ.get('figure_svg', 'figures/integration_closure_last_run.svg')}")
+        lines.append(f"- figure_png: {integ.get('figure_png', 'figures/integration_closure_last_run.png')}")
+        fits = integ.get("results", {}).get("fits", {})
+        rm_fit = fits.get("rm_max", {})
+        ft_fit = fits.get("ft_trap_max", {})
+        lines.append(f"- rm exponent: {rm_fit.get('slope')}, rm r2: {rm_fit.get('r2')}")
+        lines.append(f"- ft(trap) exponent: {ft_fit.get('slope')}, ft(trap) r2: {ft_fit.get('r2')}")
+    lines.append("")
     lines.append("### False-positive hunt")
     fp = data.get("false_positives", {})
     if "_status" in fp:
@@ -191,6 +206,7 @@ def main() -> int:
     lines.append("- python experiments/stencil_flow/leibniz_gate.py")
     lines.append("- python experiments/stencil_flow/hunt_false_positives.py")
     lines.append("- python experiments/holonomy_rm/run.py")
+    lines.append("- python experiments/integration_closure/run.py")
     lines.append("- python experiments/prime_closure_rm/run.py")
     lines.append("- python experiments/passivity_toy/run.py")
 

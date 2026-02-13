@@ -161,3 +161,17 @@ Here, enforcing multiplicative coherence is the decisive feasibility pressure th
 \input{generated/stencil_stability_table}
 \input{generated/stencil_leibniz_table}
 \input{generated/stencil_leibniz_top_table}
+
+\subsection{Integration as a packaged closure of sums}
+The same closure lens applies to integration: cumulative sums are staged at grid size $h$, audited by differentiation and protocol mismatch defects, and accepted as packaged closures when those defects shrink under refinement.
+In the recorded run, the left-versus-trapezoid route mismatch at the finest grid is $\IntegrationRMAtSmallestH$, with fitted scaling exponent $\IntegrationRMExponent$ and fit quality $\IntegrationFitRtwo$.
+The fundamental-theorem defect for the trapezoid cumulative operator decays with fitted exponent $\IntegrationFTExponent$.
+
+\input{generated/integration_table}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.85\linewidth]{integration_closure_last_run.png}
+  \caption{Integration closure diagnostics on staged grids. The route mismatch between left and trapezoid cumulative protocols and the differentiation-based defect both decay under refinement, consistent with stable packaged closure.}
+  \label{fig:integration-closure}
+\end{figure}

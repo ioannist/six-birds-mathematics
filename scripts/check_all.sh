@@ -4,10 +4,15 @@ set -euo pipefail
 python -c "import numpy, mpmath, sympy, matplotlib"
 pytest -q
 ( cd lean && lake build )
-python scripts/extract_tex_index.py
+if ls ./*.tex >/dev/null 2>&1; then
+  python scripts/extract_tex_index.py
+else
+  echo "No root-level TeX framework file; skipping extract_tex_index.py"
+fi
 python scripts/make_dashboard.py
 python -m py_compile \
   experiments/holonomy_rm/run.py \
+  experiments/integration_closure/run.py \
   experiments/prime_closure_rm/run.py \
   experiments/passivity_toy/run.py \
   experiments/stencil_flow/run.py \

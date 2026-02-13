@@ -20,6 +20,13 @@
 - figure: figures/stencil_flow_leibniz_last_run.svg
 - figure_png: figures/stencil_flow_leibniz_last_run.png
 
+### Integration closure
+- output_path: data/runs/integration_closure_20260213_174738.json
+- figure_svg: figures/integration_closure_last_run.svg
+- figure_png: figures/integration_closure_last_run.png
+- rm exponent: 1.0000909928978714, rm r2: 0.9999999977757404
+- ft(trap) exponent: 0.4999545087666289, ft(trap) r2: 0.9999999977756714
+
 ### False-positive hunt
 - false_positive_total: 0
 - passed_leibniz_total: 6
@@ -75,5 +82,6 @@ strip_table:
 - python experiments/stencil_flow/leibniz_gate.py
 - python experiments/stencil_flow/hunt_false_positives.py
 - python experiments/holonomy_rm/run.py
+- python experiments/integration_closure/run.py
 - python experiments/prime_closure_rm/run.py
 - python experiments/passivity_toy/run.py

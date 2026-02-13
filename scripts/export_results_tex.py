@@ -13,6 +13,7 @@ NOTES = {
     "holonomy": Path("notes/holonomy_rm_last_run.json"),
     "prime_closure": Path("notes/prime_closure_rm_last_run.json"),
     "passivity": Path("notes/passivity_toy_last_run.json"),
+    "integration": Path("notes/integration_closure_last_run.json"),
 }
 OUT_DIR = Path("tex/math_instantiation/generated")
 
@@ -100,6 +101,12 @@ def main() -> int:
     leib_params = data["stencil_leibniz"].get("params", {})
     prime_params = data["prime_closure"].get("params", {})
     passivity_params = data["passivity"].get("params", {})
+    integration_results = data["integration"].get("results", {})
+    integration_fits = integration_results.get("fits", {})
+    integration_rows = integration_results.get("rows", [])
+    integration_rm_smallest_h = integration_results.get("rm_smallest_h")
+    integration_rm_fit = integration_fits.get("rm_max", {})
+    integration_ft_fit = integration_fits.get("ft_trap_max", {})
 
     conv_table = data["prime_closure"].get("conv_table", [])
     strip_table = data["prime_closure"].get("strip_table", [])
@@ -182,6 +189,18 @@ def main() -> int:
     )
     macros.append(
         f"\\newcommand{{\\PassivityMeanDevLamZero}}{{\\ensuremath{{{fmt_num(passivity_l0)}}}}}"
+    )
+    macros.append(
+        f"\\newcommand{{\\IntegrationRMAtSmallestH}}{{\\ensuremath{{{fmt_num(integration_rm_smallest_h)}}}}}"
+    )
+    macros.append(
+        f"\\newcommand{{\\IntegrationRMExponent}}{{\\ensuremath{{{fmt_num(integration_rm_fit.get('slope'))}}}}}"
+    )
+    macros.append(
+        f"\\newcommand{{\\IntegrationFTExponent}}{{\\ensuremath{{{fmt_num(integration_ft_fit.get('slope'))}}}}}"
+    )
+    macros.append(
+        f"\\newcommand{{\\IntegrationFitRtwo}}{{\\ensuremath{{{fmt_num(integration_rm_fit.get('r2'))}}}}}"
     )
     write_file(OUT_DIR / "macros.tex", "\n".join(macros))
 
@@ -296,6 +315,27 @@ def main() -> int:
     )
     pass_table_tex = pass_table_tex.replace("\\begin{table}[h]", "\\begin{table}[H]", 1)
     write_file(OUT_DIR / "passivity_table.tex", pass_table_tex)
+
+    integration_rows_tex = [["N", "$h$", "RM", "FT left", "FT trap"]]
+    for row in integration_rows:
+        if not isinstance(row, list) or len(row) < 5:
+            continue
+        integration_rows_tex.append(
+            [
+                str(int(row[0])),
+                fmt_num(row[1], math=True),
+                fmt_num(row[2], math=True),
+                fmt_num(row[3], math=True),
+                fmt_num(row[4], math=True),
+            ]
+        )
+    integration_table_tex = make_table(
+        "Integration closure diagnostics under refinement",
+        "tab:integration-closure",
+        "l|l|l|l|l",
+        integration_rows_tex,
+    )
+    write_file(OUT_DIR / "integration_table.tex", integration_table_tex)
 
     return 0
 
