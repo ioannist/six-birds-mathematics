@@ -151,6 +151,7 @@ In the current run, \StencilSurvivorsTotal\ out of \StencilGeneratedTotal\ sampl
 If we additionally demand that the Leibniz defect improves with refinement (a direct numerical analog of Lemma~\ref{lem:finite-diff-leibniz} having a vanishing ledger term), then the surviving operators collapse to derivative-like (order-$1$) closures.
 In the current run, the Leibniz-gated filter produces \StencilLeibnizSurvivorsTotal\ survivors and all survivors are classified as best-fit order $k=1$
 (Table~\ref{tab:stencil-leibniz}).
+Figure~\ref{fig:stencil-leibniz} visualizes the selection outcome for the recorded run.
 
 These experiments do not prove uniqueness of the derivative in full generality.
 They serve as \emph{diagnostics} aligned with the \SBT program:
@@ -162,10 +163,18 @@ Here, enforcing multiplicative coherence is the decisive feasibility pressure th
 \input{generated/stencil_leibniz_table}
 \input{generated/stencil_leibniz_top_table}
 
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.85\linewidth]{stencil_flow_leibniz_last_run.png}
+  \caption{Leibniz-gated stencil selection under refinement. The gate filters local stencil operators by requiring a shrinking Leibniz defect under refinement, producing a concentrated set of derivative-like closures (see Table~\ref{tab:stencil-leibniz}).}
+  \label{fig:stencil-leibniz}
+\end{figure}
+
 \subsection{Integration as a packaged closure of sums}
 The same closure lens applies to integration: cumulative sums are staged at grid size $h$, audited by differentiation and protocol mismatch defects, and accepted as packaged closures when those defects shrink under refinement.
 In the recorded run, the left-versus-trapezoid route mismatch at the finest grid is $\IntegrationRMAtSmallestH$, with fitted scaling exponent $\IntegrationRMExponent$ and fit quality $\IntegrationFitRtwo$.
 The fundamental-theorem defect for the trapezoid cumulative operator decays with fitted exponent $\IntegrationFTExponent$.
+(Here the reported norms are unweighted discrete $\ell^2$ norms over grid points, so pointwise $O(h)$ defects appear as $O(h^{1/2})$ in $\ell^2$.)
 
 \input{generated/integration_table}
 
