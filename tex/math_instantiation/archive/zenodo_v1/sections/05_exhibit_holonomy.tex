@@ -1,0 +1,69 @@
+\section{Exhibit A-2: protocol holonomy and route mismatch}
+\label{sec:exhibit-holonomy}
+
+This exhibit instantiates \Pthree (protocol / holonomy) as a quantitative diagnostic rather than a geometric claim.
+The premise is simple: when there are multiple natural routes for constructing a packaged object from staged data, the routes need not commute at finite stage.
+The discrepancy between routes is a defect; a stable closure should make that defect shrink under refinement.
+
+\subsection{Two routes under coordinate change}
+We consider a small coordinate change (a ``chart'' perturbation)
+\[
+\varphi(x) \;=\; x + \varepsilon x^2,
+\qquad \varepsilon\ \text{small},
+\]
+and study a discrete derivative approximation at step size $h$.
+
+There are (at least) two natural routes:
+\begin{enumerate}
+  \item \textbf{Route A (refine then differentiate then pull back).}
+  Refine the sampled data, apply the discrete derivative in the target coordinate, then interpolate/pull back the result along $\varphi$.
+  \item \textbf{Route B (pull back then refine then differentiate).}
+  Pull back the sampled data along $\varphi$ at coarse scale, refine in the source coordinate, apply the discrete derivative, and convert by the chain rule factor $(\varphi')^{-1}$.
+\end{enumerate}
+At finite $h$, these routes generally disagree because interpolation, refinement, and discrete differentiation do not strictly commute.
+
+\subsection{Route mismatch as a defect ledger}
+In the \SBT dictionary, the existence of multiple admissible routes is \Pthree, while the numerical discrepancy between them is tracked by \Psix\ accounting.
+We quantify the mismatch by a normalized route-mismatch statistic
+\begin{equation}\label{eq:rm-def}
+\mathrm{RM}(h)
+\;:=\;
+\frac{\|R_A(h)-R_B(h)\|}{\|R_A(h)\|+\varepsilon_0},
+\end{equation}
+where $R_A(h),R_B(h)$ are the route outputs on a shared comparison grid, $\|\cdot\|$ is an $\ell^2$ norm over evaluation points, and $\varepsilon_0>0$ is a small stabilizer.
+
+A stable closure regime is indicated by \emph{decay} of $\mathrm{RM}(h)$ as $h\downarrow 0$.
+Conversely, persistent or growing mismatch is evidence that the proposed packaging (or protocol family) is not yet feasible at the tested scales.
+
+\subsection{Observed scaling under refinement}
+In the recorded run, $\mathrm{RM}(h)$ decreases with refinement and is well fit by a power law
+\[
+\mathrm{RM}(h) \approx C\,h^{p}.
+\]
+The fitted exponent is
+\[
+p \;=\; \HolonomyExponent,
+\]
+where $\HolonomyExponent$ is imported from the repository artifacts (generated TeX macros).
+Table~\ref{tab:holonomy} lists the measured values and Figure~\ref{fig:holonomy-rm} shows the decay trend.
+
+As a null calibration, setting $\varepsilon=0$ (identity coordinate map) yields route mismatch at or below \HolonomyNullRMMax\ on the tested grids, confirming that the reported decay is not an interpolation bookkeeping artifact.
+The log--log slope summary is reported together with the fit quality $R^2=\HolonomyFitRtwo$ and should be interpreted as a coarse scaling diagnostic rather than a precise convergence order.
+
+\input{generated/holonomy_table}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.85\linewidth]{holonomy_rm_last_run.png}
+  \caption{Route mismatch under coordinate change: $\mathrm{RM}(h)$ versus step size $h$ for two noncommuting refinement routes (Equation~\ref{eq:rm-def}). The mismatch decays under refinement; the fitted exponent reported in the text is sourced from the generated macro $\HolonomyExponent$.}
+  \label{fig:holonomy-rm}
+\end{figure}
+
+\subsection{Guardrail: holonomy is not directionality}
+A crucial framework guardrail is that \emph{holonomy does not by itself certify directionality}.
+In this instantiation, $\mathrm{RM}(h)$ is a measure of \emph{route dependence} (a \Pthree\ phenomenon) and its decay is a \emph{feasibility signal} (tracked by \Psix).
+None of this implies an ``arrow of time'' or a monotone irreversible ordering on states.
+It only says: given a staged protocol family and a proposed packaging rule, the protocol routes become increasingly compatible as resolution increases.
+
+In later mathematical instantiations (e.g.\ differential geometry), true holonomy is tied to curvature and obstruction-to-patching phenomena.
+Here we remain at the diagnostic level: route mismatch is a computable defect that should shrink in stable regimes, and can therefore be used to stress-test closure claims.

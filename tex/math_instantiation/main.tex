@@ -1,31 +1,43 @@
-\documentclass[11pt]{article}
+\documentclass[apajournal,article,submit,moreauthors,pdftex]{Definitions/mdpi}
 \input{preamble}
 
-\title{To Count a Stone with Six Birds: A Mathematics is A Theory}
-\author{Ioannis Tsiokos\\\texttt{ioannis@automorph.io}}
-\date{28 January 2026}
+%=================================================================
+% MDPI internal commands
+\firstpage{1}
+\makeatletter
+\setcounter{page}{\@firstpage}
+\makeatother
+\pubvolume{1}
+\issuenum{1}
+\articlenumber{0}
+\pubyear{2026}
+\copyrightyear{2026}
+\datereceived{ }
+\daterevised{ }
+\dateaccepted{ }
+\datepublished{ }
 
+%=================================================================
+\Title{To Count a Stone with Six Birds: A Mathematics is A Theory}
+
+\newcommand{\orcidauthorA}{0009-0009-7659-5964}
+
+\Author{Ioannis Tsiokos $^{1}$\orcidA{}}
+\AuthorNames{Ioannis Tsiokos}
+
+\address{%
+$^{1}$ \quad Automorph Inc., Wilmington, DE 19806, USA}
+
+\corres{Correspondence: ioannis@automorph.io}
+
+\abstract{Many ``higher'' mathematical objects are introduced as definitions (limits, completions, analytic continuations), but it is often unclear \emph{when} a large discrete protocol admits a stable continuous closure and \emph{how} to test that stability without overclaiming. This question matters because premature or untested closure claims can propagate errors through dependent results. We instantiate the Six-Birds Theory (\SBT) framework of \cite{SixBirdsFramework}---which provides a general audit methodology for validating compressions of discrete data into continuous or idealized objects---as a closure-and-audit method for mathematics: a discrete substrate is staged by refinement, compressions are assessed by an explicit defect ledger, and a packaged object is accepted only when defects shrink or stabilize under refinement. Operationally, we (i) formalize two anchor statements in Lean/mathlib \cite{moura2021lean4,mathlib2020lean}---the exact finite-difference Leibniz identity with its explicit remainder term and an algebraic uniqueness anchor for derivations on $R[X]$---and (ii) implement falsification-first Python diagnostics that compare competing closure routes under matched controls and an artifact contract (tables and macros are generated from snapshot-visible pointer JSONs). Across four exhibits we observe controlled, checkable separations. First, stability-only stencil filtering selects order-$0$ closures, while adding a Leibniz-defect gate selects derivative-like order-$1$ closures. Second, route mismatch (RM, measuring disagreement between closure paths) under a small coordinate change decays with refinement (power-law fit exponent $p\approx 1.46$). Third, for prime-based closures in a convergence control regime $\Re(s)>1$, route mismatch $\mathrm{RM}_2$ decreases with sample size $N$ (e.g.\ $\mathrm{RM}_2(800)\approx 5\times 10^{-2}$), whereas the same diagnostic in the critical strip exhibits mismatch growth by many orders of magnitude under naive staging (e.g.\ $\mathrm{RM}_2(800)\approx 5\times 10^{12}$). Fourth, in a self-dual toy family, tightening a positivity constraint sharply confines zeros to the symmetry locus (mean radial deviation drops from $\approx 0.87$ to $\approx 3\times 10^{-4}$). These results provide a reproducible methodology to separate feasible closures from protocol artifacts and to compare closure proposals across regimes. We emphasize that this paper does not establish new theorems about $\zeta$ or zero distributions; we report audit-style diagnostics under explicit controls and document the upgrade points required for stronger claims.}
+
+\keyword{emergence calculus; closure; audit; refinement; route mismatch}
+
+%=================================================================
 \begin{document}
-\maketitle
-\thispagestyle{firstpage}
 
 \input{generated/macros}
-\begin{abstract}
-Many ``higher'' mathematical objects are introduced as definitions (limits, completions, analytic continuations), but it is often unclear \emph{when} a large discrete protocol admits a stable continuous closure and \emph{how} to test that stability without overclaiming.
-This question matters because premature or untested closure claims can propagate errors through dependent results.
-We instantiate the Six-Birds Theory (\SBT) framework of \cite{SixBirdsFramework}---which provides a general audit methodology for validating compressions of discrete data into continuous or idealized objects---as a closure-and-audit method for mathematics: a discrete substrate is staged by refinement, compressions are assessed by an explicit defect ledger, and a packaged object is accepted only when defects shrink or stabilize under refinement.
-
-Operationally, we (i) formalize two anchor statements in Lean/mathlib \cite{moura2021lean4,mathlib2020lean}---the exact finite-difference Leibniz identity with its explicit remainder term and an algebraic uniqueness anchor for derivations on $R[X]$---and (ii) implement falsification-first Python diagnostics that compare competing closure routes under matched controls and an artifact contract (tables and macros are generated from snapshot-visible pointer JSONs).
-
-Across four exhibits we observe controlled, checkable separations.
-First, stability-only stencil filtering selects order-$0$ closures, while adding a Leibniz-defect gate selects derivative-like order-$1$ closures.
-Second, route mismatch (RM, measuring disagreement between closure paths) under a small coordinate change decays with refinement (power-law fit exponent $p\approx 1.46$).
-Third, for prime-based closures in a convergence control regime $\Re(s)>1$, route mismatch $\mathrm{RM}_2$ decreases with sample size $N$ (e.g.\ $\mathrm{RM}_2(800)\approx 5\times 10^{-2}$), whereas the same diagnostic in the critical strip exhibits mismatch growth by many orders of magnitude under naive staging (e.g.\ $\mathrm{RM}_2(800)\approx 5\times 10^{12}$).
-Fourth, in a self-dual toy family, tightening a positivity constraint sharply confines zeros to the symmetry locus (mean radial deviation drops from $\approx 0.87$ to $\approx 3\times 10^{-4}$).
-
-These results provide a reproducible methodology to separate feasible closures from protocol artifacts and to compare closure proposals across regimes.
-We emphasize that this paper does not establish new theorems about $\zeta$ or zero distributions; we report audit-style diagnostics under explicit controls and document the upgrade points required for stronger claims.
-\end{abstract}
 
 \input{sections/01_introduction}
 \input{sections/02_dictionary}
@@ -37,7 +49,33 @@ We emphasize that this paper does not establish new theorems about $\zeta$ or ze
 \input{sections/08_reproducibility}
 \input{sections/09_discussion}
 
-\bibliographystyle{plainnat}
+%=================================================================
+\vspace{6pt}
+
+\authorcontributions{I.T.\ conceived the study, implemented experiments and formal verification, and wrote the manuscript.}
+
+\funding{This research received no external funding.}
+
+\institutionalreview{Not applicable.}
+
+\informedconsent{Not applicable.}
+
+\dataavailability{All data, code, and reproducibility artifacts are available in the companion repository at \url{https://github.com/automorph-inc/sixbirds-mathematics}.}
+
+\acknowledgments{The author acknowledges the use of Lean 4/mathlib and standard Python scientific libraries. A prior version of this manuscript was archived on Zenodo (DOI: \href{https://doi.org/10.5281/zenodo.18402004}{10.5281/zenodo.18402004}).}
+
+\conflictsofinterest{The author declares no conflicts of interest.}
+
+%=================================================================
+\begin{adjustwidth}{-\extralength}{0cm}
+
+\reftitle{References}
+
+\externalbibliography{yes}
 \bibliography{bib/refs}
+
+\PublishersNote{}
+
+\end{adjustwidth}
 
 \end{document}

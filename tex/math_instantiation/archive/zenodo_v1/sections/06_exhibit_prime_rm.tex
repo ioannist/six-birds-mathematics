@@ -1,0 +1,129 @@
+\section{Exhibit B-1: prime closure diagnostics}
+\label{sec:exhibit-prime}
+
+This exhibit applies the \SBT closure lens to a canonical ``discrete $\rightarrow$ spectral'' packaging problem:
+compressing the multiplicative micro-structure of the integers (primes) into a continuous analytic object.
+We do \emph{not} attempt to prove theorems about $\zeta$.
+Instead we build falsification-first diagnostics that separate:
+(i) a convergence control regime where the micro-descriptions are valid, from
+(ii) the critical strip where naive staging is unstable and protocol mismatch blows up.
+
+\subsection{Two staged micro-descriptions}
+Fix $s\in\mathbb{C}$.
+The classical zeta function has two micro-descriptions in a common domain (and, in the infinite limit, they agree there):
+\[
+\zeta(s)\;=\;\sum_{n\ge 1} n^{-s}
+\qquad\text{and}\qquad
+\zeta(s)\;=\;\prod_{p}\frac{1}{1-p^{-s}},
+\quad (\Re(s)>1).
+\]
+These classical representations and their domains are standard; see e.g.\ \cite{Titchmarsh1986}.
+At finite stage we replace these by staged truncations.
+In the recorded diagnostics we use a mild exponential smoothing weight $w(u)=e^{-u}$ and define:
+\begin{align*}
+S_N(s) &:= \sum_{n=1}^{N} w(n/N)\,n^{-s},
+\\
+P_N(s) &:= \exp\!\left(\sum_{p\le N} w(p/N)\,\bigl(-\log(1-p^{-s})\bigr)\right),
+\end{align*}
+where the Euler-side expression is computed via a weighted log-sum for numerical stability.
+Note that the smoothing is applied at the level of the log-sum:
+equivalently,
+\[
+P_N(s) \;=\; \prod_{p\le N} (1-p^{-s})^{-w(p/N)}.
+\]
+We use this only to reduce sharp cutoff artifacts; when $w\equiv 1$ this reduces to the usual sharp partial Euler product.
+The key \SBT point is conceptual:
+$S_N$ is an \emph{additive} staging protocol and $P_N$ is a \emph{multiplicative} staging protocol.
+A stable closure would require these protocols to become compatible under refinement \Pfour\ and under the chosen packaging \Pfive, as audited by an accounting ledger \Psix.
+
+\subsection{Prototype packaging maps: raw, completed, symmetrized}
+To compare staged objects across regions, we apply simple prototype packaging maps.
+Let
+\[
+C(s)\;:=\;\tfrac12\,s(s-1)\,\pi^{-s/2}\Gamma(s/2).
+\]
+Given a staged function $F(s)$, define:
+\begin{align*}
+\mathrm{Raw}(F)(s) &:= F(s),
+\\
+\mathrm{Comp}(F)(s) &:= C(s)\,F(s),
+\\
+\mathrm{Sym}(F)(s) &:= \tfrac12\bigl(\mathrm{Comp}(F)(s)+\mathrm{Comp}(F)(1-s)\bigr).
+\end{align*}
+Here $\mathrm{Comp}$ is a one-sided ``completion prototype'', and $\mathrm{Sym}$ enforces the self-dual symmetry $s\leftrightarrow 1-s$ by construction.
+We emphasize that this is a \emph{diagnostic} packaging, not an analytic continuation scheme.
+
+In the recorded run we choose:
+\begin{itemize}
+  \item \textbf{Convergence region:} $\mathrm{Comp}$ (one-sided completion), because it does not force evaluation at $1-s$ far outside the domain where these truncations represent $\zeta$ (for $\Re(s)>1$ one has $\Re(1-s)<0$).
+  \item \textbf{Critical strip:} $\mathrm{Sym}$ (symmetrized completion), as a prototype of ``self-dual packaging''.
+\end{itemize}
+
+\subsection{Diagnostics: route mismatch and error ledger}
+Let $\mathrm{Pack}$ denote the chosen packaging mode in a given regime.
+On a fixed finite test set $K$ (a small grid of points in the region of interest), we evaluate the packaged staged functions.
+In the recorded run, $K$ is a grid with $\sigma\in$ \PrimeSigmaConvList\ and $t\in$ \PrimeTList\ in the convergence regime, and $\sigma\in$ \PrimeSigmaStripList\ and $t\in$ \PrimeTList\ in the strip; refinements use $N\in$ \PrimeNList.
+\[
+A_N(s):=\mathrm{Pack}(S_N)(s),
+\qquad
+B_N(s):=\mathrm{Pack}(P_N)(s).
+\]
+We quantify protocol mismatch by a normalized route mismatch:
+\[
+\mathrm{RM}_2(N)
+\;:=\;
+\frac{\bigl(\sum_{s\in K}|A_N(s)-B_N(s)|^2\bigr)^{1/2}}
+     {\bigl(\sum_{s\in K}|A_N(s)|^2\bigr)^{1/2}+\varepsilon_0},
+\]
+with a small stabilizer $\varepsilon_0>0$.
+
+All reported values in this exhibit are computed at working precision \PrimeDPS\ digits (via \texttt{mpmath}).
+
+Separately, we compute an \Psix\ error ledger by comparing each packaged truncation to a reference value computed by \texttt{mpmath.zeta} under the same packaging mode:
+\[
+\mathrm{Err}_S(N) \sim \frac{\|A_N-\mathrm{Pack}(\zeta)\|}{\|\mathrm{Pack}(\zeta)\|+\varepsilon_0},
+\qquad
+\mathrm{Err}_P(N) \sim \frac{\|B_N-\mathrm{Pack}(\zeta)\|}{\|\mathrm{Pack}(\zeta)\|+\varepsilon_0}.
+\]
+In the convergence control region this is a genuine accuracy test.
+In the critical strip it is a stress test: it measures how badly naive staging fails to track the analytically continued object.
+
+\subsection{Control regime: \texorpdfstring{$\Re(s)>1$}{Re(s)>1}}
+In the convergence control regime (where both series and product are valid in the infinite limit), the diagnostics behave sensibly:
+both the mismatch $\mathrm{RM}_2(N)$ and the errors decrease with $N$ on the recorded test set.
+Table~\ref{tab:prime-rm-conv} shows $\mathrm{RM}_2(N)$ together with the two error ledgers.
+In particular, the route mismatch decreases to $\mathrm{RM}_2(800)=$ \PrimeRMConvAtEightHundred,
+consistent with staged compatibility improving under refinement when the micro-descriptions are valid.
+
+\input{generated/prime_rm_conv_table}
+
+\subsection{Critical strip: protocol mismatch under invalid staging}
+In the critical strip ($0<\Re(s)<1$), the naive truncations $S_N$ and especially $P_N$ are \emph{not} valid micro-descriptions of the analytically continued $\zeta$.
+Accordingly, the diagnostics indicate a non-feasible closure:
+the route mismatch and errors grow rapidly with $N$ on the recorded test set.
+Table~\ref{tab:prime-rm-strip} shows that the mismatch reaches $\mathrm{RM}_2(800)=$ \PrimeRMStripAtEightHundred,
+and the Euler-side error ledger becomes enormous.
+
+\input{generated/prime_rm_strip_table}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.85\linewidth]{prime_closure_rm_last_run.png}
+  \caption{Prime closure route mismatch diagnostic. The same staged additive and multiplicative protocols behave compatibly in a convergence control regime (Re(s)>1), but mismatch grows by many orders of magnitude in the critical strip under naive staging and prototype self-dual packaging. This is interpreted as a feasibility failure of the staging/packaging pair, not as a theorem about $\zeta$.}
+  \label{fig:prime-rm}
+\end{figure}
+
+\subsection{Interpretation: a diagnostic, not a theorem about \texorpdfstring{$\zeta$}{zeta}}
+This exhibit is deliberately modest.
+It does not claim that $\mathrm{Sym}$ is ``the right'' packaging, nor that the observed blow-up has direct implications for the zero set of $\zeta$.
+Instead it instantiates the \SBT logic:
+
+\begin{itemize}
+  \item \textbf{Multiple routes exist} (additive vs multiplicative staging), hence \Pthree\ applies.
+  \item \textbf{Feasibility must be audited} by a ledger (\Psix): mismatch and error should shrink in stable regimes.
+  \item \textbf{Staging matters} (\Pfour): outside the domain of convergence, naive truncations are not compatible with the packaged object one hopes to define.
+\end{itemize}
+
+The positive outcome is methodological: the same route-mismatch machinery used for discrete derivatives (Exhibits~A-1 and A-2) can be used to stress-test prime-to-spectral closure claims.
+A stable analytic continuation scheme---if expressed as a refinement-fixed packaging with an appropriate positivity/passivity ledger---should manifest as decreasing mismatch under refinement on suitable diagnostics.
+Here we only establish the baseline: without additional feasibility structure, the mismatch blows up exactly where classical analytic number theory says naive micro-descriptions fail.

@@ -1,0 +1,93 @@
+\section{A closure engine for mathematics}
+\label{sec:packaging-engine}
+
+This section states the generic ``closure engine'' used implicitly throughout the exhibits.
+The goal is not to re-found analysis but to make explicit what is usually left tacit when passing from discrete protocols to packaged laws.
+We present the engine as a sequence of design commitments: substrate, staging, ledger, packaging, induced operators, and route diagnostics.
+These correspond directly to the \SBT primitives of Section~\ref{sec:dictionary}.
+
+\subsection{Protocol objects and staging (\Pfour)}
+Fix a family of discrete protocol spaces $\{Z_h\}_{h>0}$ indexed by a refinement parameter $h$ (mesh size, truncation cutoff, partition diameter, discretization step).
+A point $z_h\in Z_h$ is a \emph{micro-description} at stage $h$.
+In typical instantiations there are refinement maps (or comparison maps)
+\[
+\rho_{h\to h'}:Z_h \to Z_{h'}, \qquad h'>0,\ h'<h,
+\]
+that embed coarse objects into finer resolution (e.g.\ interpolation, refinement of partitions, extending a truncation).
+The abstract role of \Pfour\ is: the paper treats $h\downarrow 0$ as the mechanism by which ``infinite composition'' becomes a limit question, and by which closure claims become testable.
+
+\subsection{Defect ledgers and feasibility gates (\Psix)}
+A closure claim is only meaningful relative to an \emph{audit ledger}:
+a family of nonnegative diagnostics that quantify what is lost when compressing a protocol.
+In this mathematics instantiation, the ledger consists of error terms and mismatch quantities rather than thermodynamic arrows.
+
+Concretely, we allow two kinds of \Psix\ diagnostics:
+\begin{enumerate}
+  \item \textbf{Approximation error:} for a candidate macro quantity $Q_h(z_h)$, compare across refinement or against a reference $Q_\star$:
+  $\|Q_h-Q_{h'}\|$ or $\|Q_h-Q_\star\|$.
+  \item \textbf{Coherence defect:} residuals that measure failure of an intended algebraic constraint, such as a Leibniz defect for product structure, or a commutator/route-mismatch defect for two protocols.
+\end{enumerate}
+A feasibility gate is then a monotonicity requirement of the form:
+\[
+\mathrm{Def}(h') \le \theta\,\mathrm{Def}(h)
+\quad\text{for refined }h'<h\text{ and some }\theta<1,
+\]
+or, more weakly, that $\mathrm{Def}(h)\to 0$ as $h\downarrow 0$.
+
+\subsection{Packaging as identification and completion (\Pfive)}
+Packaging turns a staged family into a stable object by identifying distinctions that vanish under refinement.
+There are multiple equivalent ways to express this; the engine uses the following working form.
+
+A \emph{packaging rule} is an equivalence relation $\sim$ on families $\{z_h\}$ (or on a cofinal sequence $h_j\downarrow 0$) such that
+\[
+\{z_h\}\sim \{z'_h\}
+\quad\Longleftrightarrow\quad
+\mathrm{Def}(h;z_h,z'_h)\to 0
+\text{ as }h\downarrow 0,
+\]
+for a designated defect ledger.
+The packaged object is the equivalence class $[\{z_h\}]$.
+This is the same pattern as Cauchy completion (reals from rationals), and the same pattern as identifying two difference quotients that differ by $o(1)$ in the refinement limit.
+
+The point of making \Pfive\ explicit is that many disagreements in ``what is the correct limit object?'' are disagreements about \emph{which defect ledger is permitted to vanish}.
+
+\subsection{Constraints and induced macro-operators (\Ptwo, \Pone)}
+To qualify as a macro-level \emph{law}, an operator must descend to the packaged layer.
+Let $F_h:Z_h\to Z_h$ be a discrete micro-operator (update rule, local stencil, truncation transform).
+A packaged operator $F^\sharp$ is well-defined on equivalence classes only if the following holds:
+\[
+\{z_h\}\sim \{z'_h\}
+\ \Longrightarrow\
+\{F_h(z_h)\}\sim \{F_h(z'_h)\}.
+\]
+When this implication fails, one is forced into \Pone\ operator rewriting:
+modify the operator family (e.g.\ rescale by powers of $h$, add counterterms, change representation, or alter the comparison map) so that it becomes compatible with the packaging relation.
+
+Separately, \Ptwo\ constraints are the coherence requirements imposed at the packaged layer.
+In this paper they appear in three forms:
+\begin{itemize}
+  \item algebraic coherence (e.g.\ Leibniz/product compatibility for derivatives),
+  \item symmetry/invariance constraints (e.g.\ self-dual symmetrization prototypes),
+  \item locality/translation constraints in stencil experiments.
+\end{itemize}
+The closure engine is conservative: it treats these constraints as \emph{requirements for feasibility}, not as axioms of nature.
+
+\subsection{Protocol mismatch and holonomy diagnostics (\Pthree)}
+Whenever there are two reasonable routes that share input/output types, route mismatch is a computable defect.
+Abstractly, suppose two routes produce outputs $R_1(h)$ and $R_2(h)$ on a shared comparison space.
+We measure the protocol defect by a normalized mismatch
+\[
+\mathrm{RM}(h)
+\;=\;
+\frac{\|R_1(h)-R_2(h)\|}{\|R_1(h)\|+\varepsilon_0}.
+\]
+A stable closure regime is indicated by decay of $\mathrm{RM}(h)$ under refinement.
+Exhibit~A-2 uses this to quantify noncommutativity under coordinate change; Exhibit~B-1 uses it to compare additive and multiplicative staged prime closures.
+
+A key guardrail (used throughout) is that route mismatch is a \emph{diagnostic of closure feasibility}, not a certificate of directionality or irreversibility.
+
+\subsection{Closure ladders as repeated packaging}
+Finally, the engine composes: once a packaged layer is stable, it becomes a new substrate for further refinement and packaging.
+This is the \SBT ``closure ladder'' viewpoint:
+reals arise by completion of rationals; calculus arises by completion of discrete difference/sum protocols under coherence constraints; geometric obstructions appear as protocol noncommutativity when patching local descriptions.
+The exhibits should be read as small, auditable instances of this repeated pattern rather than as a claim that one mechanism replaces all mathematical practice.

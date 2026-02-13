@@ -1,0 +1,75 @@
+\section{\SBT dictionary for mathematical closures}
+\label{sec:dictionary}
+
+This section adapts the minimal working dictionary from the Six-Birds framework \cite{SixBirdsFramework} into a mathematical setting.
+We use it as a naming convention for the rest of the paper: each ``bird'' names a role that must be handled explicitly when a discrete protocol is compressed into a stable macro-level law.
+
+\subsection{Six primitives as closure mechanics}
+We follow the framework convention that the six primitives are not ``topics'' but \emph{roles} played by concrete objects in an instantiation.
+In mathematics, the relevant objects are typically families indexed by a refinement parameter (meshes, truncations, partitions), defect bounds (error terms, residual norms), quotient/completion maps, and coherence constraints (linearity, locality, invariance, compatibility with algebraic operations).
+
+\begin{remark}[Six primitives (P1--P6), in framework language]\label{rem:six-primitives}
+Fix a space $\mathcal P$ of protocol objects (discrete descriptions) equipped with a refinement chain, modeled as a family of equivalences $\sim_j$ indexed by a stage parameter $j$ (or, in analysis notation, by a step size $h\downarrow 0$).
+Write $\Pi_j:\mathcal P\to \mathcal P/\!\sim_j$ for the quotient/packaging map.
+Then the six primitives may be read as follows:
+\begin{enumerate}
+  \item \Pfive\ (Packaging). Each equivalence $\sim_j$ yields a quotient/packaging map $\Pi_j$ and induces an idempotent saturation on predicates/events via
+  \[
+    \mathrm{cl}_j(A)\;:=\;\Pi_j^{-1}(\Pi_j(A)).
+  \]
+  This is a standard closure-operator construction in order/lattice settings; see e.g.\ \cite{DaveyPriestley2002}.
+  In analytic instantiations, $\Pi_j$ is a limit/identification map (``equal up to $o(1)$ as $h\to 0$''); in algebraic instantiations it is a literal quotient by a congruence.
+
+  \item \Psix\ (Accounting). The refinement order on quotients induces a preorder and monotone defect/audit quantities (e.g.\ $j\mapsto \mathrm{Def}(j)$ or $h\mapsto \mathrm{Err}(h)$).
+  In this mathematics instantiation, ``accounting'' is a feasibility ledger (error control), not a directionality certificate.
+
+  \item \Pfour\ (Staging). The refinement chain generates the stage index $j$ (or $h$).
+  Nontrivial staging corresponds to strict refinement at some scale (a genuine increase in resolution rather than a reparameterization).
+
+  \item \Ptwo\ (Constraints). Feasible macrostates at depth $j$ are those representable as images under $\Pi_j$.
+  Concretely, this is where invariances (translation/rotation/scale), locality, linearity, and algebra-compatibility are imposed as coherence conditions on the packaged layer.
+
+  \item \Pone\ (Operator rewrite). Fix a micro-update or micro-operator $F:\mathcal P\to\mathcal P$.
+  The induced macro-update $F^\sharp([p]) := [F(p)]$ on $\mathcal P/\!\sim_j$ is well-defined iff
+  \[
+    p\sim_j q \ \Rightarrow\ F(p)\sim_j F(q).
+  \]
+  When this fails, one must either refine the lens (change $\sim_j$), modify/extend $F$ (renormalize / rescale / rewrite it), or accept that no closed macro dynamics exists at depth $j$.
+
+  \item \Pthree\ (Protocol / holonomy). When there exist two admissible closure/evolution routes with the same input/output type (e.g.\ ``refine then apply'' versus ``apply then refine''), their discrepancy defines a holonomy-like diagnostic.
+  In normed instantiations we measure this by a route-mismatch quantity $\mathrm{RM}$: a number that should decay under refinement in stable regimes.
+\end{enumerate}
+\end{remark}
+
+\subsection{``A mathematics is A theory'': porting the theory-package schema}
+The framework packages an instantiation as a \emph{theory package}: a carrier (micro) space, a lens of observation, a completion/packaging rule, and an audit/defect principle \cite{SixBirdsFramework}.
+For the mathematics instantiation we use the same shape, with ``audit'' interpreted as a nonnegative defect ledger (error and mismatch diagnostics).
+
+\begin{definition}[Mathematics theory package]\label{def:math-theory-package}
+A \emph{mathematics theory package} is a tuple
+\[
+\mathcal T \;=\; (Z,\ f,\ \Sigma_f,\ E,\ \mathcal D)
+\]
+where:
+\begin{itemize}
+  \item $Z$ is a carrier of discrete protocol objects at a chosen stage (e.g.\ grid functions, truncated sums/products, finite compositions, Cauchy sequences of rationals).
+  \item $f:Z\to X$ is a \emph{lens} (a coarse description map). The induced definability structure $\Sigma_f$ is the family of predicates on $Z$ that are visible through $f$ (equivalently: constant on fibers of $f$).
+  \item $E:\mathcal V\to\mathcal V$ is a \emph{completion/packaging endomap} on a chosen description space $\mathcal V$ associated to $Z$ (often idempotent or approximately idempotent in a specified norm). The fixed points of $E$ are the internally complete objects recognized by the theory at the chosen scale.
+  \item $\mathcal D$ is a \emph{defect ledger}: a designated family of nonnegative diagnostics (error bounds, residual norms, route mismatch statistics) together with a monotonicity principle under refinement/coarsening. In this mathematics instantiation, $\mathcal D$ records feasibility (stability under refinement), not a thermodynamic arrow-of-time.
+\end{itemize}
+\end{definition}
+
+\begin{remark}[Slogan]\label{rem:math-is-theory}
+The title phrase ``A mathematics is A theory'' is used in the following technical sense:
+to introduce a stable mathematical layer is to specify (i) what discrete protocol objects are being staged, (ii) what identifications are permitted under refinement, (iii) what completion/packaging map is being used, and (iv) what defect ledger certifies that the packaged layer is coherent.
+\end{remark}
+
+\subsection{Notation used in this instantiation}
+We use $h>0$ for a refinement parameter (mesh size / step size) and write $h\downarrow 0$ for infinite refinement; equivalently we use a depth index $j\to\infty$.
+Families of discrete objects are written with stage subscripts (e.g.\ $A_h$, $F_h$).
+A generic route mismatch diagnostic takes the form
+\[
+\mathrm{RM}(h)\;=\;\frac{\|R_1(h)-R_2(h)\|}{\|R_1(h)\|+\varepsilon},
+\]
+where $R_1,R_2$ are two admissible routes and $\varepsilon>0$ is a small stabilizer.
+In later exhibits, $\mathrm{RM}$ is instantiated as: (i) a coordinate-change mismatch for discrete derivatives, and (ii) a mismatch between two staged prime closures after prototype packaging.

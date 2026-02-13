@@ -1,0 +1,77 @@
+\section{Reproducibility and artifact contract}
+\label{sec:reproducibility}
+
+This draft is designed so that reported numbers are not hand-copied.
+Instead, tables and key numeric macros in the TeX source are generated from snapshot-visible pointer artifacts in \texttt{notes/}.
+This section documents the minimal workflow and the ``artifact contract'' that links the PDF to repository state \cite{clt_repo}.
+
+\subsection{Quickstart: sanity checks}
+From the repository root, the recommended first command is:
+\begin{verbatim}
+bash scripts/check_all.sh
+\end{verbatim}
+This script runs a lightweight pipeline:
+Python import sanity checks, \texttt{pytest}, a Lean build, regeneration of the TeX-label index, regeneration of the results dashboard, and byte-compilation checks for the main experiment scripts.
+It is intended as a ``freeze check'' before edits and before releases.
+
+\subsection{How tables and macros are generated}
+The TeX paper reads generated material from:
+\begin{verbatim}
+tex/math_instantiation/generated/
+\end{verbatim}
+These generated files are produced by:
+\begin{verbatim}
+python scripts/export_results_tex.py
+\end{verbatim}
+The exporter reads snapshot-visible ``last run'' pointers (JSON) in \texttt{notes/} and writes:
+(i) numeric macros (e.g.\ \texttt{HolonomyExponent}) and
+(ii) LaTeX tables for each exhibit.
+This makes the paper ``honest by construction'': if the pointers change, the macros/tables change.
+
+After regenerating, rebuild the PDF with:
+\begin{verbatim}
+bash scripts/build_math_paper.sh
+\end{verbatim}
+
+\subsection{Figures and the ``last run'' pointers}
+Each experiment script writes two kinds of artifacts:
+\begin{enumerate}
+  \item a timestamped run record under \texttt{data/runs/} (not committed by default), and
+  \item a snapshot-visible pointer file under \texttt{notes/} that records the most recent run path and the canonical figure paths.
+\end{enumerate}
+The pointer files used by the TeX exporter in this draft are:
+\begin{verbatim}
+notes/stencil_flow_last_run.json
+notes/stencil_flow_leibniz_last_run.json
+notes/holonomy_rm_last_run.json
+notes/prime_closure_rm_last_run.json
+notes/passivity_toy_last_run.json
+\end{verbatim}
+and each pointer includes (at minimum) a timestamp, an \texttt{output\_path} into \texttt{data/runs/}, and figure paths under \texttt{figures/}.
+For TeX compatibility, each exhibit figure is committed in both SVG (inspection) and PNG (pdflatex inclusion) form.
+
+To regenerate the committed ``last run'' figures (and refresh the pointers), run the corresponding experiment scripts, e.g.:
+\begin{verbatim}
+python experiments/stencil_flow/leibniz_gate.py
+python experiments/holonomy_rm/run.py
+python experiments/prime_closure_rm/run.py
+python experiments/passivity_toy/run.py
+\end{verbatim}
+
+\subsection{Dashboard regeneration}
+The file \texttt{notes/results\_dashboard.md} is a snapshot-visible summary of the current pointer state.
+It can be regenerated at any time via:
+\begin{verbatim}
+python scripts/make_dashboard.py
+\end{verbatim}
+The dashboard is intended for writing efficiency: it lists the latest tables, macro values, and figure paths that will appear in the TeX build.
+
+\subsection{Minimal artifact contract}
+The artifact contract for this draft is:
+
+\begin{remark}[Artifact contract for reported numbers]
+All numeric values appearing in (i) the generated tables under \texttt{tex/math\_instantiation/generated/} and (ii) the macros imported from \texttt{generated/macros.tex} are generated from the snapshot-visible pointer JSON files in \texttt{notes/} listed above, by the script \texttt{scripts/export\_results\_tex.py}.
+Thus, the ``meaning'' of a reported number is: ``the value recorded in the latest pointer JSON at the time the TeX build was produced,'' rather than an untracked manual transcription.
+\end{remark}
+
+This contract does not guarantee that the experiments are deterministic across platforms (though seeds are recorded in run artifacts); it guarantees that the paper and repository state are internally consistent.

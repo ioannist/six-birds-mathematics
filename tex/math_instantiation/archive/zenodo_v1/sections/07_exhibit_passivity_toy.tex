@@ -1,0 +1,80 @@
+\section{Exhibit B-2: passivity toy (positivity ledger and zero confinement)}
+\label{sec:exhibit-passivity}
+
+A recurring \SBT motif is that the most rigidifying feasibility conditions are often \emph{positivity} conditions.
+In physics, passivity/positivity constraints strongly restrict the analytic structure of response functions \cite{Willems1972II}.
+In mathematics, many ``stability'' and ``no-gain'' requirements appear as nonnegativity of quadratic forms, positive-definite kernels, or positivity of coefficients in generating functions.
+This exhibit provides a deliberately simple toy instantiation of that motif:
+as a positivity constraint is tightened, zeros (defects) are increasingly confined to a symmetry locus.
+
+\subsection{Self-duality and a symmetry locus}
+We consider a family of polynomials
+\[
+Z_\lambda(z) \;=\; \sum_{k=0}^{n} a_k(\lambda)\,z^k
+\]
+constructed from a finite Ising-style partition sum (implemented by direct enumeration for $n=\PassivityN$ in the recorded run).
+A key structural feature is a built-in self-duality symmetry:
+we enforce palindromic coefficients by symmetrization,
+\[
+a_k(\lambda)\leftarrow \tfrac12\bigl(a_k(\lambda)+a_{n-k}(\lambda)\bigr),
+\]
+which makes $Z_\lambda$ invariant (up to the trivial $z^n$ factor) under inversion $z\leftrightarrow 1/z$.
+Consequently, zeros occur in reciprocal pairs.
+The fixed locus of this symmetry is the unit circle $|z|=1$, which we treat as the \emph{symmetry axis} (or symmetry manifold) for the toy.
+
+In \SBT language, inversion symmetry is a \Ptwo\ constraint, while palindromization is a \Pone\ operator rewrite that makes the constraint manifest at the packaged level.
+
+\subsection{Positivity as a feasibility ledger}
+The toy feasibility constraint is a one-parameter ``positivity tightening'' of couplings.
+We sample a set of edge couplings $J_e$ (both signs), and define a clipped family
+\[
+J_e(\lambda) \;=\; \max(J_e,0) + \lambda\,\min(J_e,0),
+\qquad \lambda\in[0,1].
+\]
+Thus $\lambda=1$ is the original mixed-sign instance, while $\lambda=0$ is a purely nonnegative (ferromagnetic) instance.
+This is a minimal model of a passivity/positivity ledger: tightening $\lambda\downarrow 0$ removes ``gain-like'' sign structure.
+
+\subsection{Defects as zeros and a confinement metric}
+We compute all complex zeros of $Z_\lambda$ and quantify confinement to the symmetry locus by the radial deviation
+\[
+d_i(\lambda) := \bigl||z_i(\lambda)|-1\bigr|,
+\]
+summarized by
+\[
+\mathrm{mean\_dev}(\lambda)=\frac1n\sum_i d_i(\lambda),
+\qquad
+\mathrm{max\_dev}(\lambda)=\max_i d_i(\lambda).
+\]
+These play the role of \Psix\ accounting diagnostics: they measure how strongly the defect set (zeros) respects the symmetry locus.
+
+Table~\ref{tab:passivity} reports the confinement metrics across $\lambda$.
+In the recorded run, tightening positivity produces a dramatic confinement effect:
+\[
+\mathrm{mean\_dev}(1) \approx \PassivityMeanDevLamOne,
+\qquad
+\mathrm{mean\_dev}(0) \approx \PassivityMeanDevLamZero,
+\]
+so the feasible ($\lambda\to 0$) regime concentrates zeros extremely close to $|z|=1$.
+
+\input{generated/passivity_table}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.75\linewidth]{passivity_toy_last_run.png}%
+\caption{Passivity toy: zeros of a self-dual polynomial family under positivity tightening. The symmetry locus is the unit circle $|z|=1$. As the clipping parameter $\lambda$ decreases toward the nonnegative (ferromagnetic) regime, the zeros concentrate near the symmetry locus; Table~\ref{tab:passivity} quantifies this via radial deviation metrics.}
+\label{fig:passivity-toy}
+\end{figure}
+
+\subsection{Interpretation and scope}
+This toy is not a theorem and does not claim to reproduce the full hypotheses of classical zero-confinement results.
+Its role is methodological: it demonstrates a recognizable \SBT pattern in a controlled setting.
+This motif has rigorous instances, most famously the Lee--Yang circle theorem for ferromagnetic Ising models \cite{LeeYang1952}; we do not invoke that theorem here.
+
+\begin{itemize}
+  \item Symmetry (\Ptwo) specifies a distinguished locus (here $|z|=1$).
+  \item Positivity/passivity acts as a feasibility constraint measured by an audit ledger (\Psix).
+  \item Under tighter feasibility, defects (zeros) become increasingly confined to the symmetry locus.
+\end{itemize}
+
+The purpose of including this exhibit in a mathematics instantiation paper is to motivate (without overclaiming) why problems like ``zero confinement to a self-dual manifold'' naturally invite passivity/positivity formulations.
+Exhibit~B-1 on prime closures shows that naive staging and packaging can fail catastrophically in the critical strip; this toy suggests what a successful closure might require in addition: a feasibility ledger strong enough to prevent defect drift away from symmetry.
