@@ -45,7 +45,42 @@ if [[ -d "$PAPER_DIR/Definitions" ]]; then
 fi
 
 if [[ -d "$ROOT_DIR/figures" ]]; then
-  find "$ROOT_DIR/figures" -maxdepth 1 -type f \( -name "*.png" -o -name "*.jpg" -o -name "*.pdf" \) -exec cp {} "$STAGE_DIR/figures/" \;
+  mapfile -t FIG_FILES < <(
+    python - "$PAPER_DIR" <<'PY'
+import re
+import sys
+from pathlib import Path
+
+paper_dir = Path(sys.argv[1])
+paths = [paper_dir / "main.tex"] + sorted((paper_dir / "sections").glob("*.tex"))
+pattern = re.compile(r"\\includegraphics(?:\[[^\]]*\])?\{([^}]+)\}")
+seen = []
+
+for path in paths:
+    if not path.exists():
+        continue
+    text = path.read_text(encoding="utf-8", errors="replace")
+    for raw in pattern.findall(text):
+        name = raw.strip()
+        if not name:
+            continue
+        # Keep exact filename reference as used by TeX includegraphics.
+        seen.append(Path(name).name)
+
+for name in dict.fromkeys(seen):
+    print(name)
+PY
+  )
+
+  for fig in "${FIG_FILES[@]}"; do
+    [[ -z "$fig" ]] && continue
+    src="$ROOT_DIR/figures/$fig"
+    if [[ ! -f "$src" ]]; then
+      echo "[package_preprints] ERROR: referenced figure missing: $src" >&2
+      exit 4
+    fi
+    cp "$src" "$STAGE_DIR/figures/"
+  done
 fi
 
 find "$STAGE_DIR" -name "*.aux" -delete

@@ -1,16 +1,13 @@
 # TeX quality report
 
-Generated: 2026-01-27T22:33:00Z
-
-Counts:
+- timestamp_utc: 2026-02-13T19:08:27Z
 - undefined citations: 0
 - undefined references: 0
 - overfull hboxes: 0
 - underfull hboxes: 0
-- LaTeX warnings: 5
-- package warnings: 0
-- bibtex warnings: 0
+- latex warnings: 8
+- package warnings: 78
 
-Top overfull hboxes (up to 10):
-
-(none)
+## top_overfull_hboxes
+- Overfull \hbox (60.18175pt too wide) in paragraph at lines 94--104
+- Overfull \hbox (8.4035pt too wide) in paragraph at lines 36--38
