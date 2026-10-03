@@ -8,7 +8,7 @@ import json
 import math
 from collections import Counter
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Dict, Iterable, List, Sequence, Tuple
 
@@ -28,6 +28,8 @@ def apply_stencil_clipped(
 ) -> Tuple[np.ndarray, np.ndarray]:
     """Apply a local stencil on the interior (no wrap)."""
     f_arr = np.asarray(f)
+    if m < 1 or np.shape(coeffs) != (2 * m + 1,):
+        raise ValueError("require m >= 1 and exactly 2*m+1 coefficients")
     if f_arr.ndim != 1:
         raise ValueError("apply_stencil_clipped expects 1D arrays")
     n = f_arr.shape[0]
@@ -99,8 +101,11 @@ def main() -> int:
     parser.add_argument("--N0", type=int, default=64)
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--out", type=str, default=None)
+    parser.add_argument("--notes-out", default="notes/stencil_flow_last_run.json")
 
     args = parser.parse_args()
+    if any(m < 1 or args.N0 <= 2*m for m in args.m_values) or args.num < 1:
+        parser.error("require m >= 1, N0 > 2*m and num >= 1")
 
     m_values = args.m_values
     num = args.num
@@ -233,23 +238,12 @@ def main() -> int:
             )
 
             stable = (
-                e12_k[best_fit_k] < e01_k[best_fit_k]
+                (e12_k[best_fit_k] < e01_k[best_fit_k] or e12_k[best_fit_k] < 1e-12)
                 and e12_k[best_fit_k] < 0.25
             )
 
-            leibniz_ok = True
-            if best_fit_k == 1:
-                leibniz_ok = (
-                    d2 is not None
-                    and d1 is not None
-                    and d0 is not None
-                    and d2 <= d1 + 1e-15
-                    and d1 <= d0 + 1e-15
-                    and d2 < d0
-                    and d2 < 0.50
-                )
-
-            if stable and nontrivial and leibniz_ok:
+            # The baseline is stability-only; D0/D1/D2 are audit readouts.
+            if stable and nontrivial:
                 survivors_by_k[best_fit_k] += 1
                 survivors.append(
                     {
@@ -273,7 +267,7 @@ def main() -> int:
     survivors.sort(key=lambda rec: rec["F_%d" % rec["best_fit_k"]])
     top_survivors = survivors[:10]
 
-    timestamp = datetime.utcnow().strftime("%Y%m%d_%H%M%S")
+    timestamp = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
     out_path = (
         Path(args.out)
         if args.out
@@ -325,7 +319,8 @@ def main() -> int:
             "test_family": test_family,
         },
     }
-    notes_path = Path("notes/stencil_flow_last_run.json")
+    notes_path = Path(args.notes_out)
+    notes_path.parent.mkdir(parents=True, exist_ok=True)
     notes_path.write_text(json.dumps(last_run, indent=2) + "\n", encoding="utf-8")
 
     summary = (

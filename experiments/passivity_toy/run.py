@@ -5,7 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Dict, List, Tuple
 
@@ -66,6 +66,64 @@ def compute_roots_metrics(a: np.ndarray) -> Tuple[np.ndarray, float, float, floa
     return roots, float(np.mean(d)), float(np.median(d)), float(np.max(d))
 
 
+def component_factors(
+    n: int, beta: float, edges: List[Tuple[int, int]], J: np.ndarray
+) -> List[np.ndarray]:
+    """Factor the partition polynomial over components of nonzero interactions.
+
+    Zero edges are removed exactly, with no tolerance that could change the model.
+    In particular an isolated spin contributes exactly 1 + z. Factoring before
+    root finding avoids the artificial splitting of repeated roots at z = -1.
+    """
+    adjacent = [set() for _ in range(n)]
+    for (i, j), coupling in zip(edges, J):
+        if beta != 0.0 and coupling != 0.0:
+            adjacent[i].add(j)
+            adjacent[j].add(i)
+    unseen = set(range(n))
+    factors = []
+    while unseen:
+        pending = [min(unseen)]
+        vertices = []
+        while pending:
+            i = pending.pop()
+            if i not in unseen:
+                continue
+            unseen.remove(i)
+            vertices.append(i)
+            pending.extend(sorted(adjacent[i] & unseen))
+        relabel = {v: k for k, v in enumerate(sorted(vertices))}
+        sub_edges, sub_J = [], []
+        for (i, j), coupling in zip(edges, J):
+            if beta != 0.0 and coupling != 0.0 and i in relabel and j in relabel:
+                sub_edges.append((relabel[i], relabel[j]))
+                sub_J.append(coupling)
+        a, _, _, _ = compute_coeffs(len(vertices), beta, sub_edges, np.array(sub_J))
+        factors.append(a)
+    return factors
+
+
+def factored_roots_metrics(
+    factors: List[np.ndarray],
+) -> Tuple[np.ndarray, float, float, float, float]:
+    """Return roots with multiplicity and a scale invariant backward residual.
+
+    The residual is |P(z)| / sum_k |a_k z^k| per component. It measures backward
+    accuracy, not a forward error bound on roots of an ill-conditioned polynomial.
+    """
+    roots_parts = []
+    residual_max = 0.0
+    for a in factors:
+        roots, _, _, _ = compute_roots_metrics(a)
+        roots_parts.append(roots)
+        residual = np.abs(np.polynomial.polynomial.polyval(roots, a))
+        scale = np.polynomial.polynomial.polyval(np.abs(roots), np.abs(a))
+        residual_max = max(residual_max, float(np.max(residual / scale)))
+    roots = np.concatenate(roots_parts)
+    d = np.abs(np.abs(roots) - 1.0)
+    return roots, float(np.mean(d)), float(np.median(d)), float(np.max(d)), residual_max
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Passivity toy experiment")
     parser.add_argument("--n", type=int, default=12)
@@ -84,6 +142,12 @@ def main() -> int:
     parser.add_argument("--notes-out", type=str, default="notes/passivity_toy_last_run.json")
     parser.add_argument("--fig-out", type=str, default="figures/passivity_toy_last_run.svg")
     args = parser.parse_args()
+    if args.n < 1 or args.n > 24:
+        parser.error("direct enumeration requires 1 <= n <= 24")
+    if not np.isfinite(args.beta) or args.beta < 0:
+        parser.error("beta must be finite and nonnegative")
+    if any(not np.isfinite(lam) or not 0 <= lam <= 1 for lam in args.lambda_list):
+        parser.error("lambda must be in [0,1]")
 
     print(
         f"params: n={args.n}, beta={args.beta}, graph={args.graph}, p={args.p}, "
@@ -107,7 +171,8 @@ def main() -> int:
     for lam in args.lambda_list:
         J_lambda = J_pos + lam * J_neg
         a, sym_before, sym_after, _ = compute_coeffs(args.n, args.beta, edges, J_lambda)
-        roots, mean_dev, median_dev, max_dev = compute_roots_metrics(a)
+        factors = component_factors(args.n, args.beta, edges, J_lambda)
+        roots, mean_dev, median_dev, max_dev, root_residual = factored_roots_metrics(factors)
         roots_by_lambda[lam] = roots
         results.append(
             {
@@ -117,6 +182,8 @@ def main() -> int:
                 "max_dev": max_dev,
                 "sym_err_before": sym_before,
                 "sym_err_after": sym_after,
+                "component_degrees": [len(factor) - 1 for factor in factors],
+                "root_backward_residual_max": root_residual,
                 "roots": [[float(z.real), float(z.imag)] for z in roots],
                 "coeffs": [float(x) for x in a],
             }
@@ -127,11 +194,13 @@ def main() -> int:
         1 for i in range(1, len(mean_vals)) if mean_vals[i] < mean_vals[i - 1]
     )
 
+    toward_zero = all(b < a for a, b in zip(args.lambda_list, args.lambda_list[1:]))
     trend_note = (
-        f"mean_dev decreased in {decrease_steps}/{max(len(mean_vals)-1,1)} steps as lambda→0"
+        f"mean_dev decreased in {decrease_steps}/{len(mean_vals)-1} supplied steps; "
+        f"lambda strictly decreases toward zero: {toward_zero}"
     )
 
-    timestamp = datetime.utcnow().strftime("%Y%m%d_%H%M%S")
+    timestamp = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
     out_path = (
         Path(args.out)
         if args.out
@@ -156,7 +225,8 @@ def main() -> int:
             "lambda_values": [float(l) for l in args.lambda_list],
             "mean_dev_values": mean_vals,
             "mean_dev_decrease_steps": decrease_steps,
-            "mean_dev_total_steps": max(len(mean_vals) - 1, 1),
+            "mean_dev_total_steps": len(mean_vals) - 1,
+            "lambda_strictly_decreasing": toward_zero,
         },
     }
     out_path.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")

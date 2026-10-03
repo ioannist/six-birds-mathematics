@@ -8,7 +8,7 @@ import json
 import math
 from collections import Counter
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Dict, List, Sequence, Tuple
 
@@ -30,6 +30,8 @@ def apply_stencil_clipped(
     f: np.ndarray, coeffs: np.ndarray, m: int
 ) -> Tuple[np.ndarray, np.ndarray]:
     f_arr = np.asarray(f)
+    if m < 1 or np.shape(coeffs) != (2 * m + 1,):
+        raise ValueError("require m >= 1 and exactly 2*m+1 coefficients")
     if f_arr.ndim != 1:
         raise ValueError("apply_stencil_clipped expects 1D arrays")
     n = f_arr.shape[0]
@@ -104,16 +106,15 @@ def moment1_project(c: np.ndarray, m: int) -> Tuple[np.ndarray, float]:
 
 def project_high_order(c: np.ndarray, m: int) -> np.ndarray:
     """Enforce moments: sum=0, M1=1, M2=0, M3=0 via a linear correction."""
+    if m < 2:
+        raise ValueError("four independent moment constraints require m >= 2")
     idx = np.arange(-m, m + 1, dtype=float)
     basis = np.vstack([np.ones_like(idx), idx, idx**2, idx**3]).T
     M = basis.T
     target = np.array([0.0, 1.0, 0.0, 0.0])
     current = M @ c
-    try:
-        alpha = np.linalg.solve(M @ basis, target - current)
-        return c + basis @ alpha
-    except np.linalg.LinAlgError:
-        return c
+    alpha = np.linalg.solve(M @ basis, target - current)
+    return c + basis @ alpha
 
 
 def build_base(m: int) -> np.ndarray:
@@ -231,6 +232,8 @@ def main() -> int:
         default="figures/stencil_flow_leibniz_last_run.svg",
     )
     args = parser.parse_args()
+    if args.m < 2 or args.N0 <= 2 * args.m:
+        parser.error("require m >= 2 and N0 > 2*m")
 
     print(
         "params: m={m}, max_tries={max_tries}, target_survivors={target_survivors}, "
@@ -257,6 +260,8 @@ def main() -> int:
     survivors: List[Dict[str, object]] = []
     tested_by_mode: Counter[str] = Counter()
     survivors_by_k: Counter[int] = Counter()
+    tested_by_k: Counter[int] = Counter()
+    stability_only_by_k: Counter[int] = Counter()
     resample_count = 0
 
     for _ in range(args.max_tries):
@@ -285,20 +290,22 @@ def main() -> int:
         )
 
         best_fit_k = min(f_errors, key=f_errors.get)
+        tested_by_k[best_fit_k] += 1
 
-        stable = e12_k[1] < e01_k[1] and e12_k[1] < 0.25
+        stable = (e12_k[1] < e01_k[1] or e12_k[1] < 1e-12) and e12_k[1] < 0.25
         leibniz_ok = (
             d2 < args.gate_D2
             and d2 < args.gate_ratio * d1
             and d1 < args.gate_ratio * d0
         )
-        derivative_like = best_fit_k == 1
-
-        if stable and leibniz_ok and derivative_like and nontrivial:
+        if stable and nontrivial:
+            stability_only_by_k[best_fit_k] += 1
+        if stable and leibniz_ok and nontrivial:
             survivors_by_k[best_fit_k] += 1
             survivors.append(
                 {
                     "coeffs": [float(c) for c in coeffs],
+                    "best_fit_k": int(best_fit_k),
                     "E01_1": float(e01_k[1]),
                     "E12_1": float(e12_k[1]),
                     "D0": float(d0),
@@ -313,7 +320,7 @@ def main() -> int:
     survivors.sort(key=lambda rec: rec["D2"])
     top_survivors = survivors[:10]
 
-    timestamp = datetime.utcnow().strftime("%Y%m%d_%H%M%S")
+    timestamp = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
     out_path = (
         Path(args.out)
         if args.out
@@ -340,6 +347,12 @@ def main() -> int:
             "survivors_total": len(survivors),
         },
         "survivors_by_best_fit_k": {str(k): int(v) for k, v in survivors_by_k.items()},
+        "ablation_same_candidates": {
+            "tested_by_best_fit_k": dict(tested_by_k),
+            "stability_only_by_best_fit_k": dict(stability_only_by_k),
+            "stability_and_leibniz_by_best_fit_k": dict(survivors_by_k),
+        },
+        "classification_used_as_gate": False,
         "top_survivors": top_survivors,
     }
     out_path.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
@@ -385,11 +398,13 @@ def main() -> int:
             "gate_D2": args.gate_D2,
             "gate_ratio": args.gate_ratio,
             "moment_projection": True,
+            "classification_used_as_gate": False,
             "moment_constraints": "sum=0, M1=1, M2≈0, M3≈0",
             "boundary_mode": "clipped",
             "test_family": test_family,
         },
     }
+    Path(args.notes_out).parent.mkdir(parents=True, exist_ok=True)
     Path(args.notes_out).write_text(
         json.dumps(notes_payload, indent=2) + "\n", encoding="utf-8"
     )

@@ -5,7 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import List, Tuple
 
@@ -19,6 +19,10 @@ def g_func(y: np.ndarray) -> np.ndarray:
     return np.sin(2 * np.pi * y) + 0.1 * np.cos(6 * np.pi * y) + np.exp(-y)
 
 
+def g_prime(y: np.ndarray) -> np.ndarray:
+    return 2 * np.pi * np.cos(2 * np.pi * y) - 0.6 * np.pi * np.sin(6 * np.pi * y) - np.exp(-y)
+
+
 def interp1(u_grid: np.ndarray, u_vals: np.ndarray, query: np.ndarray) -> np.ndarray:
     return np.interp(query, u_grid, u_vals)
 
@@ -27,28 +31,34 @@ def central_diff(vals: np.ndarray, step: float) -> np.ndarray:
     return (vals[2:] - vals[:-2]) / (2 * step)
 
 
-def fit_loglog(hs: np.ndarray, rms: np.ndarray) -> Tuple[float, float, float]:
-    eps = 1e-30
+def fit_loglog(hs: np.ndarray, rms: np.ndarray) -> Tuple[float | None, float | None, float | None]:
+    if np.any(rms <= 0) or len(np.unique(hs)) < 2:
+        return None, None, None
     logh = np.log(hs)
-    logr = np.log(rms + eps)
+    logr = np.log(rms)
     p, c = np.polyfit(logh, logr, 1)
     pred = p * logh + c
     ss_res = float(np.sum((logr - pred) ** 2))
     ss_tot = float(np.sum((logr - np.mean(logr)) ** 2))
-    r2 = 1.0 - ss_res / ss_tot if ss_tot > 0 else float("nan")
-    return float(p), float(c), float(r2)
+    r2 = 1.0 - ss_res / ss_tot if ss_tot > 0 else None
+    return float(p), float(c), float(r2) if r2 is not None else None
 
 
 def compute_results(eps: float, n_list: List[int]) -> List[dict]:
+    if not np.isfinite(eps) or eps <= -0.5:
+        raise ValueError("phi must have positive derivative on [0,1]: eps > -0.5")
+    if any(n <= 4 for n in n_list):
+        raise ValueError("each grid requires N > 4")
     results: List[dict] = []
     for n in n_list:
         h = 1.0 / n
         x = np.linspace(0.0, 1.0, n + 1)
         ymax = 1.0 + eps
-        y = np.arange(0.0, ymax + 1e-12, h)
+        # Cover the entire image; np.interp otherwise silently clamps the tail.
+        y = np.arange(int(np.ceil(ymax / h)) + 1) * h
 
         x2 = np.linspace(0.0, 1.0, 2 * n + 1)
-        y2 = np.arange(0.0, ymax + 1e-12, h / 2.0)
+        y2 = np.arange(2 * (len(y) - 1) + 1) * (h / 2.0)
 
         g_y = g_func(y)
         g_y_ref = interp1(y, g_y, y2)
@@ -77,7 +87,13 @@ def compute_results(eps: float, n_list: List[int]) -> List[dict]:
 
         rm = float(np.linalg.norm(A - B) / (np.linalg.norm(A) + 1e-12))
 
-        results.append({"N": int(n), "h": float(h), "rm": rm, "n_eval": int(len(x_use))})
+        truth = g_prime(phi_x)
+        results.append({
+            "N": int(n), "h": float(h), "rm": rm, "n_eval": int(len(x_use)),
+            "route_A_rms_error": float(np.sqrt(np.mean((A - truth) ** 2))),
+            "route_B_rms_error": float(np.sqrt(np.mean((B - truth) ** 2))),
+            "absolute_mismatch_rms": float(np.sqrt(np.mean((A - B) ** 2))),
+        })
     return results
 
 
@@ -107,9 +123,9 @@ def main() -> int:
     print("RM table (h, rm):")
     for r in results:
         print(f"  h={r['h']:.6f}  rm={r['rm']:.6e}  n_eval={r['n_eval']}")
-    print(f"fitted exponent p={p:.6f}")
+    print(f"fitted exponent p={p:.6f}" if p is not None else "power-law fit unavailable: zero mismatch")
 
-    timestamp = datetime.utcnow().strftime("%Y%m%d_%H%M%S")
+    timestamp = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
     out_path = (
         Path(args.out)
         if args.out
@@ -130,10 +146,12 @@ def main() -> int:
     fig, ax = plt.subplots(figsize=(5, 3))
     ax.plot(hs, rms, marker="o")
     # fitted line in log-log space
-    fit_vals = np.exp(p * np.log(hs) + c)
-    ax.plot(hs, fit_vals)
+    if p is not None:
+        fit_vals = np.exp(p * np.log(hs) + c)
+        ax.plot(hs, fit_vals)
     ax.set_xscale("log")
-    ax.set_yscale("log")
+    if np.all(rms > 0):
+        ax.set_yscale("log")
     ax.set_xlabel("h")
     ax.set_ylabel("RM")
     fig.tight_layout()

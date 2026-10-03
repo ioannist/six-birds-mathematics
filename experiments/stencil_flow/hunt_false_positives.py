@@ -27,6 +27,8 @@ def apply_stencil_clipped(
     f: np.ndarray, coeffs: np.ndarray, m: int
 ) -> Tuple[np.ndarray, np.ndarray]:
     f_arr = np.asarray(f)
+    if m < 1 or np.shape(coeffs) != (2 * m + 1,):
+        raise ValueError("require m >= 1 and exactly 2*m+1 coefficients")
     if f_arr.ndim != 1:
         raise ValueError("apply_stencil_clipped expects 1D arrays")
     n = f_arr.shape[0]
@@ -106,7 +108,7 @@ def sample_moment1(
         if abs(m1) < tol:
             resamples += 1
             if resamples > 1000:
-                return coeffs, resamples
+                raise RuntimeError("failed to sample a nonzero first moment")
             continue
         coeffs = coeffs / m1
         return coeffs, resamples
@@ -184,6 +186,8 @@ def main() -> int:
         default="notes/stencil_flow_false_positives.json",
     )
     args = parser.parse_args()
+    if args.m < 1 or args.N0 <= 2*args.m or args.num < 1:
+        parser.error("require m >= 1, N0 > 2*m and num >= 1")
 
     m = args.m
     num = args.num
@@ -306,6 +310,7 @@ def main() -> int:
     if near_misses:
         output["near_misses_top10"] = near_misses
 
+    Path(args.out).parent.mkdir(parents=True, exist_ok=True)
     Path(args.out).write_text(json.dumps(output, indent=2) + "\n", encoding="utf-8")
 
     summary = (

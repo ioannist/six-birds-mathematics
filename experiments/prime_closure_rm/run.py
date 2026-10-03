@@ -5,7 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Dict, List, Tuple
 
@@ -31,24 +31,32 @@ def primes_upto(n: int) -> List[int]:
 
 
 def S_N(s: mp.mpc, N: int, smooth: str) -> mp.mpc:
+    if N < 1 or smooth not in {"none", "exp"}:
+        raise ValueError("require N >= 1 and smooth in {none, exp}")
     total = mp.mpc(0)
     if smooth == "none":
         for n in range(1, N + 1):
             total += mp.power(n, -s)
     else:
         for n in range(1, N + 1):
-            total += mp.e ** (-n / N) * mp.power(n, -s)
+            total += mp.exp(-mp.mpf(n) / N) * mp.power(n, -s)
     return total
 
 
 def P_N(s: mp.mpc, N: int, smooth: str, primes: List[int]) -> mp.mpc:
+    if N < 1 or smooth not in {"none", "exp"}:
+        raise ValueError("require N >= 1 and smooth in {none, exp}")
     logp = mp.mpc(0)
     if smooth == "none":
         for p in primes:
+            if p > N:
+                continue
             logp += -mp.log(1 - mp.power(p, -s))
     else:
         for p in primes:
-            logp += mp.e ** (-p / N) * (-mp.log(1 - mp.power(p, -s)))
+            if p > N:
+                continue
+            logp += mp.exp(-mp.mpf(p) / N) * (-mp.log(1 - mp.power(p, -s)))
     return mp.e ** (logp)
 
 
@@ -77,6 +85,8 @@ def apply_mode_sym(F, s: mp.mpc, mode: str) -> mp.mpc:
 
 
 def apply_true(s: mp.mpc, mode: str) -> mp.mpc:
+    if mode not in {"raw", "comp", "sym"}:
+        raise ValueError(f"unsupported mode: {mode}")
     z = mp.zeta(s)
     if mode == "sym":
         z1 = mp.zeta(1 - s)
@@ -247,7 +257,7 @@ def main() -> int:
                 f"  N={row['N']}: rm2={row['rm2']:.6e}, errS2={row['errS2']:.6e}, errP2={row['errP2']:.6e}"
             )
 
-    timestamp = datetime.utcnow().strftime("%Y%m%d_%H%M%S")
+    timestamp = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
     out_path = (
         Path(args.out)
         if args.out

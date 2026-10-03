@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+if [[ "${1:-}" == "--math-only" ]]; then
+  exec bash scripts/check_math.sh
+fi
+
 python -c "import numpy, mpmath, sympy, matplotlib"
 pytest -q
 ( cd lean && lake build )

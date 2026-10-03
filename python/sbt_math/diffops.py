@@ -22,8 +22,8 @@ def delta(f: np.ndarray, h: float) -> np.ndarray:
 def scaled_delta(f: np.ndarray, h: float) -> np.ndarray:
     """Scaled forward difference: δ_h f = (T_h f - f) / h."""
     h_val = float(h)
-    if h_val == 0.0:
-        raise ValueError("h must be nonzero")
+    if h_val == 0.0 or not np.isfinite(h_val):
+        raise ValueError("h must be finite and nonzero")
     return delta(f, h_val) / h_val
 
 

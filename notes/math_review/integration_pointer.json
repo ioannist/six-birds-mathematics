@@ -1,0 +1,72 @@
+{
+  "timestamp": "20261003_111544",
+  "output_path": "notes/math_review/integration_run.json",
+  "figure_svg": "figures/tmp/math_review/integration.svg",
+  "figure_png": "figures/tmp/math_review/integration.png",
+  "params": {
+    "N_list": [
+      128,
+      256,
+      512,
+      1024
+    ],
+    "test_family": [
+      "sin2pi",
+      "exp",
+      "const1",
+      "x",
+      "x2"
+    ],
+    "norm": "l2",
+    "epsilon0": 1e-12
+  },
+  "results": {
+    "rows": [
+      [
+        128,
+        0.0078125,
+        0.014173153582816176,
+        5.6674465917440093e-14,
+        0.19632982818329858
+      ],
+      [
+        256,
+        0.00390625,
+        0.007085509458459658,
+        1.6209271368054735e-13,
+        0.13883660699876363
+      ],
+      [
+        512,
+        0.001953125,
+        0.003542621342750818,
+        4.749076804547915e-13,
+        0.09817415438647313
+      ],
+      [
+        1024,
+        0.0009765625,
+        0.0017712939990070884,
+        1.298147735313426e-12,
+        0.06941993700737219
+      ]
+    ],
+    "fits": {
+      "rm_max": {
+        "slope": 1.0000909928978712,
+        "r2": 0.9999999977757404
+      },
+      "ft_left_max": {
+        "slope": null,
+        "intercept": null,
+        "r2": null,
+        "status": "algebraically_zero_roundoff_only"
+      },
+      "ft_trap_max": {
+        "slope": 0.4999545087666288,
+        "r2": 0.9999999977756714
+      }
+    },
+    "rm_smallest_h": 0.0017712939990070884
+  }
+}

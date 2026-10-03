@@ -1,0 +1,56 @@
+{
+  "timestamp": "20261003_111543",
+  "output_path": "notes/math_review/holonomy_run.json",
+  "figure_path": "figures/tmp/math_review/holonomy.svg",
+  "figure_png_path": "figures/tmp/math_review/holonomy.png",
+  "fit_p": 1.4638055029260535,
+  "fit_r2": 0.9878080057170429,
+  "table": [
+    [
+      0.015625,
+      0.00476218
+    ],
+    [
+      0.0078125,
+      0.00132002
+    ],
+    [
+      0.00390625,
+      0.00049099
+    ],
+    [
+      0.00195312,
+      0.00022498
+    ]
+  ],
+  "null_table": [
+    [
+      0.015625,
+      0.0
+    ],
+    [
+      0.0078125,
+      0.0
+    ],
+    [
+      0.00390625,
+      0.0
+    ],
+    [
+      0.00195312,
+      0.0
+    ]
+  ],
+  "null_rm_max": 0.0,
+  "null_rm_at_smallest_h": 0.0,
+  "params": {
+    "eps": 0.05,
+    "N_list": [
+      64,
+      128,
+      256,
+      512
+    ],
+    "seed": 0
+  }
+}

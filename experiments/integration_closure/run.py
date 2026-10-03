@@ -5,7 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Callable, Dict, List, Tuple
 
@@ -63,6 +63,13 @@ def main() -> int:
         "x2": lambda x: x**2,
     }
     test_family = list(funcs.keys())
+    integrals = {
+        "sin2pi": lambda x: (1 - np.cos(2 * np.pi * x)) / (2 * np.pi),
+        "exp": lambda x: np.exp(x) - 1,
+        "const1": lambda x: x,
+        "x": lambda x: x**2 / 2,
+        "x2": lambda x: x**3 / 3,
+    }
 
     print(f"params: N_list={args.N_list}, test_family={test_family}, eps0={args.eps0}")
 
@@ -86,6 +93,7 @@ def main() -> int:
         ft_trap_max = 0.0
         add_left_max = 0.0
         add_trap_max = 0.0
+        integral_left_error_max = integral_trap_error_max = 0.0
 
         for name, fn in funcs.items():
             f = fn(x)
@@ -99,6 +107,11 @@ def main() -> int:
             ft_left = l2_norm(dI - f_aligned)
             ft_trap = l2_norm(dT - f_aligned)
             rm = l2_norm(I - T) / (l2_norm(T) + args.eps0)
+            truth = integrals[name](x)
+            err_left = np.sqrt(h) * l2_norm(I - truth)
+            err_trap = np.sqrt(h) * l2_norm(T - truth)
+            integral_left_error_max = max(integral_left_error_max, float(err_left))
+            integral_trap_error_max = max(integral_trap_error_max, float(err_trap))
 
             full_left = I[-1]
             split_left = h * np.sum(f[:k]) + h * np.sum(f[k:n])
@@ -117,6 +130,9 @@ def main() -> int:
                     "ft_trap": float(ft_trap),
                     "add_left": add_left,
                     "add_trap": add_trap,
+                    "integral_left_weighted_l2_error": float(err_left),
+                    "integral_trap_weighted_l2_error": float(err_trap),
+                    "ft_trap_weighted_l2": float(np.sqrt(h) * ft_trap),
                 }
             )
 
@@ -134,6 +150,9 @@ def main() -> int:
             "ft_trap_max": ft_trap_max,
             "add_left_max": add_left_max,
             "add_trap_max": add_trap_max,
+            "integral_left_weighted_l2_error_max": integral_left_error_max,
+            "integral_trap_weighted_l2_error_max": integral_trap_error_max,
+            "ft_trap_weighted_l2_max": float(np.sqrt(h) * ft_trap_max),
         }
         per_n_rows.append(row)
         per_n_details.append({"N": int(n), "per_function": per_func})
@@ -153,10 +172,11 @@ def main() -> int:
     add_trap_arr = np.array(add_trap_vals, dtype=float)
 
     rm_slope, rm_intercept, rm_r2 = fit_loglog(h_arr, rm_arr, args.eps0)
-    ft_left_slope, ft_left_intercept, ft_left_r2 = fit_loglog(h_arr, ft_left_arr, args.eps0)
     ft_trap_slope, ft_trap_intercept, ft_trap_r2 = fit_loglog(h_arr, ft_trap_arr, args.eps0)
-    add_left_slope, add_left_intercept, add_left_r2 = fit_loglog(h_arr, add_left_arr, args.eps0)
-    add_trap_slope, add_trap_intercept, add_trap_r2 = fit_loglog(h_arr, add_trap_arr, args.eps0)
+    # Left differentiation and split additivity are algebraic identities. Their
+    # numerical residuals are roundoff; fitting powers of h has no analytic meaning.
+    zero_identity_fit = {"slope": None, "intercept": None, "r2": None,
+                         "status": "algebraically_zero_roundoff_only"}
 
     print("integration closure table:")
     for row in per_n_rows:
@@ -167,7 +187,7 @@ def main() -> int:
         )
     print(f"fits: rm_slope={rm_slope:.6f}, ft_trap_slope={ft_trap_slope:.6f}")
 
-    timestamp = datetime.utcnow().strftime("%Y%m%d_%H%M%S")
+    timestamp = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
     out_path = (
         Path(args.out)
         if args.out
@@ -193,26 +213,14 @@ def main() -> int:
             "per_function": per_n_details,
             "fits": {
                 "rm_max": {"slope": rm_slope, "intercept": rm_intercept, "r2": rm_r2},
-                "ft_left_max": {
-                    "slope": ft_left_slope,
-                    "intercept": ft_left_intercept,
-                    "r2": ft_left_r2,
-                },
+                "ft_left_max": zero_identity_fit,
                 "ft_trap_max": {
                     "slope": ft_trap_slope,
                     "intercept": ft_trap_intercept,
                     "r2": ft_trap_r2,
                 },
-                "add_left_max": {
-                    "slope": add_left_slope,
-                    "intercept": add_left_intercept,
-                    "r2": add_left_r2,
-                },
-                "add_trap_max": {
-                    "slope": add_trap_slope,
-                    "intercept": add_trap_intercept,
-                    "r2": add_trap_r2,
-                },
+                "add_left_max": zero_identity_fit,
+                "add_trap_max": zero_identity_fit,
             },
         },
     }
@@ -259,7 +267,7 @@ def main() -> int:
             ],
             "fits": {
                 "rm_max": {"slope": rm_slope, "r2": rm_r2},
-                "ft_left_max": {"slope": ft_left_slope, "r2": ft_left_r2},
+                "ft_left_max": zero_identity_fit,
                 "ft_trap_max": {"slope": ft_trap_slope, "r2": ft_trap_r2},
             },
             "rm_smallest_h": float(rm_arr[np.argmin(h_arr)]),

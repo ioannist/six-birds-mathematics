@@ -8,7 +8,8 @@ require mathlib from git
 
 lean_lib SbtMath where
   srcDir := "."
-  roots := #[`Derivations.Polynomial, `Diff.FiniteDifference]
+  roots := #[`Derivations.Polynomial, `Diff.FiniteDifference, `Closure.VanishingDefect,
+    `Closure.OperatorBounds]
 
 @[default_target]
 lean_exe sbt_math where
