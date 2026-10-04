@@ -1,0 +1,24 @@
+\section{Version history}
+\label{app:versions}
+
+All versions on Zenodo share the concept DOI \href{https://doi.org/10.5281/zenodo.18402003}{10.5281/zenodo.18402003}.
+
+\paragraph{Version 1 (28 January 2026).}
+First release on Zenodo (DOI: \href{https://doi.org/10.5281/zenodo.18402004}{10.5281/zenodo.18402004}), with the dictionary, the closure engine, and four exhibits: stencil selection, coordinate-change route mismatch, prime closures, and the positivity toy.
+
+\paragraph{Version 2 (February 2026).}
+Added the integration exhibit and moved the manuscript to the MDPI preprint format. This version was not deposited on Zenodo.
+
+\paragraph{Version 3 (4 October 2026).}
+Zenodo DOI: \href{https://doi.org/10.5281/zenodo.23131358}{10.5281/zenodo.23131358}.
+Followed a mathematical audit of the statements, code, and formalization.
+\begin{itemize}
+  \item The packaging and descent contracts are now explicit (Propositions~\ref{prop:packaging} and~\ref{prop:descent}), with the counterexamples that motivate them; the distinction between a quotient and a completion is stated.
+  \item New Lean statements: linearity of $\delta_h$, the limit bridge to the Leibniz rule, the inverse formula for polynomial derivations, the packaging and descent contracts, and the linear route and idempotence bounds. The text now distinguishes convergence from boundedness (Example~\ref{ex:bounded-not-convergent}) and adds the quotient-valued derivation of Proposition~\ref{prop:quotient-derivation}.
+  \item The stencil experiment was redesigned. In versions~1 and~2 the Leibniz-gated run selected candidates partly by their fitted order, which made the outcome ``all survivors are first order'' untestable, and it was compared with a stability-only run on a different population. The present matched experiment holds the population fixed, and fit labels never enter a gate.
+  \item Integration: fitted power laws for residuals that are rounding error around exact identities were removed; raw and weighted norms are distinguished, and truth checks against exact antiderivatives were added.
+  \item Coordinate change: the chart condition is enforced, the target grid covers the whole image, and route errors against the exact derivative are reported.
+  \item Primes: the smoothing weights are now evaluated at full working precision; an $80$-digit recomputation and a convergence proof for the control regime (Proposition~\ref{prop:prime-control}) were added.
+  \item Positivity toy: zeros are computed per connected component, which removes a spurious numerical splitting of the fourfold root at $z=-1$ (the endpoint deviation changes from about $3\times 10^{-4}$ to rounding level); the symmetry locus is identified as the fixed set of $z\mapsto 1/\bar z$; and the endpoint is identified as an instance of the Lee--Yang theorem.
+  \item The abstract and text were rewritten for readability, the figures were redrawn from the audited artifacts, and the closure-engine diagram (Figure~\ref{fig:engine}) was added. The title is unchanged.
+\end{itemize}

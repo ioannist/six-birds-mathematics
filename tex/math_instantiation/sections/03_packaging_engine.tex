@@ -1,93 +1,129 @@
 \section{A closure engine for mathematics}
 \label{sec:packaging-engine}
 
-This section states the generic ``closure engine'' used implicitly throughout the exhibits.
-The goal is not to re-found analysis but to make explicit what is usually left tacit when passing from discrete protocols to packaged laws.
-We present the engine as a sequence of design commitments: substrate, staging, ledger, packaging, induced operators, and route diagnostics.
-These correspond directly to the \SBT primitives of Section~\ref{sec:dictionary}.
+This section states the procedure that the exhibits apply.
+It does not re-found analysis; it makes explicit the commitments that are usually left tacit when one passes from a discrete protocol to a packaged law.
+There are five of them---staging, a ledger, a packaging contract, a descent contract, and route diagnostics---and Figure~\ref{fig:engine} shows how they fit together.
 
-\subsection{Protocol objects and staging (\Pfour)}
-Fix a family of discrete protocol spaces $\{Z_h\}_{h>0}$ indexed by a refinement parameter $h$ (mesh size, truncation cutoff, partition diameter, discretization step).
-A point $z_h\in Z_h$ is a \emph{micro-description} at stage $h$.
-In typical instantiations there are refinement maps (or comparison maps)
-\[
-\rho_{h\to h'}:Z_h \to Z_{h'}, \qquad h'>0,\ h'<h,
-\]
-that embed coarse objects into finer resolution (e.g.\ interpolation, refinement of partitions, extending a truncation).
-The abstract role of \Pfour\ is: the paper treats $h\downarrow 0$ as the mechanism by which ``infinite composition'' becomes a limit question, and by which closure claims become testable.
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+  font=\small,
+  box/.style={draw=black!55, rounded corners=3pt, fill=black!3, align=center, inner sep=5pt, minimum height=11mm, text width=24mm},
+  arr/.style={-{Latex[length=2.2mm]}, draw=black!65, line width=0.6pt},
+  tag/.style={font=\scriptsize\bfseries, text=black!65}
+]
+\node[box] (stage) {staged family\\ $z_h$, \ $h\downarrow 0$};
+\node[box, right=6mm of stage] (ledger) {defect ledger\\ $\Def(h)$};
+\node[box, right=6mm of ledger] (pack) {package\\ class $[\{z_h\}]$};
+\node[box, right=6mm of pack] (law) {packaged law\\ $F^\sharp$ on classes};
+\node[box, below=9mm of ledger, text width=60mm] (routes) {two routes $R_1(h),R_2(h)$ to the same object\\ route mismatch $\RM(h)$};
+\draw[arr] (stage) -- (ledger);
+\draw[arr] (ledger) -- node[above, font=\scriptsize]{shrinks?} (pack);
+\draw[arr] (pack) -- node[above, font=\scriptsize]{descends?} (law);
+\draw[arr] (stage.south) |- (routes.west);
+\draw[arr] (routes.east) -| (pack.south);
+\node[tag, above=0.5mm of stage] {P4 staging};
+\node[tag, above=0.5mm of ledger] {P6 accounting};
+\node[tag, above=0.5mm of pack] {P5 packaging};
+\node[tag, above=0.5mm of law] {P1, P2 descent};
+\node[tag, below=0.5mm of routes] {P3 protocol};
+\end{tikzpicture}
+\caption{The closure engine. A staged family is audited by a defect ledger. If the defect vanishes under refinement in a genuine pseudometric, the family defines a packaged object (Proposition~\ref{prop:packaging}). A discrete operator becomes a packaged law only if it respects the packaging (Proposition~\ref{prop:descent}), which may require rescaling or rewriting it. Independently, two routes to the same object are compared by a route mismatch that should shrink in stable regimes.}
+\label{fig:engine}
+\end{figure}
 
-\subsection{Defect ledgers and feasibility gates (\Psix)}
-A closure claim is only meaningful relative to an \emph{audit ledger}:
-a family of nonnegative diagnostics that quantify what is lost when compressing a protocol.
-In this mathematics instantiation, the ledger consists of error terms and mismatch quantities rather than thermodynamic arrows.
+\subsection{Staging (\Pfour)}
+Fix a family of discrete protocol spaces $\{Z_h\}_{h>0}$ indexed by a refinement parameter: a mesh size, a truncation cutoff, a partition diameter.
+A point $z_h\in Z_h$ is a description at stage $h$.
+Often there are comparison maps $\rho_{h\to h'}:Z_h\to Z_{h'}$ for $h'<h$ that carry coarse objects to finer resolution (interpolation, refinement of a partition, extension of a truncation).
+Staging is what turns ``infinitely many small steps'' into a question about the behaviour of a family as $h\downarrow 0$, and therefore into something that can be tested.
 
-Concretely, we allow two kinds of \Psix\ diagnostics:
+\subsection{Ledgers and feasibility gates (\Psix)}
+A closure claim is meaningful only relative to a ledger of nonnegative diagnostics that measure what a compression loses.
+We use two kinds:
 \begin{enumerate}
-  \item \textbf{Approximation error:} for a candidate macro quantity $Q_h(z_h)$, compare across refinement or against a reference $Q_\star$:
-  $\|Q_h-Q_{h'}\|$ or $\|Q_h-Q_\star\|$.
-  \item \textbf{Coherence defect:} residuals that measure failure of an intended algebraic constraint, such as a Leibniz defect for product structure, or a commutator/route-mismatch defect for two protocols.
+  \item \emph{approximation errors}, comparing a candidate quantity across refinement, $\|Q_h-Q_{h'}\|$, or against a reference, $\|Q_h-Q_\star\|$;
+  \item \emph{coherence defects}, measuring the failure of an intended algebraic constraint, such as a Leibniz defect for a product rule or a route mismatch between two protocols.
 \end{enumerate}
-A feasibility gate is then a monotonicity requirement of the form:
-\[
-\mathrm{Def}(h') \le \theta\,\mathrm{Def}(h)
-\quad\text{for refined }h'<h\text{ and some }\theta<1,
-\]
-or, more weakly, that $\mathrm{Def}(h)\to 0$ as $h\downarrow 0$.
+A \emph{feasibility gate} is a requirement on the ledger, either asymptotic ($\Def(h)\to 0$ as $h\downarrow 0$) or, in finite experiments, a contraction test such as $\Def(h')\le\theta\,\Def(h)$ for $h'<h$ and some $\theta<1$, together with an absolute threshold.
+A finite gate checks finitely many stages; it is evidence about the trend, not a proof of the limit.
 
-\subsection{Packaging as identification and completion (\Pfive)}
-Packaging turns a staged family into a stable object by identifying distinctions that vanish under refinement.
-There are multiple equivalent ways to express this; the engine uses the following working form.
+\subsection{Packaging as identification (\Pfive)}
+\label{subsec:packaging}
+Packaging turns a staged family into an object by identifying families whose differences vanish under refinement.
+This is the pattern of the Cauchy completion of the rationals and of identifying two difference quotients that differ by $o(1)$.
+For it to define objects at all, the identification must be an equivalence relation, and an arbitrary nonnegative defect does not guarantee that.
 
-A \emph{packaging rule} is an equivalence relation $\sim$ on families $\{z_h\}$ (or on a cofinal sequence $h_j\downarrow 0$) such that
-\[
-\{z_h\}\sim \{z'_h\}
-\quad\Longleftrightarrow\quad
-\mathrm{Def}(h;z_h,z'_h)\to 0
-\text{ as }h\downarrow 0,
-\]
-for a designated defect ledger.
-The packaged object is the equivalence class $[\{z_h\}]$.
-This is the same pattern as Cauchy completion (reals from rationals), and the same pattern as identifying two difference quotients that differ by $o(1)$ in the refinement limit.
+\begin{example}[A defect that does not package]\label{ex:nontransitive}
+On three points $a,b,c$ put $d(a,b)=d(b,c)=0$, $d(a,c)=1$, with $d$ symmetric and zero on the diagonal.
+Taking $d$ independent of the stage, ``$d$ tends to zero'' relates $a$ to $b$ and $b$ to $c$ but not $a$ to $c$.
+\end{example}
 
-The point of making \Pfive\ explicit is that many disagreements in ``what is the correct limit object?'' are disagreements about \emph{which defect ledger is permitted to vanish}.
+The missing ingredient is the triangle inequality.
+We therefore make the comparison space part of the packaging contract.
 
-\subsection{Constraints and induced macro-operators (\Ptwo, \Pone)}
-To qualify as a macro-level \emph{law}, an operator must descend to the packaged layer.
-Let $F_h:Z_h\to Z_h$ be a discrete micro-operator (update rule, local stencil, truncation transform).
-A packaged operator $F^\sharp$ is well-defined on equivalence classes only if the following holds:
-\[
-\{z_h\}\sim \{z'_h\}
-\ \Longrightarrow\
-\{F_h(z_h)\}\sim \{F_h(z'_h)\}.
-\]
-When this implication fails, one is forced into \Pone\ operator rewriting:
-modify the operator family (e.g.\ rescale by powers of $h$, add counterterms, change representation, or alter the comparison map) so that it becomes compatible with the packaging relation.
+\begin{proposition}[Packaging contract]\label{prop:packaging}
+Let $(X,d)$ be a pseudometric space. For sequences $a,b:\mathbb N\to X$ write $a\sim b$ when $d(a_n,b_n)\to 0$. Then $\sim$ is an equivalence relation.
+\end{proposition}
 
-Separately, \Ptwo\ constraints are the coherence requirements imposed at the packaged layer.
-In this paper they appear in three forms:
+\begin{proof}
+Reflexivity and symmetry follow from $d(x,x)=0$ and $d(x,y)=d(y,x)$. For transitivity, $0\le d(a_n,c_n)\le d(a_n,b_n)+d(b_n,c_n)\to 0$.
+\end{proof}
+
+\noindent In Lean this is \leanname{Closure.vanishingDistSetoid}.
+Several ledger coordinates can be combined through a joint pseudometric or as a conjunction of such relations.
+Three further points keep the contract honest.
 \begin{itemize}
-  \item algebraic coherence (e.g.\ Leibniz/product compatibility for derivatives),
-  \item symmetry/invariance constraints (e.g.\ self-dual symmetrization prototypes),
-  \item locality/translation constraints in stencil experiments.
+  \item \emph{A quotient is not a limit.} The quotient by $\sim$ of \emph{all} sequences is not a completion: bounded oscillating scalar sequences survive in $\ell^\infty/c_0$ without representing any real number. A completion requires restricting to Cauchy sequences, and convergence in an existing complete space must be proved there.
+  \item \emph{Algebra need not descend.} On unbounded scalar sequences, multiplication does not respect $\sim$: $n$ and $n+1/n$ are equivalent, but their squares differ by $2+1/n^2$. On uniformly bounded families it does, by $|ab-a'b'|\le|a|\,|b-b'|+|b'|\,|a-a'|$.
+  \item \emph{The stage dependence must be uniform.} A comparison that changes with the stage needs the same triangle-type control uniformly in the stage; naming a ledger does not supply it.
 \end{itemize}
-The closure engine is conservative: it treats these constraints as \emph{requirements for feasibility}, not as axioms of nature.
 
-\subsection{Protocol mismatch and holonomy diagnostics (\Pthree)}
-Whenever there are two reasonable routes that share input/output types, route mismatch is a computable defect.
-Abstractly, suppose two routes produce outputs $R_1(h)$ and $R_2(h)$ on a shared comparison space.
-We measure the protocol defect by a normalized mismatch
+\subsection{Descent of operators (\Pone, \Ptwo)}
+A discrete operator family $F_n$ becomes a packaged law only if equivalent inputs give equivalent outputs.
+A uniform Lipschitz estimate is a sufficient condition.
+
+\begin{proposition}[Descent contract]\label{prop:descent}
+Let $X,Y$ be pseudometric spaces and $F_n:X\to Y$ maps with $d_Y(F_n x,F_n y)\le K\,d_X(x,y)$ for all $n,x,y$, where $K\ge 0$ does not depend on $n$.
+If $d_X(a_n,b_n)\to 0$, then $d_Y(F_n a_n,F_n b_n)\to 0$. Hence $(a_n)\mapsto(F_n a_n)$ induces a map on equivalence classes.
+\end{proposition}
+
+\begin{proof}
+$0\le d_Y(F_n a_n,F_n b_n)\le K\,d_X(a_n,b_n)\to 0$.
+\end{proof}
+
+\noindent In Lean this is \leanname{Closure.stage_operator_respects_vanishing_dist}.
+The condition is sufficient, not necessary, and it genuinely fails for the operator at the heart of calculus if the comparison is chosen carelessly.
+
+\begin{example}[Difference quotients do not descend on uniform values]\label{ex:no-descent}
+Let $h_n=1/n$, $f_n(x)=h_n\sin(x/h_n)$ and $g_n=0$. Then $\|f_n-g_n\|_\infty\le h_n\to 0$, yet $\delta_{h_n}f_n(0)=\sin(1)\ne 0=\delta_{h_n}g_n(0)$.
+The Lipschitz constant of $\delta_h$ with respect to the uniform norm is of order $1/h$, so Proposition~\ref{prop:descent} does not apply.
+\end{example}
+
+The repair is a richer comparison, which is an instance of \Pone.
+If $f,g\in C^1$, the mean value theorem gives $\|\delta_h(f-g)\|_\infty\le\|f'-g'\|_\infty$ on any interior domain, so equivalence of inputs in the $C^1$ norm descends to equivalence of outputs in the $C^0$ norm.
+For an operator that maps a function algebra to itself, one works on a derivative-closed class such as polynomials or smooth functions with derivative seminorms.
+
+\subsection{Route mismatch (\Pthree)}
+When two reasonable routes $R_1(h)$ and $R_2(h)$ produce outputs on a common space, the relative mismatch~\eqref{eq:rm-generic} is a computable defect, and its decay under refinement indicates a stable regime.
+For bounded linear routes the absolute version of this defect has a clean meaning: it controls how much the direct route can amplify compared with the composite one.
+
+\begin{proposition}[Route defect bounds gain]\label{prop:route-gain}
+Let $A$, $B$, $C$ be continuous linear maps between normed spaces with $C$ and $A\circ B$ of the same type. Then
 \[
-\mathrm{RM}(h)
-\;=\;
-\frac{\|R_1(h)-R_2(h)\|}{\|R_1(h)\|+\varepsilon_0}.
+  \|C\|\;\le\;\|A\|\,\|B\|+\|C-A\circ B\|.
 \]
-A stable closure regime is indicated by decay of $\mathrm{RM}(h)$ under refinement.
-Exhibit~A-2 uses this to quantify noncommutativity under coordinate change; Exhibit~B-1 uses it to compare additive and multiplicative staged prime closures.
+For a continuous linear endomap $L$, moreover $L\circ L-L=L\circ(L-\mathrm{Id})$, so $\|L\circ L-L\|\le\|L\|\,\|L-\mathrm{Id}\|$.
+\end{proposition}
 
-A key guardrail (used throughout) is that route mismatch is a \emph{diagnostic of closure feasibility}, not a certificate of directionality or irreversibility.
+\noindent These are \leanname{Closure.route_gain_bound}, \leanname{Closure.idempotence_factorization}, and \leanname{Closure.idempotence_defect_bound}.
+Linearity matters: for $E(x)=|x|$ on $\mathbb R$ one has $E\circ E-E=0$ but $E\bigl((E-\mathrm{Id})(-1)\bigr)=2$, so the factorization fails for nonlinear maps.
+The bound concerns the absolute operator-norm defect.
+The relative diagnostic used in the exhibits is evaluated on finitely many sampled inputs; rescaling it recovers only the absolute discrepancy on those inputs, not the operator-norm defect. (For $A=B=\mathrm{Id}$ and $C=\mathrm{diag}(1,M)$ with $M>1$ on Euclidean $\mathbb R^2$, sampling only $e_1$ shows zero mismatch although $\|C-A\circ B\|=M-1$.) Applying the gain bound therefore requires a separately established operator-norm estimate, and even a zero route defect at each step does not by itself control growth over many steps.
+Above all, route mismatch is a diagnostic of closure feasibility; it does not certify a direction of time or any irreversibility.
 
-\subsection{Closure ladders as repeated packaging}
-Finally, the engine composes: once a packaged layer is stable, it becomes a new substrate for further refinement and packaging.
-This is the \SBT ``closure ladder'' viewpoint:
-reals arise by completion of rationals; calculus arises by completion of discrete difference/sum protocols under coherence constraints; geometric obstructions appear as protocol noncommutativity when patching local descriptions.
-The exhibits should be read as small, auditable instances of this repeated pattern rather than as a claim that one mechanism replaces all mathematical practice.
+\subsection{Closure ladders}
+The engine composes.
+Once a packaged layer is stable it becomes the substrate for further staging and packaging: the reals arise by completing the rationals, calculus arises by packaging difference and sum protocols under coherence constraints, and geometric obstructions appear as route dependence when local descriptions are patched together.
+The exhibits that follow are small, auditable instances of this pattern.

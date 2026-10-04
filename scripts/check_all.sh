@@ -24,11 +24,15 @@ python -m py_compile \
   experiments/stencil_flow/hunt_false_positives.py \
   scripts/extract_tex_index.py \
   scripts/make_dashboard.py \
+  scripts/make_paper_figures.py \
   scripts/tex_quality_scan.py
 
 if [ -f scripts/export_results_tex.py ]; then
   python -m py_compile scripts/export_results_tex.py
 fi
+
+python scripts/export_results_tex.py
+python scripts/make_paper_figures.py
 
 if command -v latexmk >/dev/null 2>&1 || command -v pdflatex >/dev/null 2>&1; then
   bash scripts/build_math_paper.sh

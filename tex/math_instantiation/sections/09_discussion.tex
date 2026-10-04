@@ -1,61 +1,47 @@
-\section{Discussion: scope, limitations, and next steps}
+\section{Discussion}
 \label{sec:discussion}
 
-\subsection{What this draft establishes}
-This paper contributes a mathematics instantiation of the \SBT dictionary of \cite{SixBirdsFramework} with three deliverables:
-\begin{itemize}
-  \item a \emph{formal vocabulary} for mathematics-as-closure (Section~\ref{sec:dictionary} and Section~\ref{sec:packaging-engine}),
-  \item \emph{machine-checked anchors} (Lean) and falsification-first diagnostics (Python) that can fail,
-  \item an \emph{artifact contract} that ties reported numbers in the PDF to snapshot-visible pointers in the repository (Section~\ref{sec:reproducibility}).
-\end{itemize}
-The exhibits are intended to be small but sharp: they illustrate how SBT-style feasibility pressure (staging + ledger + packaging + constraints) can be expressed in ordinary mathematical workflows.
+\subsection{What is established}
+The paper offers three things.
+First, a vocabulary for treating mathematical constructions as closures (Sections~\ref{sec:dictionary} and~\ref{sec:packaging-engine}), with the two contracts that make the vocabulary precise: packaging needs a genuine pseudometric, and an operator becomes a packaged law only if it respects the packaging.
+Second, machine-checked anchors that pin the calculus exhibit to exact statements: the finite-difference product rule, the limit bridge to the Leibniz rule, the classification of polynomial derivations, and the packaging, descent, and linear route bounds.
+Third, numerical diagnostics that were able to fail, together with the controls that make their outcomes interpretable: a matched population for the stencil experiment, null charts and truth checks for the route comparisons, a proof for the prime control regime, and a classical theorem for the endpoint of the positivity toy.
 
-\subsection{Limitations and guardrails}
-Several limitations are deliberate and should be understood as guardrails rather than omissions.
-
+\subsection{Limits of the claims}
 \paragraph{Diagnostics are not theorems.}
-The Python experiments are designed as feasibility stress tests, not as proofs of uniqueness.
-For example, the stencil-selection results support the claim that adding a Leibniz-defect gate selects derivative-like operators under the tested conditions, but they do not rule out exotic behaviors outside those conditions.
+The stencil experiment shows that, in a fixed population of $\StencilMatchedTotal$ normalized stencils, the Leibniz gate keeps exactly the first-derivative ones, and it explains why through the limiting defects.
+It is not a classification of all local operators, and the false-positive search is sampled, not exhaustive.
+Fitted exponents, such as $p\approx\HolonomyExponent$ for the coordinate change, summarize a few grids and are not asymptotic orders.
 
-\paragraph{Prime closure results are baseline, not analytic continuation.}
-Exhibit~B-1 separates a convergence control regime from the critical strip and reports catastrophic mismatch for naive staging in the strip.
-This is consistent with classical domain-of-convergence facts; it does not establish new results about $\zeta$ and should not be read as evidence for conjectures about its zeros.
+\paragraph{Prime closures are a baseline, not a continuation.}
+In the region $\Re(s)>1$ the diagnostics confirm what Proposition~\ref{prop:prime-control} proves.
+In the strip they document that naive staging fails, for reasons that are already classical, and they say nothing about the zeros of $\zeta$.
 
-\paragraph{Positivity toy is a motif demonstration.}
-The passivity toy illustrates a pattern---tightening a positivity constraint can confine zeros to a symmetry locus---but it does not claim generality.
-Its role is motivational: it shows why ``zero confinement to a self-dual manifold'' naturally invites positivity/passivity ledgers.
+\paragraph{The positivity toy is a motif.}
+Its endpoint is the Lee--Yang theorem; its intermediate trend is one sampled system.
+The sign constraint it uses is not a general passivity condition.
 
-\paragraph{SBT is used as a dictionary, not a replacement foundation.}
-This paper does not propose new axioms or attempt to subsume all of mathematics under one formalism.
-Instead it makes explicit a set of closure roles that are already present (often implicitly) in mathematical practice.
+\paragraph{The dictionary is adopted.}
+The six roles organize constructions that are already present in mathematical practice.
+They do not supply the comparison spaces, Cauchy conditions, or descent estimates; those must be proved in each case, as Sections~\ref{sec:packaging-engine} and~\ref{sec:exhibit-calculus} do for the calculus exhibit.
 
-\subsection{Upgrade points}
-The exhibits suggest concrete upgrade paths if one wishes to strengthen claims.
+\subsection{Next steps}
+\paragraph{Analytic closure.}
+The calculus exhibit could replace its finite gates with classical consistency and stability hypotheses, and state the regularity classes under which each ledger term vanishes.
+The coordinate-change exhibit could connect its observed decay to truncation-order estimates for the interpolation and differencing steps.
 
-\paragraph{Stronger analytical closure claims.}
-For calculus, one can replace heuristic feasibility gates with classical stability/consistency hypotheses from numerical analysis, and explicitly state the regularity classes under which the ledger terms vanish.
-For protocol mismatch, one can connect the observed scaling to known truncation-order estimates.
+\paragraph{Prime ledgers that are valid in the strip.}
+A natural next protocol uses the approximate functional equation as an additive staging that is valid in the critical strip, compared against smoothed prime-sum or logarithmic-derivative ledgers in regimes where they are controlled \cite{Titchmarsh1986}.
+The present exhibit is the baseline against which such a scheme would be measured.
 
-\paragraph{Richer prime closure ledgers.}
-Exhibit~B-1 uses deliberately simple staging and packaging.
-For $\zeta(s)$ in the critical strip, a natural upgrade is to use the approximate functional equation as an additive staged protocol (valid in the strip) and to compare against smoothed prime-sum / log-derivative ledgers in regimes where such representations are controlled \cite{Titchmarsh1986}.
-More informative ledgers could compare additional invariants (e.g.\ log-derivative statistics), incorporate smoothing optimized for convergence acceleration, or restrict to regimes where the protocols admit controlled continuation.
-The present draft should be treated as a baseline diagnostic that clarifies what fails without additional structure.
+\paragraph{Formalization.}
+The quotient-valued derivation of Proposition~\ref{prop:quotient-derivation} and the convergence argument of Proposition~\ref{prop:prime-control} are short and standard, and both are natural candidates for mechanization alongside the existing bridges.
 
-\paragraph{Formalization interface improvements.}
-The Lean anchors are intentionally minimal.
-Future versions can add small ``glue lemmas'' that align the informal narrative even more tightly with the formal objects (without attempting to formalize all of analysis in a proof assistant).
-
-\subsection{Why the closure lens is still useful}
-Even at this modest level, the closure lens supplies two pragmatic benefits.
-
-First, it separates \emph{definitions} from \emph{feasibility}.
-A packaged object is not merely a symbolic completion; it is a completion that is stable under refinement and compatible with chosen constraints.
-
-Second, it encourages controlled comparisons.
-The same route-mismatch and defect-ledger ideas can be applied to other mathematical packaging problems (measure and integration, functional analysis limits, geometric patching, spectral constructions), where it is otherwise easy to conflate ``a formula exists'' with ``a stable closure exists.''
+\subsection{Why the closure lens helps}
+Even at this modest scale, the closure lens separates two questions that are easy to conflate: whether a formula for a limit object exists, and whether the staged protocol behind it is stable under refinement and compatible with the operations one wants to perform on it.
+The same ledger, packaging, and route-mismatch ideas apply to measure and integration, to limits in functional analysis, to the patching of local descriptions in geometry, and to spectral constructions.
 
 \subsection{Closing}
-The slogan ``To Count a Stone with Six Birds'' is literal in this instantiation:
-counting is a staged discrete protocol; calculus is the stable compression of that protocol under an accounting ledger; and higher layers arise by repeating packaging with new constraints and new mismatch diagnostics.
-The intent of the paper is to make those roles explicit, auditable, and reusable.
+The slogan ``to count a stone with six birds'' is meant literally.
+Counting is a staged discrete protocol; calculus is a stable compression of that protocol under an accounting ledger; and higher layers arise by repeating the packaging with new constraints and new mismatch diagnostics.
+The aim of the paper is to make those roles explicit, auditable, and reusable.

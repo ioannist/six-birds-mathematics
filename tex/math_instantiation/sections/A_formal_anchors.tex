@@ -1,0 +1,37 @@
+\section{Formal anchors in Lean}
+\label{app:formal}
+
+Table~\ref{tab:lean} lists the $\LeanExportCount$ declarations exported by \path{lean/Main.lean}.
+For each, the review pipeline prints the transitive axioms with \texttt{\#print axioms} and checks that they are among \texttt{propext}, \texttt{Classical.choice}, and \texttt{Quot.sound}; no declaration depends on \texttt{sorryAx} or on a custom axiom.
+The hypotheses visible in each statement are part of the claim: the limit bridge consumes convergence of the factor quotients, the packaging statement consumes a pseudometric, and the descent statement consumes a uniform Lipschitz bound.
+None of the numerical experiments is formalized.
+
+\begin{table}[htbp]
+\caption{Exported Lean declarations and what they state. Files are under \texttt{lean/}.}
+\label{tab:lean}
+\small
+\begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}p{0.42\linewidth}>{\raggedright\arraybackslash}X}
+\toprule
+Declaration & Statement \\
+\midrule
+\multicolumn{2}{l}{\emph{Finite differences} (\path{Diff/FiniteDifference.lean})} \\
+\leanname{Diff.delta_mul_leibniz} & Over a field $F$ with $h\ne 0$: exact product rule with remainder (Lemma~\ref{lem:finite-diff-leibniz}). \\
+\leanname{Diff.delta_add}, \leanname{Diff.delta_const_mul}, \leanname{Diff.delta_const} & $\delta_h$ is additive and homogeneous, and kills constants. \\
+\leanname{Diff.tendsto_delta_mul} & Over $\mathbb R$: convergent factor quotients along a filter with $h_i\to 0$, $h_i\ne 0$ eventually, force the product quotient to converge to $a\,g(x)+f(x)\,b$. \\
+\leanname{Diff.leibniz_of_tendsto_delta} & Along a nontrivial filter, any limit of the product quotient equals that value (Proposition~\ref{prop:limit-bridge}). \\
+\midrule
+\multicolumn{2}{l}{\emph{Polynomial derivations} (\path{Derivations/Polynomial.lean})} \\
+\leanname{Derivations.derivation_ext_X} & For a commutative semiring $R$: two derivations of $R[X]$ agreeing on $X$ are equal. \\
+\leanname{Derivations.polynomialDerivationEquiv} & $\mathrm{Der}_R(R[X],R[X])\simeq_R R[X]$, from mathlib's equivalence. \\
+\leanname{Derivations.polynomialDerivationEquiv_apply_X}, \leanname{Derivations.polynomialDerivationEquiv_symm_apply_X} & The equivalence is evaluation at $X$, and its inverse sends $p$ to a derivation with value $p$ at $X$. \\
+\leanname{Derivations.polynomialDerivationEquiv_symm_apply} & The inverse is $q\mapsto p\,q'$. \\
+\leanname{Derivations.derivation_eq_derivative_of_X_eq_one} & $D(X)=1$ implies $D$ is the formal derivative (Theorem~\ref{thm:derivation-determined-by-X}). \\
+\midrule
+\multicolumn{2}{l}{\emph{Packaging, descent, and routes} (\path{Closure/})} \\
+\leanname{Closure.vanishingDistSetoid} & Vanishing pseudometric distance between sequences is an equivalence relation (Proposition~\ref{prop:packaging}). \\
+\leanname{Closure.stage_operator_respects_vanishing_dist} & Uniformly Lipschitz stage operators preserve it (Proposition~\ref{prop:descent}). \\
+\leanname{Closure.route_gain_bound} & $\|C\|\le\|A\|\,\|B\|+\|C-A\circ B\|$ for continuous linear maps. \\
+\leanname{Closure.idempotence_factorization}, \leanname{Closure.idempotence_defect_bound} & $L\circ L-L=L\circ(L-\mathrm{Id})$ and $\|L\circ L-L\|\le\|L\|\,\|L-\mathrm{Id}\|$ for a continuous linear $L$ (Proposition~\ref{prop:route-gain}). \\
+\bottomrule
+\end{tabularx}
+\end{table}

@@ -1,80 +1,75 @@
-\section{Exhibit B-2: passivity toy (positivity ledger and zero confinement)}
+\section{A positivity toy: interaction signs and zero confinement}
 \label{sec:exhibit-passivity}
 
-A recurring \SBT motif is that the most rigidifying feasibility conditions are often \emph{positivity} conditions.
-In physics, passivity/positivity constraints strongly restrict the analytic structure of response functions \cite{Willems1972II}.
-In mathematics, many ``stability'' and ``no-gain'' requirements appear as nonnegativity of quadratic forms, positive-definite kernels, or positivity of coefficients in generating functions.
-This exhibit provides a deliberately simple toy instantiation of that motif:
-as a positivity constraint is tightened, zeros (defects) are increasingly confined to a symmetry locus.
+A recurring motif in the framework is that the most rigidifying feasibility conditions are positivity conditions.
+In physics, passivity constraints strongly restrict the analytic structure of response functions \cite{Willems1972II}; in mathematics, stability requirements often take the form of nonnegative quadratic forms, positive-definite kernels, or sign conditions on coefficients.
+This exhibit gives a small, exactly understood instance: as a sign constraint on interactions is tightened, the zeros of a partition polynomial move onto a symmetry locus.
 
-\subsection{Self-duality and a symmetry locus}
-We consider a family of polynomials
+\subsection{The polynomial and its symmetries}
+Take $n=\PassivityN$ spins $\sigma_i\in\{-1,1\}$ on a cycle with edge couplings $J_e$ and inverse temperature $\beta=\PassivityBeta$, and let
 \[
-Z_\lambda(z) \;=\; \sum_{k=0}^{n} a_k(\lambda)\,z^k
+  Z(z)\;=\;\sum_{\sigma\in\{-1,1\}^n}\exp\Bigl(\beta\sum_{e=\{i,j\}}J_e\,\sigma_i\sigma_j\Bigr)\,z^{\#\{i:\ \sigma_i=-1\}}\;=\;\sum_{k=0}^{n}a_k z^k,
 \]
-constructed from a finite Ising-style partition sum (implemented by direct enumeration for $n=\PassivityN$ in the recorded run).
-A key structural feature is a built-in self-duality symmetry:
-we enforce palindromic coefficients by symmetrization,
-\[
-a_k(\lambda)\leftarrow \tfrac12\bigl(a_k(\lambda)+a_{n-k}(\lambda)\bigr),
-\]
-which makes $Z_\lambda$ invariant (up to the trivial $z^n$ factor) under inversion $z\leftrightarrow 1/z$.
-Consequently, zeros occur in reciprocal pairs.
-The fixed locus of this symmetry is the unit circle $|z|=1$, which we treat as the \emph{symmetry axis} (or symmetry manifold) for the toy.
+computed by direct enumeration.
+Every coefficient $a_k$ is positive, whatever the signs of the $J_e$.
+Reversing all spins leaves the interaction energy unchanged and exchanges $k$ with $n-k$, so $a_k=a_{n-k}$: the polynomial is palindromic as a matter of mathematics.
+(The computation symmetrizes the coefficients numerically, which only removes floating-point summation asymmetry.)
 
-In \SBT language, inversion symmetry is a \Ptwo\ constraint, while palindromization is a \Pone\ operator rewrite that makes the constraint manifest at the packaged level.
+A real palindromic polynomial has its roots closed under $z\mapsto 1/z$ and under complex conjugation, hence under the combined anti-involution $z\mapsto 1/\bar z$.
+The fixed-point set of that anti-involution is the unit circle $|z|=1$, which is the natural symmetry locus.
+(The inversion $z\mapsto 1/z$ alone fixes only $\pm 1$.)
+Neither symmetry forces the roots onto the circle, and neither does positivity of the coefficients: $1+3z+z^2$ is real, palindromic, and positive, yet its two roots are real, negative, and off the circle.
 
-\subsection{Positivity as a feasibility ledger}
-The toy feasibility constraint is a one-parameter ``positivity tightening'' of couplings.
-We sample a set of edge couplings $J_e$ (both signs), and define a clipped family
+\subsection{The feasibility parameter}
+The couplings are drawn independently from a normal distribution with mean $0$ and standard deviation $\PassivityJScale$ (seed $0$), so they have mixed signs.
+We tighten their signs with the clipped family
 \[
-J_e(\lambda) \;=\; \max(J_e,0) + \lambda\,\min(J_e,0),
-\qquad \lambda\in[0,1].
+  J_e(\lambda)=\max(J_e,0)+\lambda\min(J_e,0),\qquad\lambda\in[0,1],
 \]
-Thus $\lambda=1$ is the original mixed-sign instance, while $\lambda=0$ is a purely nonnegative (ferromagnetic) instance.
-This is a minimal model of a passivity/positivity ledger: tightening $\lambda\downarrow 0$ removes ``gain-like'' sign structure.
+so that $\lambda=1$ is the original mixed-sign system and $\lambda=0$ removes every negative interaction.
+This is an interaction-sign constraint; it is not a frequency-domain passivity condition, and we use ``positivity'' in that narrow sense.
 
-\subsection{Defects as zeros and a confinement metric}
-We compute all complex zeros of $Z_\lambda$ and quantify confinement to the symmetry locus by the radial deviation
-\[
-d_i(\lambda) := \bigl||z_i(\lambda)|-1\bigr|,
-\]
-summarized by
-\[
-\mathrm{mean\_dev}(\lambda)=\frac1n\sum_i d_i(\lambda),
-\qquad
-\mathrm{max\_dev}(\lambda)=\max_i d_i(\lambda).
-\]
-These play the role of \Psix\ accounting diagnostics: they measure how strongly the defect set (zeros) respects the symmetry locus.
+At the endpoint the zeros are located by a classical theorem.
+For $\beta\ge 0$ all effective couplings $\beta J_e(0)$ are nonnegative, and the Lee--Yang circle theorem \cite{LeeYang1952} applies to this finite ferromagnetic Ising polynomial, including zero couplings and disconnected components: every zero of $Z_0$ lies on $|z|=1$.
+This is an imported theorem, not a numerical discovery.
 
-Table~\ref{tab:passivity} reports the confinement metrics across $\lambda$.
-In the recorded run, tightening positivity produces a dramatic confinement effect:
+A two-spin system shows the mechanism in closed form.
+With one edge and $K=\beta J$, the polynomial is, up to a positive factor,
 \[
-\mathrm{mean\_dev}(1) \approx \PassivityMeanDevLamOne,
-\qquad
-\mathrm{mean\_dev}(0) \approx \PassivityMeanDevLamZero,
+  z^2+2e^{-2K}z+1 .
 \]
-so the feasible ($\lambda\to 0$) regime concentrates zeros extremely close to $|z|=1$.
+If $K\ge 0$ the middle coefficient lies in $(0,2]$, the roots are complex conjugates with product $1$, and both lie on the unit circle.
+If $K<0$ the middle coefficient exceeds $2$, and the roots are two negative reals with product $1$, one inside and one outside the circle.
+Shrinking a negative coupling toward zero moves the coefficient toward $2$ and the roots toward $-1$.
+This exact example supplies the motif that tightening the sign constraint \emph{can} confine zeros; no monotonicity theorem for arbitrary graphs is claimed.
+
+\subsection{Measurement}
+We compute all zeros of $Z_\lambda$ and measure their radial deviations $d_i=\bigl||z_i|-1\bigr|$, summarized by $\mathrm{mean\_dev}(\lambda)=\frac1n\sum_id_i$ and $\mathrm{max\_dev}(\lambda)=\max_id_i$.
+The computation respects the structure of the problem.
+Partition functions of disjoint subsystems multiply, so we factor $Z_\lambda$ over the connected components of the graph of nonzero couplings, with edges removed only when a coupling is exactly zero, and find the roots of each factor separately.
+An isolated spin contributes exactly $1+z$.
+Every component factor is palindromic, and a palindromic polynomial of odd degree has $-1$ as a root.
+At $\lambda=0$ the components have degrees $\PassivityComponentsLamZero$, so $z=-1$ is a root of multiplicity four: one from each of the two cubic factors and one from each of the two isolated spins.
+Finding the roots of the full degree-$12$ polynomial instead would split that fourfold root numerically and report spurious deviations of order $10^{-4}$; a small backward residual of the computed roots does not control the forward position of a repeated root.
+
+\subsection{Results}
+Table~\ref{tab:passivity} and Figure~\ref{fig:passivity-toy} show the outcome.
+The mean deviation decreases at every sampled step, from $\PassivityMeanDevLamOne$ at $\lambda=1$ (where the largest deviation is $\PassivityMaxDevLamOne$) to $\PassivityMeanDevLamZero$ at $\lambda=0$, which is floating-point rounding: at the endpoint every zero is on the circle, as the Lee--Yang theorem requires.
+As an independent check, the zeros at $\lambda=1$ and $\lambda=0$ were recomputed at $\PassivityCheckDPS$ digits with a separate enumeration and component decomposition.
+The largest distance between matched roots is $\PassivityMatchLamOne$ at $\lambda=1$ and $\PassivityMatchLamZero$ at $\lambda=0$.
+This high-precision computation is a consistency check, not an interval certificate; the endpoint statement rests on the theorem.
 
 \input{generated/passivity_table}
 
-\begin{figure}[H]
+\begin{figure}[htbp]
 \centering
-\includegraphics[width=0.75\linewidth]{passivity_toy_last_run.png}%
-\caption{Passivity toy: zeros of a self-dual polynomial family under positivity tightening. The symmetry locus is the unit circle $|z|=1$. As the clipping parameter $\lambda$ decreases toward the nonnegative (ferromagnetic) regime, the zeros concentrate near the symmetry locus; Table~\ref{tab:passivity} quantifies this via radial deviation metrics.}
+\includegraphics[width=\linewidth]{fig_passivity.pdf}
+\caption{Positivity toy. (a) Zeros of $Z_\lambda$ plotted by argument and modulus, so that the unit circle is the horizontal line $|z|=1$; reciprocal pairs appear symmetric about it on the logarithmic scale. With mixed-sign couplings ($\lambda=1$) several zeros lie on the negative real axis (argument $\pi$) far from the circle; with nonnegative couplings ($\lambda=0$) all lie on it. (b) Mean and maximum radial deviation as the negative couplings are scaled to zero; the endpoint is at rounding level. Data in Table~\ref{tab:passivity}.}
 \label{fig:passivity-toy}
 \end{figure}
 
-\subsection{Interpretation and scope}
-This toy is not a theorem and does not claim to reproduce the full hypotheses of classical zero-confinement results.
-Its role is methodological: it demonstrates a recognizable \SBT pattern in a controlled setting.
-This motif has rigorous instances, most famously the Lee--Yang circle theorem for ferromagnetic Ising models \cite{LeeYang1952}; we do not invoke that theorem here.
-
-\begin{itemize}
-  \item Symmetry (\Ptwo) specifies a distinguished locus (here $|z|=1$).
-  \item Positivity/passivity acts as a feasibility constraint measured by an audit ledger (\Psix).
-  \item Under tighter feasibility, defects (zeros) become increasingly confined to the symmetry locus.
-\end{itemize}
-
-The purpose of including this exhibit in a mathematics instantiation paper is to motivate (without overclaiming) why problems like ``zero confinement to a self-dual manifold'' naturally invite passivity/positivity formulations.
-Exhibit~B-1 on prime closures shows that naive staging and packaging can fail catastrophically in the critical strip; this toy suggests what a successful closure might require in addition: a feasibility ledger strong enough to prevent defect drift away from symmetry.
+\subsection{Interpretation}
+The endpoint is a theorem and the decrease across the five sampled steps in $\lambda$ is a finite observation for one sampled system.
+The exhibit's role in this paper is to show a recognizable pattern under explicit control: a symmetry (\Ptwo) singles out a locus, a sign constraint acts as the feasibility condition, and the radial deviations of the zeros serve as the ledger (\Psix).
+It suggests why problems of confining zeros to a self-dual locus invite positivity formulations, and it complements the prime exhibit, where staging and symmetrization without any additional feasibility condition did not yield a stable closure.
+It establishes nothing about $\zeta$.

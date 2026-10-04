@@ -5,7 +5,8 @@
 \renewcommand{\ttdefault}{lmtt} % Latin Modern Typewriter (Type 1, avoids bitmap ectt)
 \renewcommand\linenumberfont{\normalfont\scriptsize\fontfamily{lmss}\selectfont} % Type 1 sans for line numbers
 
-\graphicspath{{../../figures/}{figures/}}
+\graphicspath{{../../figures/paper/}{figures/}}
+\usetikzlibrary{arrows.meta,positioning,fit,calc}
 
 % Lowercase aliases for MDPI's capitalized theorem environments
 % (mdpi.cls defines \begin{Theorem}, our sections use \begin{theorem})
@@ -14,6 +15,8 @@
 \newenvironment{definition}{\begin{Definition}}{\end{Definition}}
 \newenvironment{corollary}{\begin{Corollary}}{\end{Corollary}}
 \newenvironment{remark}{\begin{Remark}}{\end{Remark}}
+\newenvironment{proposition}{\begin{Proposition}}{\end{Proposition}}
+\newenvironment{example}{\begin{Example}}{\end{Example}}
 
 % Custom commands
 \newcommand{\SBT}{\textsc{SBT}}
@@ -23,3 +26,9 @@
 \newcommand{\Pfour}{\textbf{P4}}
 \newcommand{\Pfive}{\textbf{P5}}
 \newcommand{\Psix}{\textbf{P6}}
+
+% Notation
+\newcommand{\RM}{\mathrm{RM}}
+\newcommand{\Def}{\mathrm{Def}}
+\newcommand{\Lip}{\mathrm{Lip}}
+\newcommand{\leanname}[1]{\path{#1}}

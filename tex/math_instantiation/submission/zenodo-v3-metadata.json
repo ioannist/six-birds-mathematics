@@ -1,0 +1,78 @@
+{
+  "title": "To Count a Stone with Six Birds: A Mathematics is A Theory",
+  "description": "<p>Limits, completions, and analytic continuations are usually introduced as definitions. This paper asks an operational question instead: when does a large discrete protocol &mdash; a difference quotient, a cumulative sum, a truncated Euler product &mdash; admit a stable continuous closure, and how can that be tested without overclaiming? It instantiates <strong>Six Birds Theory</strong> as a closure-and-audit method for mathematics. A discrete object is staged by refinement, the cost of compressing it is tracked by an explicit defect ledger, and a packaged object is accepted only when the ledger is controlled under refinement and the relevant operations descend to the packaged layer.</p>\n<h3>Formal core (Lean 4 / mathlib)</h3>\n<ul>\n<li>The exact finite-difference product rule with its remainder term, over any field and nonzero step.</li>\n<li>A limit bridge: convergent factor quotients force the product quotient to converge to the Leibniz value. Bounded quotients alone do not suffice; the paper gives a counterexample and shows that they still yield a derivation with values in a quotient of bounded sequences.</li>\n<li>The classification of <em>R</em>-derivations of <em>R</em>[<em>X</em>] by their value on <em>X</em>, over any commutative semiring.</li>\n<li>The two contracts that make packaging well defined: vanishing distance in a pseudometric is an equivalence relation, and uniformly Lipschitz stage operators respect it.</li>\n</ul>\n<p>The 17 exported declarations use only Lean's three standard axioms. The bounded-quotient counterexample and the quotient-valued derivation are proved in the text and are not mechanized.</p>\n<h3>Numerical exhibits</h3>\n<ul>\n<li><strong>Calculus.</strong> In a matched population of 300 candidate stencils, a refinement-stability gate alone retains identity-like, first-derivative, and second-derivative operators (100, 100, and 81 of 100 each); adding a shrinking Leibniz defect retains only the 100 first-derivative stencils. Cumulative sums converge to each other and to exact antiderivatives at their classical rates.</li>\n<li><strong>Coordinate change.</strong> Two routes for computing a derivative after a change of variables approach each other under refinement (fitted exponent about 1.46 over four grids), with an identity-chart null control and checks against the exact derivative.</li>\n<li><strong>Primes.</strong> Additive and multiplicative staged closures of &zeta; provably converge to a common limit for Re(<em>s</em>) &gt; 1, and their route mismatch falls to 0.052 at cutoff 800 on the tested grid. On a critical-strip grid with symmetrized packaging, the same naive truncations drift apart (mismatch 5.0&times;10<sup>12</sup>).</li>\n<li><strong>Positivity.</strong> In an Ising partition polynomial, shrinking the negative couplings to zero reduces the mean distance of the zeros from the unit circle from 0.87 to rounding level; the endpoint is an instance of the Lee&ndash;Yang circle theorem.</li>\n</ul>\n<p>The diagnostics prove no new theorem about &zeta; or its zeros. Every table, data figure, and generated number is regenerated from audited artifacts in the accompanying repository.</p>\n<p><strong>Version 3</strong> follows a full mathematical review of the statements, the Lean library, and the code, and a rewrite for readability. Appendix B of the paper lists the changes.</p>",
+  "publication_date": "2026-10-04",
+  "version": "v3",
+  "keywords": [
+    "emergence calculus",
+    "Six Birds Theory",
+    "closure",
+    "audit",
+    "refinement",
+    "route mismatch",
+    "finite differences",
+    "derivations",
+    "formal verification",
+    "Lean",
+    "zeta function",
+    "Lee-Yang theorem",
+    "reproducible research"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "10.48550/arXiv.2602.00134",
+      "relation": "cites",
+      "resource_type": "publication-preprint",
+      "scheme": "doi"
+    },
+    {
+      "identifier": "978-0-521-78451-1",
+      "relation": "cites",
+      "resource_type": "publication-book",
+      "scheme": "isbn"
+    },
+    {
+      "identifier": "978-0-19-853369-6",
+      "relation": "cites",
+      "resource_type": "publication-book",
+      "scheme": "isbn"
+    },
+    {
+      "identifier": "10.1103/PhysRev.87.410",
+      "relation": "cites",
+      "resource_type": "publication-article",
+      "scheme": "doi"
+    },
+    {
+      "identifier": "https://stacks.math.columbia.edu/tag/00RM",
+      "relation": "cites",
+      "resource_type": "other",
+      "scheme": "url"
+    },
+    {
+      "identifier": "10.1007/BF00276494",
+      "relation": "cites",
+      "resource_type": "publication-article",
+      "scheme": "doi"
+    },
+    {
+      "identifier": "10.1007/978-3-030-79876-5_37",
+      "relation": "cites",
+      "resource_type": "publication-conferencepaper",
+      "scheme": "doi"
+    },
+    {
+      "identifier": "10.1145/3372885.3373824",
+      "relation": "cites",
+      "resource_type": "publication-conferencepaper",
+      "scheme": "doi"
+    },
+    {
+      "identifier": "https://github.com/ioannist/six-birds-mathematics",
+      "relation": "isSupplementedBy",
+      "resource_type": "software",
+      "scheme": "url"
+    }
+  ],
+  "notes": "Version 3 (4 October 2026). Version 1 (28 January 2026) is the first Zenodo version of this record; version 2 (February 2026) added the integration exhibit and the MDPI preprint format and was not deposited on Zenodo. Appendix B of the paper lists the version 3 changes."
+}

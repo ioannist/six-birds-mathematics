@@ -40,3 +40,22 @@ tex/**/build/
 *_snapshot_v*.zip
 *.zip
 .package-repo-snapshot-version
+
+# AI agent state, transcripts, and local settings (never commit)
+.claude/
+.codex/
+.codex_thread_id
+CLAUDE.local.md
+.cursor/
+.aider*
+.continue/
+*.transcript
+*.transcript.*
+# Local AI review log (kept out of the repository by owner decision)
+notes/paper_v3_review.md
+
+# Credentials
+.env
+.env.*
+*.pem
+*.key

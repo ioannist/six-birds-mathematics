@@ -127,9 +127,9 @@ def main() -> int:
     meta_path = out_dir / "metadata.json"
     meta_path.write_text(json.dumps(meta, indent=2))
 
-    short = title.split(":", 1)[0].strip()
-    short = re.sub(r"[^A-Za-z0-9]+", "_", short).strip("_")
-    hal_name = f"2026_Tsiokos_{short}_v1.pdf"
+    # Release name follows the six-birds-papers convention: Tsiokos_YEAR_Title_Words.pdf
+    title_words = re.sub(r"[^A-Za-z0-9]+", "_", title).strip("_")
+    hal_name = f"Tsiokos_2026_{title_words}.pdf"
     shutil.copy2(pdf_path, out_dir / hal_name)
 
     if shutil.which("pdfinfo"):

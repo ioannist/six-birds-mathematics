@@ -1,69 +1,54 @@
-\section{Exhibit A-2: protocol holonomy and route mismatch}
+\section{Route dependence under a change of coordinates}
 \label{sec:exhibit-holonomy}
 
-This exhibit instantiates \Pthree (protocol / holonomy) as a quantitative diagnostic rather than a geometric claim.
-The premise is simple: when there are multiple natural routes for constructing a packaged object from staged data, the routes need not commute at finite stage.
-The discrepancy between routes is a defect; a stable closure should make that defect shrink under refinement.
+This exhibit makes the protocol role (\Pthree) quantitative.
+When there are two natural routes from staged data to a packaged object, the routes need not agree at finite resolution.
+Their disagreement is a defect, and a stable closure should make it shrink under refinement.
 
-\subsection{Two routes under coordinate change}
-We consider a small coordinate change (a ``chart'' perturbation)
+\subsection{Two routes to one derivative}
+Let $g(y)=\sin(2\pi y)+0.1\cos(6\pi y)+e^{-y}$ and consider the change of coordinates
 \[
-\varphi(x) \;=\; x + \varepsilon x^2,
-\qquad \varepsilon\ \text{small},
+  y=\varphi(x)=x+\varepsilon x^2,\qquad x\in[0,1],\quad\varepsilon=\HolonomyEps .
 \]
-and study a discrete derivative approximation at step size $h$.
-
-There are (at least) two natural routes:
+The map is a valid chart, with $\varphi'>0$ on $[0,1]$, whenever $\varepsilon>-1/2$.
+Both routes below estimate the same quantity, $g'(\varphi(x))$, at the same interior points $x$ of a grid with step $h$:
 \begin{enumerate}
-  \item \textbf{Route A (refine then differentiate then pull back).}
-  Refine the sampled data, apply the discrete derivative in the target coordinate, then interpolate/pull back the result along $\varphi$.
-  \item \textbf{Route B (pull back then refine then differentiate).}
-  Pull back the sampled data along $\varphi$ at coarse scale, refine in the source coordinate, apply the discrete derivative, and convert by the chain rule factor $(\varphi')^{-1}$.
+  \item \emph{Route A (differentiate in the target, then pull back).} Sample $g$ on a uniform $y$-grid with step $h$ that covers the whole image $\varphi([0,1])$, refine it to step $h/2$ by linear interpolation, take central differences, and interpolate the result at the points $\varphi(x)$.
+  \item \emph{Route B (pull back, then differentiate in the source).} Interpolate the same samples to obtain $g\circ\varphi$ on the $x$-grid, refine to step $h/2$, take central differences in $x$, divide by $\varphi'(x)$ (the chain rule), and interpolate back to the evaluation points.
 \end{enumerate}
-At finite $h$, these routes generally disagree because interpolation, refinement, and discrete differentiation do not strictly commute.
+At finite $h$ the two routes differ because interpolation, refinement, and differencing do not commute.
 
-\subsection{Route mismatch as a defect ledger}
-In the \SBT dictionary, the existence of multiple admissible routes is \Pthree, while the numerical discrepancy between them is tracked by \Psix\ accounting.
-We quantify the mismatch by a normalized route-mismatch statistic
+\subsection{Diagnostic}
+We measure the relative route mismatch~\eqref{eq:rm-generic},
 \begin{equation}\label{eq:rm-def}
-\mathrm{RM}(h)
-\;:=\;
-\frac{\|R_A(h)-R_B(h)\|}{\|R_A(h)\|+\varepsilon_0},
+  \RM(h)\;=\;\frac{\|R_A(h)-R_B(h)\|_2}{\|R_A(h)\|_2+\varepsilon_0},\qquad \varepsilon_0=10^{-12},
 \end{equation}
-where $R_A(h),R_B(h)$ are the route outputs on a shared comparison grid, $\|\cdot\|$ is an $\ell^2$ norm over evaluation points, and $\varepsilon_0>0$ is a small stabilizer.
+over the common evaluation points, on grids with $N=1/h\in\HolonomyNList$.
+Two controls accompany it.
+With the identity chart ($\varepsilon=0$) the routes coincide exactly, and the measured mismatch is $\HolonomyNullRMMax$ on every grid, which confirms that the comparison is aligned.
+And because mutual agreement does not show that either route is correct, we also measure each route's RMS error against the exact value $g'(\varphi(x))$.
 
-A stable closure regime is indicated by \emph{decay} of $\mathrm{RM}(h)$ as $h\downarrow 0$.
-Conversely, persistent or growing mismatch is evidence that the proposed packaging (or protocol family) is not yet feasible at the tested scales.
-
-\subsection{Observed scaling under refinement}
-In the recorded run, $\mathrm{RM}(h)$ decreases with refinement and is well fit by a power law
-\[
-\mathrm{RM}(h) \approx C\,h^{p}.
-\]
-The fitted exponent is
-\[
-p \;=\; \HolonomyExponent,
-\]
-where $\HolonomyExponent$ is imported from the repository artifacts (generated TeX macros).
-Table~\ref{tab:holonomy} lists the measured values and Figure~\ref{fig:holonomy-rm} shows the decay trend.
-
-As a null calibration, setting $\varepsilon=0$ (identity coordinate map) yields route mismatch at or below \HolonomyNullRMMax\ on the tested grids, confirming that the reported decay is not an interpolation bookkeeping artifact.
-The log--log slope summary is reported together with the fit quality $R^2=\HolonomyFitRtwo$ and should be interpreted as a coarse scaling diagnostic rather than a precise convergence order.
+\subsection{Results}
+The mismatch decreases monotonically, from $4.76\times 10^{-3}$ at $N=64$ to $\HolonomyRMFinest$ at $N=512$ (Table~\ref{tab:holonomy}, Figure~\ref{fig:holonomy}).
+A least-squares fit of $\log\RM$ against $\log h$ over the four grids gives slope $p=\HolonomyExponent$ with $R^2=\HolonomyFitRtwo$.
+Both routes also converge to the exact derivative.
 
 \input{generated/holonomy_table}
 
 \begin{figure}[htbp]
-  \centering
-  \includegraphics[width=0.85\linewidth]{holonomy_rm_last_run.png}
-  \caption{Route mismatch under coordinate change: $\mathrm{RM}(h)$ versus step size $h$ for two noncommuting refinement routes (Equation~\ref{eq:rm-def}). The mismatch decays under refinement; the fitted exponent reported in the text is sourced from the generated macro $\HolonomyExponent$.}
-  \label{fig:holonomy-rm}
+\centering
+\includegraphics[width=0.92\linewidth]{fig_holonomy.pdf}
+\caption{Coordinate-change diagnostic (log--log). The relative mismatch between the two routes (circles; dashed line, least-squares fit) decreases under refinement, and each route approaches the exact derivative $g'(\varphi(x))$. The identity chart gives zero mismatch on every grid and is not shown on the logarithmic axis. Data in Table~\ref{tab:holonomy}.}
+\label{fig:holonomy}
 \end{figure}
 
-\subsection{Guardrail: holonomy is not directionality}
-A crucial framework guardrail is that \emph{holonomy does not by itself certify directionality}.
-In this instantiation, $\mathrm{RM}(h)$ is a measure of \emph{route dependence} (a \Pthree\ phenomenon) and its decay is a \emph{feasibility signal} (tracked by \Psix).
-None of this implies an ``arrow of time'' or a monotone irreversible ordering on states.
-It only says: given a staged protocol family and a proposed packaging rule, the protocol routes become increasingly compatible as resolution increases.
+\subsection{Interpretation}
+The fitted exponent is a four-point summary of a finite-grid trend, not an asymptotic convergence order.
+For a smooth $g$, piecewise-linear interpolation already guarantees a first-order error bound away from the boundary; the observed decay is faster than that on these grids, but nothing here establishes a universal rate.
+Nor does the zero mismatch of the identity chart prove that every effect of nonlinear interpolation has been removed: route dependence is precisely what is being measured.
 
-In later mathematical instantiations (e.g.\ differential geometry), true holonomy is tied to curvature and obstruction-to-patching phenomena.
-Here we remain at the diagnostic level: route mismatch is a computable defect that should shrink in stable regimes, and can therefore be used to stress-test closure claims.
+What the exhibit does establish is the shape of a \Pthree\ audit.
+Two admissible routes are made to estimate the same quantity at the same points, a null control calibrates the comparison, a truth check guards against two routes agreeing on a wrong answer, and the mismatch is tracked under refinement.
+In differential geometry, genuine holonomy is tied to curvature and to obstructions to patching local descriptions; nothing of that kind is claimed here.
+A decaying route mismatch says only that, for this staged protocol, the two routes become compatible as resolution increases.
+It implies no direction of time and no irreversible ordering of states.

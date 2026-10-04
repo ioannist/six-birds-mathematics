@@ -36,7 +36,7 @@
       "python/tests/test_math_review.py": "b9dc19bd091c20be7a54f446fdcd569c351292171ab3af5af362a1dd8f0ca2b5",
       "python/tests/test_sanity.py": "cfcf7c40f1fae8aec3b006eebd65926df5ea36d8e5354a2bdbb1463ba66da47a",
       "scripts/audit_math.py": "ae089817a425657d082483053d6093c8586bc521b7cd69b3f3605c157f43026c",
-      "scripts/check_all.sh": "139d54f69bcde6d9ad1d4bd10a57f10d27ef4614144735268c597a367ec76d98",
+      "scripts/check_all.sh": "38096856083f7120077030ddfb2349ab3c73cdf3a5f39f63844f75f9ccbf2429",
       "scripts/check_math.sh": "af14db23507072c4a3308868fcf7e6bd2ac61e76a3877a8451f6812adab1de78"
     }
   },

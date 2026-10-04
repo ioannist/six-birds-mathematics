@@ -1,75 +1,71 @@
-\section{\SBT dictionary for mathematical closures}
+\section{The Six Birds dictionary for mathematical closures}
 \label{sec:dictionary}
 
-This section adapts the minimal working dictionary from the Six-Birds framework \cite{SixBirdsFramework} into a mathematical setting.
-We use it as a naming convention for the rest of the paper: each ``bird'' names a role that must be handled explicitly when a discrete protocol is compressed into a stable macro-level law.
+The Six Birds framework \cite{SixBirdsFramework} names six roles that recur whenever a detailed description is compressed into a coarser one that is still supposed to obey laws.
+In this paper the roles are a naming convention: each one marks a piece of data that must be supplied explicitly when a discrete protocol is compressed into a stable mathematical object.
+The dictionary is adopted, not derived.
+For every exhibit we supply the carrier, the comparison, the packaging, and the audit by hand; none of them follows from the six labels, and the framework's own structural hypotheses (such as its bounded-interface assumption) are not tested by the experiments here.
 
-\subsection{Six primitives as closure mechanics}
-We follow the framework convention that the six primitives are not ``topics'' but \emph{roles} played by concrete objects in an instantiation.
-In mathematics, the relevant objects are typically families indexed by a refinement parameter (meshes, truncations, partitions), defect bounds (error terms, residual norms), quotient/completion maps, and coherence constraints (linearity, locality, invariance, compatibility with algebraic operations).
+\subsection{The six roles}
+In mathematics the objects playing these roles are usually families indexed by a refinement parameter (meshes, truncations, partitions), error terms and residual norms, quotient or completion maps, and coherence conditions such as linearity, locality, invariance, or compatibility with products.
 
-\begin{remark}[Six primitives (P1--P6), in framework language]\label{rem:six-primitives}
-Fix a space $\mathcal P$ of protocol objects (discrete descriptions) equipped with a refinement chain, modeled as a family of equivalences $\sim_j$ indexed by a stage parameter $j$ (or, in analysis notation, by a step size $h\downarrow 0$).
-Write $\Pi_j:\mathcal P\to \mathcal P/\!\sim_j$ for the quotient/packaging map.
-Then the six primitives may be read as follows:
+\begin{remark}[The six roles in mathematical form]\label{rem:six-primitives}
+Let $\mathcal P$ be a set of protocol objects (discrete descriptions), refined along a stage parameter $j$ (or a step size $h\downarrow 0$).
 \begin{enumerate}
-  \item \Pfive\ (Packaging). Each equivalence $\sim_j$ yields a quotient/packaging map $\Pi_j$ and induces an idempotent saturation on predicates/events via
+  \item \Pfive\ (Packaging). An equivalence relation $\sim$ on $\mathcal P$ identifies descriptions that should count as the same object, with quotient map $\Pi:\mathcal P\to\mathcal P/\!\sim$.
+  The map $\Pi$ changes type, so it is not itself an idempotent endomap.
+  The idempotent object is the \emph{saturation} of sets of descriptions,
   \[
-    \mathrm{cl}_j(A)\;:=\;\Pi_j^{-1}(\Pi_j(A)).
+    \mathrm{cl}(A)\;:=\;\Pi^{-1}\bigl(\Pi(A)\bigr),\qquad A\subseteq\mathcal P,
   \]
-  This is a standard closure-operator construction in order/lattice settings; see e.g.\ \cite{DaveyPriestley2002}.
-  In analytic instantiations, $\Pi_j$ is a limit/identification map (``equal up to $o(1)$ as $h\to 0$''); in algebraic instantiations it is a literal quotient by a congruence.
+  which is extensive, monotone, and idempotent, that is, a closure operator \cite{DaveyPriestley2002}.
+  A finer equivalence identifies less, so its saturation is smaller and has more fixed points.
+  In analytic instances, $\sim$ is ``equal up to a defect that vanishes under refinement'' (Section~\ref{subsec:packaging}); in algebraic instances it is a congruence.
 
-  \item \Psix\ (Accounting). The refinement order on quotients induces a preorder and monotone defect/audit quantities (e.g.\ $j\mapsto \mathrm{Def}(j)$ or $h\mapsto \mathrm{Err}(h)$).
-  In this mathematics instantiation, ``accounting'' is a feasibility ledger (error control), not a directionality certificate.
+  \item \Psix\ (Accounting). A ledger is a designated family of nonnegative diagnostics: error bounds, residual norms, route-mismatch statistics.
+  In this paper the ledger records feasibility, that is, whether the compression stays coherent under refinement; it is not an arrow-of-time certificate.
+  Refinement orders can support monotone information measures, but they do not by themselves make an approximation error decrease. Whether the ledger shrinks is something we test, never something we assume.
 
-  \item \Pfour\ (Staging). The refinement chain generates the stage index $j$ (or $h$).
-  Nontrivial staging corresponds to strict refinement at some scale (a genuine increase in resolution rather than a reparameterization).
+  \item \Pfour\ (Staging). The refinement parameter $j$ or $h$ is the stage. Staging is nontrivial when refinement genuinely increases resolution rather than merely reparametrizing.
 
-  \item \Ptwo\ (Constraints). Feasible macrostates at depth $j$ are those representable as images under $\Pi_j$.
-  Concretely, this is where invariances (translation/rotation/scale), locality, linearity, and algebra-compatibility are imposed as coherence conditions on the packaged layer.
+  \item \Ptwo\ (Constraints). Coherence conditions imposed on the packaged layer: linearity, a product rule, an invariance, or compatibility with an algebraic operation.
 
-  \item \Pone\ (Operator rewrite). Fix a micro-update or micro-operator $F:\mathcal P\to\mathcal P$.
-  The induced macro-update $F^\sharp([p]) := [F(p)]$ on $\mathcal P/\!\sim_j$ is well-defined iff
+  \item \Pone\ (Operator rewrite). A micro-operator $F:\mathcal P\to\mathcal P$ induces a packaged operator $F^\sharp([p]):=[F(p)]$ exactly when
   \[
-    p\sim_j q \ \Rightarrow\ F(p)\sim_j F(q).
+    p\sim q\ \Longrightarrow\ F(p)\sim F(q).
   \]
-  When this fails, one must either refine the lens (change $\sim_j$), modify/extend $F$ (renormalize / rescale / rewrite it), or accept that no closed macro dynamics exists at depth $j$.
+  When this fails, one must change the comparison, rescale or otherwise rewrite $F$ (for example by the factor $h^{-1}$ that turns a difference into a difference quotient), or accept that no packaged operator exists.
 
-  \item \Pthree\ (Protocol / holonomy). When there exist two admissible closure/evolution routes with the same input/output type (e.g.\ ``refine then apply'' versus ``apply then refine''), their discrepancy defines a holonomy-like diagnostic.
-  In normed instantiations we measure this by a route-mismatch quantity $\mathrm{RM}$: a number that should decay under refinement in stable regimes.
+  \item \Pthree\ (Protocol). When two admissible routes produce objects of the same type (``refine, then apply'' versus ``apply, then refine''), their discrepancy is a route-mismatch defect $\RM$. In stable regimes it should shrink under refinement.
 \end{enumerate}
 \end{remark}
 
-\subsection{``A mathematics is A theory'': porting the theory-package schema}
-The framework packages an instantiation as a \emph{theory package}: a carrier (micro) space, a lens of observation, a completion/packaging rule, and an audit/defect principle \cite{SixBirdsFramework}.
-For the mathematics instantiation we use the same shape, with ``audit'' interpreted as a nonnegative defect ledger (error and mismatch diagnostics).
+\subsection{``A mathematics is A theory''}
+The framework organizes an instantiation as a \emph{theory package}: a carrier, a lens, a completion rule, and an audit \cite{SixBirdsFramework}.
+We keep the same shape and read the audit as a defect ledger.
 
 \begin{definition}[Mathematics theory package]\label{def:math-theory-package}
-A \emph{mathematics theory package} is a tuple
-\[
-\mathcal T \;=\; (Z,\ f,\ \Sigma_f,\ E,\ \mathcal D)
-\]
-where:
+A \emph{mathematics theory package} is a tuple $\mathcal T=(Z,\ f,\ \Sigma_f,\ E,\ \mathcal D)$ where
 \begin{itemize}
-  \item $Z$ is a carrier of discrete protocol objects at a chosen stage (e.g.\ grid functions, truncated sums/products, finite compositions, Cauchy sequences of rationals).
-  \item $f:Z\to X$ is a \emph{lens} (a coarse description map). The induced definability structure $\Sigma_f$ is the family of predicates on $Z$ that are visible through $f$ (equivalently: constant on fibers of $f$).
-  \item $E:\mathcal V\to\mathcal V$ is a \emph{completion/packaging endomap} on a chosen description space $\mathcal V$ associated to $Z$ (often idempotent or approximately idempotent in a specified norm). The fixed points of $E$ are the internally complete objects recognized by the theory at the chosen scale.
-  \item $\mathcal D$ is a \emph{defect ledger}: a designated family of nonnegative diagnostics (error bounds, residual norms, route mismatch statistics) together with a monotonicity principle under refinement/coarsening. In this mathematics instantiation, $\mathcal D$ records feasibility (stability under refinement), not a thermodynamic arrow-of-time.
+  \item $Z$ is a carrier of discrete protocol objects at a chosen stage (grid functions, truncated sums or products, finite compositions, sequences of rationals);
+  \item $f:Z\to X$ is a \emph{lens}, a coarse description map, and $\Sigma_f$ is the family of predicates on $Z$ that are visible through $f$, that is, constant on the fibers of $f$;
+  \item $E:\mathcal V\to\mathcal V$ is a \emph{completion} or packaging endomap on a description space $\mathcal V$ associated with $Z$, idempotent or approximately idempotent in a stated norm, whose fixed points are the objects the package treats as complete;
+  \item $\mathcal D$ is a \emph{defect ledger}, a designated family of nonnegative diagnostics together with the behaviour required of them under refinement (typically, decay to zero along the stage parameter). That behaviour is stated as a hypothesis or tested; it is not built into the definition.
 \end{itemize}
 \end{definition}
 
-\begin{remark}[Slogan]\label{rem:math-is-theory}
-The title phrase ``A mathematics is A theory'' is used in the following technical sense:
-to introduce a stable mathematical layer is to specify (i) what discrete protocol objects are being staged, (ii) what identifications are permitted under refinement, (iii) what completion/packaging map is being used, and (iv) what defect ledger certifies that the packaged layer is coherent.
+\begin{remark}[The title phrase]\label{rem:math-is-theory}
+``A mathematics is A theory'' is meant in the following sense.
+To introduce a stable mathematical layer is to specify (i) which discrete protocol objects are staged, (ii) which identifications are permitted under refinement, (iii) which completion or packaging map is used, and (iv) which defect ledger certifies that the packaged layer is coherent.
 \end{remark}
 
-\subsection{Notation used in this instantiation}
-We use $h>0$ for a refinement parameter (mesh size / step size) and write $h\downarrow 0$ for infinite refinement; equivalently we use a depth index $j\to\infty$.
-Families of discrete objects are written with stage subscripts (e.g.\ $A_h$, $F_h$).
-A generic route mismatch diagnostic takes the form
-\[
-\mathrm{RM}(h)\;=\;\frac{\|R_1(h)-R_2(h)\|}{\|R_1(h)\|+\varepsilon},
-\]
-where $R_1,R_2$ are two admissible routes and $\varepsilon>0$ is a small stabilizer.
-In later exhibits, $\mathrm{RM}$ is instantiated as: (i) a coordinate-change mismatch for discrete derivatives, and (ii) a mismatch between two staged prime closures after prototype packaging.
+\subsection{Notation}
+We write $h>0$ for a step size and $h\downarrow 0$ for refinement; equivalently, a depth index $j\to\infty$.
+Families of discrete objects carry stage subscripts ($A_h$, $F_h$, $z_h$).
+Throughout, a route mismatch compares two routes $R_1(h)$ and $R_2(h)$ that produce outputs on a common comparison space:
+\begin{equation}\label{eq:rm-generic}
+  \RM(h)\;=\;\frac{\|R_1(h)-R_2(h)\|}{\|R_1(h)\|+\varepsilon_0},
+\end{equation}
+where $\varepsilon_0>0$ is a small constant that only guards against division by zero.
+This is a \emph{relative} diagnostic.
+Section~\ref{sec:exhibit-holonomy} instantiates it for a change of coordinates, Section~\ref{sec:exhibit-calculus} for two quadrature rules, and Section~\ref{sec:exhibit-prime} for two staged descriptions of~$\zeta$.

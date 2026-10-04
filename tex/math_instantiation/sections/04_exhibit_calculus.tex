@@ -1,186 +1,222 @@
-\section{Exhibit A-1: calculus as a stable closure}
+\section{Calculus as a stable closure}
 \label{sec:exhibit-calculus}
 
-This exhibit instantiates the \SBT closure lens in the most familiar mathematical setting:
-how the differential and integral calculus appear as the stable closure of discrete protocols under refinement.
-Our emphasis is not on definitions but on \emph{feasibility}:
-which compressions remain coherent as the stage parameter refines.
+This section applies the engine to the most familiar case: how differentiation and integration arise as stable closures of discrete protocols.
+It has three parts: an exact ledger for products (Sections~\ref{subsec:ledger}--\ref{subsec:poly}), a numerical test of whether that ledger selects derivative-like operators from a population of candidates (Section~\ref{subsec:stencils}), and the corresponding audit for sums (Section~\ref{subsec:integration}).
 
-\subsection{Discrete substrate and staging}
-Fix a step size $h>0$ and consider functions on a one-dimensional grid (or, more generally, any set with a notion of translation by $h$).
-The discrete substrate supplies:
-\begin{itemize}
-  \item a \emph{shift} operator $T_h$ defined by $(T_h f)(x)=f(x+h)$;
-  \item a \emph{difference} operator $\Delta_h := T_h-I$;
-  \item the \emph{scaled difference} (difference quotient)
-  \[
-    \delta_h f(x)\;:=\;\frac{f(x+h)-f(x)}{h},
-  \]
-  which is the simplest instance of \Pone\ operator rewriting: the $h^{-1}$ rescaling that keeps the update comparable across stages.
-\end{itemize}
+\subsection{Discrete substrate}
+Fix a step $h\ne 0$ and functions on a set where translation by $h$ makes sense (a grid, a line, or a field).
+The substrate provides the shift $(T_hf)(x)=f(x+h)$, the difference $\Delta_h=T_h-I$, and the scaled difference
+\[
+  \delta_hf(x)\;:=\;\frac{f(x+h)-f(x)}{h}.
+\]
+The factor $h^{-1}$ is the simplest operator rewrite (\Pone): without it, the difference of a smooth function vanishes as $h\to 0$ and nothing survives refinement.
+Refinement $h\to 0$ is the staging (\Pfour).
 
-In \SBT terms, $h\downarrow 0$ is \Pfour\ staging.
-Any proposed macro-law (``derivative'', ``generator'', ``flow'') is a packaged object only if its induced defect ledger remains feasible under refinement (\Psix\ accounting), and only if it respects the coherence constraints imposed at the packaged layer (\Ptwo\ constraints).
-
-\subsection{The accounting ledger: exact discrete Leibniz identity}
-At the discrete level, the difference quotient is not a derivation:
-multiplicative coherence fails by a remainder term that can be written \emph{exactly}.
-This remainder is the canonical \Psix\ ledger term for the passage from differences to derivatives.
+\subsection{The ledger: an exact product rule with remainder}
+\label{subsec:ledger}
+At finite $h$ the scaled difference is not a derivation, but its failure is exactly computable.
 
 \begin{lemma}[Finite-difference Leibniz identity]\label{lem:finite-diff-leibniz}
-Let $F$ be a field, let $h\in F$ with $h\neq 0$, and let $f,g:F\to F$.
-Define $\delta_h f(x):=(f(x+h)-f(x))/h$.
-Then for all $x\in F$,
+Let $F$ be a field, $h\in F$ with $h\ne 0$, and $f,g:F\to F$. For all $x\in F$,
 \[
-\delta_h(fg)(x)
-\;=\;
-\delta_h f(x)\, g(x)
-\;+
-\;f(x)\, \delta_h g(x)
-\;+
-\;h\,\delta_h f(x)\,\delta_h g(x).
+  \delta_h(fg)(x)\;=\;\delta_hf(x)\,g(x)\;+\;f(x)\,\delta_hg(x)\;+\;h\,\delta_hf(x)\,\delta_hg(x).
 \]
+Moreover, $\delta_h$ is linear and annihilates constants.
 \end{lemma}
 
-\begin{remark}[Machine-checked anchor]\label{rem:lean-leibniz}
-Lemma~\ref{lem:finite-diff-leibniz} is formalized in Lean/mathlib in this repository as
-\texttt{Diff.delta\_mul\_leibniz} (file \texttt{lean/Diff/FiniteDifference.lean}) \cite{moura2021lean4,mathlib2020lean}.
-\end{remark}
+\begin{proof}
+Expand $f(x+h)g(x+h)-f(x)g(x)=\bigl(f(x+h)-f(x)\bigr)g(x)+f(x)\bigl(g(x+h)-g(x)\bigr)+\bigl(f(x+h)-f(x)\bigr)\bigl(g(x+h)-g(x)\bigr)$ and divide by $h$.
+\end{proof}
 
-The key point for closure is not the identity itself but the structure of the ledger term:
+\noindent The Lean statements are \leanname{Diff.delta_mul_leibniz}, \leanname{Diff.delta_add}, \leanname{Diff.delta_const_mul}, and \leanname{Diff.delta_const}, in \path{lean/Diff/FiniteDifference.lean}.
+The identity is purely algebraic; it needs neither limits nor characteristic zero.
+
+The remainder $h\,\delta_hf\,\delta_hg$ is the ledger term (\Psix) for the passage from differences to derivatives.
+It carries an explicit factor of the stage parameter, so it vanishes as $h\to 0$ whenever the two factor quotients stay bounded.
+That observation is the heart of the closure story, but turning it into a theorem requires care about what ``the limit'' is.
+
+\subsection{From a vanishing remainder to derivations}
+\label{subsec:bridge}
+The first route identifies the packaged operator with ordinary pointwise limits.
+
+\begin{proposition}[Limit bridge]\label{prop:limit-bridge}
+Let $l$ be a filter on an index set, and let $h_i\in\mathbb R$ with $h_i\to 0$ along $l$ and $h_i\ne 0$ eventually.
+Let $f,g:\mathbb R\to\mathbb R$ and $x\in\mathbb R$, and suppose $\delta_{h_i}f(x)\to a$ and $\delta_{h_i}g(x)\to b$. Then
 \[
-\underbrace{h\,\delta_h f\,\delta_h g}_{\text{ledger term}}
+  \delta_{h_i}(fg)(x)\;\longrightarrow\;a\,g(x)+f(x)\,b .
 \]
-is explicitly proportional to the stage parameter $h$.
-Thus, in any refinement regime where $\delta_h f$ and $\delta_h g$ remain bounded (a feasibility condition measured by \Psix),
-the ledger term vanishes as $h\downarrow 0$ and multiplicative coherence emerges at the packaged layer.
+If, in addition, $l$ is nontrivial and $\delta_{h_i}(fg)(x)\to c$, then $c=a\,g(x)+f(x)\,b$.
+\end{proposition}
 
-\subsection{Packaging: quotient by vanishing defect yields derivations}
-The previous subsection suggests a general closure template.
-A discrete operator family $L_h$ (or a protocol that composes many micro-steps) is admissible as a ``law'' in the packaged layer only after specifying:
-\begin{enumerate}
-  \item a staging parameter $h$ (\Pfour);
-  \item a ledger that tracks closure defects, such as Leibniz residuals, consistency across refinement, and stability bounds (\Psix);
-  \item an identification rule ``equal up to vanishing defect as $h\downarrow 0$'' that packages families into an equivalence class (\Pfive).
-\end{enumerate}
-
-Demanding multiplicative coherence is a \Ptwo\ constraint.
-For difference quotients it is satisfied only \emph{approximately} at finite $h$ and becomes exact in the packaged limit because the ledger term in Lemma~\ref{lem:finite-diff-leibniz} vanishes.
-The packaged limit of feasible difference-quotient families therefore satisfies the Leibniz rule:
+\begin{proof}
+By Lemma~\ref{lem:finite-diff-leibniz}, eventually
 \[
-D(fg) \;=\; (Df)\,g + f\,(Dg),
+  \delta_{h_i}(fg)(x)=\delta_{h_i}f(x)\,g(x)+f(x)\,\delta_{h_i}g(x)+h_i\,\delta_{h_i}f(x)\,\delta_{h_i}g(x).
 \]
-i.e.\ it is a \emph{derivation}.
-In one dimension, further invariance/normalization choices single out the usual derivative, but the closure point is more general:
-\emph{derivations are what survives after enforcing multiplicative coherence under refinement.}
+The first two terms converge to $a\,g(x)$ and $f(x)\,b$, and the third to $0\cdot a\cdot b=0$, by continuity of addition and multiplication. Uniqueness of limits in a Hausdorff space along a nontrivial filter gives the second claim.
+\end{proof}
 
-\subsection{Algebraic uniqueness anchor on polynomials}
-The previous discussion is analytic and asymptotic.
-To anchor the ``derivation as closure fixed point'' motif in a fully algebraic setting, we use polynomial rings where derivations have a clean universal property.
+\noindent These are \leanname{Diff.tendsto_delta_mul} and \leanname{Diff.leibniz_of_tendsto_delta}.
+Two features matter.
+The convergence of the product quotient is \emph{derived}, not assumed.
+And the nontriviality hypothesis is needed for the identification: along the trivial filter every value is a limit.
 
-\begin{theorem}[Derivations on $R\lbrack X\rbrack$ are determined by $D(X)$]\label{thm:derivation-determined-by-X}
-Let $R$ be a commutative semiring and let $A:=R[X]$ be the polynomial ring.
-An $R$-derivation $D:\mathrm{Derivation}(R,A,A)$ is uniquely determined by its value on the indeterminate $X\in A$.
-Equivalently, evaluation on $X$ induces an $R$-linear equivalence
+Combined with the linearity in Lemma~\ref{lem:finite-diff-leibniz}, Proposition~\ref{prop:limit-bridge} shows that on any algebra of functions where the limits $D f(x)=\lim\delta_{h_i}f(x)$ exist, all taken along the same nontrivial filter, $D$ is linear, kills constants, and satisfies $D(fg)=(Df)g+f(Dg)$.
+The values of $D$ may lie in a different regularity class from its inputs; differentiation maps $C^1$ to $C^0$, while polynomials are closed under formal differentiation.
+A limit along one sequence of steps is also weaker than a derivative along all steps; the filter must be stated.
+
+Bounded factor quotients make the ledger term vanish, but they do not make the quotients converge.
+
+\begin{example}[A vanishing ledger without a derivative]\label{ex:bounded-not-convergent}
+Let $f(0)=0$ and $f(x)=x\sin(\log|x|)$ for $x\ne 0$. Then $\delta_hf(0)=\sin(\log|h|)$ is bounded by $1$ but has no limit as $h\to 0$. With $g=f$, the ledger term $h\sin^2(\log|h|)$ tends to $0$, yet $f'(0)$ does not exist.
+\end{example}
+
+So a shrinking ledger alone does not construct a derivative.
+It does, however, construct a derivation if the target is chosen to be the space where bounded families live.
+
+\begin{proposition}[A quotient-valued derivation]\label{prop:quotient-derivation}
+Let $A$ be the real algebra of bounded Lipschitz functions $\mathbb R\to\mathbb R$ and $B$ the Banach algebra of bounded functions with the uniform norm. Let
 \[
-\mathrm{Derivation}(R,R[X],R[X]) \;\simeq_{\ell[R]}\; R[X],
-\qquad
-D \longmapsto D(X),
+  Q\;=\;\ell^\infty(\mathbb N;B)\,/\,c_0(\mathbb N;B),
 \]
-with inverse given (schematically) by ``multiply the formal derivative by a polynomial''.
+regarded as an $A$-module through pointwise multiplication by $A$ on each term (which preserves $c_0$ because elements of $A$ are bounded).
+Fix $h_n\ne 0$ with $h_n\to 0$ and set $D(f)=[(\delta_{h_n}f)_n]\in Q$. Then $D:A\to Q$ is a well-defined $\mathbb R$-linear derivation:
+\[
+  D(fg)\;=\;D(f)\,g+f\,D(g)\qquad\text{in }Q.
+\]
+\end{proposition}
+
+\begin{proof}
+For $f\in A$, $\|\delta_{h_n}f\|_\infty\le\Lip(f)$, so the sequence lies in $\ell^\infty(\mathbb N;B)$; since $A$ is an algebra, the same holds for $fg$. Linearity follows from the exact linearity of $\delta_h$. By Lemma~\ref{lem:finite-diff-leibniz}, the difference between $\delta_{h_n}(fg)$ and $(\delta_{h_n}f)g+f(\delta_{h_n}g)$ is $h_n\,\delta_{h_n}f\,\delta_{h_n}g$, whose uniform norm is at most $|h_n|\Lip(f)\Lip(g)\to 0$. So the difference lies in $c_0(\mathbb N;B)$ and vanishes in $Q$.
+\end{proof}
+
+This is the precise sense in which ``derivations are what survives when the multiplicative ledger vanishes'': the derivation identity holds exactly, but in a quotient that does not pretend to be $\mathbb R$-valued and that need not consist of classical derivatives.
+The construction is on fixed functions in $A$; it makes no claim about descent for arbitrary families of inputs (Example~\ref{ex:no-descent}).
+Proposition~\ref{prop:quotient-derivation} is proved here and is not mechanized; its pointwise counterpart, Proposition~\ref{prop:limit-bridge}, is.
+
+\subsection{An algebraic anchor: derivations of polynomial rings}
+\label{subsec:poly}
+In a purely algebraic setting, imposing the product rule leaves remarkably little freedom.
+
+\begin{theorem}[Derivations of $R\lbrack X\rbrack$]\label{thm:derivation-determined-by-X}
+Let $R$ be a commutative semiring, and let $\mathrm{Der}_R(R[X],R[X])$ denote the $R$-derivations of $R[X]$, that is, $R$-linear maps that satisfy the product rule and annihilate the constant polynomials ($D(1)=0$, which over a general semiring does not follow from the other two conditions). Evaluation at the indeterminate,
+\[
+  \mathrm{Der}_R\bigl(R[X],R[X]\bigr)\;\xrightarrow{\ \sim\ }\;R[X],\qquad D\longmapsto D(X),
+\]
+is an $R$-linear equivalence, with inverse $p\mapsto\bigl(q\mapsto p\,q'\bigr)$, where $q'$ is the formal derivative. In particular, a derivation is determined by $D(X)$, and the derivation with $D(X)=1$ is the formal derivative.
 \end{theorem}
 
-\begin{remark}[Machine-checked anchors]\label{rem:lean-derivation-poly}
-Theorem~\ref{thm:derivation-determined-by-X} is formalized in Lean/mathlib in this repository as:
-\path{Derivations.derivation_ext_X} (uniqueness) and
-\path{Derivations.polynomialDerivationEquiv} (explicit $R$-linear equivalence),
-in file \path{lean/Derivations/Polynomial.lean}.
-The Lean type of the equivalence is
-\path{Derivation R (Polynomial R) (Polynomial R)} $\simeq_{\ell[R]}$ \path{Polynomial R}.
-The evaluation-at-$X$ interface is exposed by
-\path{Derivations.polynomialDerivationEquiv_apply_X} and
-\path{Derivations.polynomialDerivationEquiv_symm_apply_X}.
-These are re-exported/instantiated from mathlib with small glue lemmas. \cite{moura2021lean4,mathlib2020lean}
-\end{remark}
+\begin{proof}[Proof sketch]
+A derivation is $R$-linear and kills scalars. Iterating the product rule gives $D(X^n)=nX^{n-1}D(X)$, so by linearity $D(q)=q'\,D(X)$ for every polynomial $q$. Conversely, $q\mapsto p\,q'$ is a derivation for every $p$. No division and no assumption on the characteristic is needed.
+\end{proof}
 
-Classically, this computation is expressed via Kähler differentials, e.g.\ $\Omega_{R[X]/R} \cong R[X]\cdot dX$; see \cite{StacksProject00RM}.
+\noindent The Lean counterparts, in \path{lean/Derivations/Polynomial.lean}, are:
+\begin{itemize}
+  \item uniqueness: \leanname{Derivations.derivation_ext_X};
+  \item the equivalence, imported from mathlib's proved equivalence:\\ \leanname{Derivations.polynomialDerivationEquiv};
+  \item its evaluation lemmas:\\ \leanname{Derivations.polynomialDerivationEquiv_apply_X},\\ \leanname{Derivations.polynomialDerivationEquiv_symm_apply_X};
+  \item the inverse formula:\\ \leanname{Derivations.polynomialDerivationEquiv_symm_apply};
+  \item the normalized statement:\\ \leanname{Derivations.derivation_eq_derivative_of_X_eq_one}.
+\end{itemize}
+Classically this is the computation $\Omega_{R[X]/R}\cong R[X]\,dX$ of K\"ahler differentials \cite{StacksProject00RM}.
 
-For the purposes of this paper, the takeaway is structural:
-once the Leibniz rule is imposed as a coherence constraint, the space of admissible operators collapses to a small, rigid family.
-In polynomial land this rigidity is literal and exact (determined by $D(X)$);
-in analytic settings it is mediated by the defect ledger and the chosen packaging rule.
+The theorem expresses rigidity of an algebraic family of operators, not finite-dimensionality ($R[X]$ need not be finite-dimensional over $R$), and it does not classify operators on arbitrary real functions.
+In the analytic setting the same rigidity is mediated by the ledger and the packaging contract, which is what the next experiment probes.
 
-\subsection{Falsification-first diagnostics: stencil selection under feasibility}
-To complement the algebraic anchors, we implemented a numerical experiment that samples a population of candidate operators and filters them by feasibility gates.
-We sample local linear stencil operators and apply gates that instantiate \Pfour--\Psix:
-stability under refinement, decreasing route mismatch, and (optionally) decreasing multiplicative (Leibniz) defect.
+\subsection{Does the Leibniz ledger select derivatives? A matched stencil experiment}
+\label{subsec:stencils}
+We now ask a falsifiable version of the closure claim: among many local linear operators that are stable under refinement, does requiring a shrinking Leibniz defect single out the first-derivative ones?
 
-\subsection{Numerical protocol details (stencils)}
-We emphasize that the stencil experiments are \emph{diagnostics}, not a uniqueness theorem.
-A candidate local operator is a clipped-boundary stencil of half-width $m$,
+\paragraph{Candidates.}
+A candidate is a stencil of half-width $m=\StencilMatchedM$,
 \[
-  (L f)_i := \sum_{j=-m}^{m} c_j\, f_{i+j},
-  \qquad i=m,\dots,N-m-1,
+  (L_hf)_i\;=\;h^{-k}\sum_{j=-m}^{m}c_j\,f_{i+j},
 \]
-evaluated only on interior points to avoid boundary-condition artifacts.
-To compare across refinements $N,2N,4N$ (step sizes $h, h/2, h/4$), we align outputs by restricting the finer-grid interior outputs to even-index centers.
-The refinement-consistency defects $E_{01},E_{12}$ used in the feasibility gate are relative $\ell^2$ mismatches on this aligned interior, maximized over a fixed smooth test family (polynomials plus $\sin$ and $\exp$).
+applied at interior grid points only, so no boundary rule is involved.
+Each candidate has a \emph{declared} scaling order $k\in\{0,1,2\}$, fixed when it is generated, and its coefficients satisfy the moment conditions $M_p:=\sum_jj^pc_j=k!\,\delta_{pk}$ for $p=0,1,2,3$.
+For a $C^4$ function $f$, Taylor's theorem then gives $L_hf(x)=f^{(k)}(x)+O(h^{4-k})$, with a constant proportional to $\|f^{(4)}\|_\infty\sum_j|c_j|\,|j|^4$; so each candidate is consistent with $f$, $f'$, or $f''$ according to its order.
+We draw $\StencilMatchedPerOrder$ candidates of each order by projecting Gaussian coefficient vectors onto these moment conditions (seed $0$), giving a fixed population of $\StencilMatchedTotal$ stencils.
 
-The ``order'' label $k\in\{0,1,2\}$ is chosen by best-fit against analytic templates on the finest grid:
-after the renormalization $h^{-k}$ (an instance of \Pone\ operator rewriting), we select the $k$ whose output is closest (up to an overall scalar) to $f$, $f'$, or $f''$ on the test family.
+\paragraph{Gates.}
+Each candidate is applied on uniform grids $x_i=ih$ in $[0,1)$ with $N_0=\StencilMatchedNZero$, $2N_0$, and $4N_0$ points, to the test family $\{1,\,x,\,x^2,\,\sin 2\pi x,\,e^x\}$, with outputs compared at aligned interior centers.
+For consecutive grids, the refinement mismatch is $\mathrm{RMS}(\text{coarse}-\text{aligned fine})/(\mathrm{RMS}(\text{coarse})+10^{-8})$, maximized over the family; write $E_{01}$ and $E_{12}$ for its values on the first and second pair of grids. The \emph{stability gate} requires $E_{12}<E_{01}$ (or $E_{12}<10^{-8}$) and $E_{12}<0.25$, and it requires a nontrivial output: the RMS of the pooled finest-grid outputs must exceed $10^{-6}$.
+The \emph{Leibniz gate} adds a product-rule audit.
+For the pairs $(x,x^2)$, $(\sin 2\pi x,e^x)$, $(x^2,e^x)$, and $(1,e^x)$ we compute
+\[
+  \Def_{\mathrm L}\;=\;\frac{\mathrm{RMS}\bigl(L(fg)-(Lf)g-f(Lg)\bigr)}{\mathrm{RMS}\bigl(L(fg)\bigr)+\mathrm{RMS}\bigl((Lf)g\bigr)+\mathrm{RMS}\bigl(f(Lg)\bigr)+10^{-12}},
+\]
+maximized over the pairs; normalizing by all three terms avoids dividing by values near stationary points.
+Writing $\Def_0,\Def_1,\Def_2$ for its values on the three grids, the gate requires $\Def_2<\StencilMatchedDTwoMax$, $\Def_2<\StencilMatchedRatioMax\,\Def_1$, and $\Def_1<\StencilMatchedRatioMax\,\Def_0$.
+After a candidate is accepted or rejected, we record which of $f$, $f'$, $f''$ its finest-grid output fits best up to a scalar.
+This fit label is an output only; it never enters a gate.
 
-In the recorded runs, the baseline grid size is $N_0=\StencilNZero$ and the Leibniz-gated experiment uses half-width $m=\StencilMLeibniz$ with gate thresholds $D_2<\StencilGateDTwo$ and ratio gate $\mathrm{gate\_ratio}=\StencilGateRatio$.
-For standard background on finite-difference stencils, consistency, and stability, see \cite{LeVeque2007}.
+\paragraph{Result.}
+Table~\ref{tab:stencil-matched} and Figure~\ref{fig:stencil} show the outcome.
+The stability gate alone keeps $\StencilMatchedStableTotal$ of the $\StencilMatchedTotal$ candidates, spread over all three orders ($\StencilMatchedStableZero$, $\StencilMatchedStableOne$, and $\StencilMatchedStableTwo$).
+Adding the Leibniz gate keeps $\StencilMatchedLeibnizTotal$: all of the first-order stencils and none of the others.
+The best-fit label agrees with the declared order for all $\StencilMatchedLabelAgreement$ candidates.
 
-\paragraph{Disclosure of the \Pone\ step in the Leibniz-gated run.}
-In the Leibniz-gated experiment we additionally apply a moment-normalization step to candidate coefficient vectors $(c_j)$ before auditing them.
-Concretely, we project to a ``first-order'' class by enforcing the discrete moment constraints
-$\sum_j c_j=0$ and $\sum_j j\,c_j = 1$, and we optionally suppress low-order contamination by setting higher moments (e.g.\ $\sum_j j^2 c_j$, $\sum_j j^3 c_j$) near zero.
-In \SBT terms this is not the conclusion but the \emph{operator rewrite} (\Pone) that makes families comparable across scale and avoids trivial $k=0$ closures.
-The empirical point of Table~\ref{tab:stencil-leibniz} is therefore conditional:
-\emph{within the normalized first-order class, imposing a shrinking Leibniz defect selects derivative-like closures.}
+\input{generated/stencil_matched_table}
 
-Two regimes illustrate the role of constraints.
-
-\paragraph{Stability-only filtering.}
-If we impose only refinement stability/consistency without demanding multiplicative coherence, then the surviving operators overwhelmingly behave as order-$0$ closures (approximately scalar multiplication).
-In the current run, \StencilSurvivorsTotal\ out of \StencilGeneratedTotal\ sampled stencils survive under the stability gate, and the survivors are classified as best-fit order $k=0$
-(Table~\ref{tab:stencil-stability}).
-
-\paragraph{Leibniz-gated filtering.}
-If we additionally demand that the Leibniz defect improves with refinement (a direct numerical analog of Lemma~\ref{lem:finite-diff-leibniz} having a vanishing ledger term), then the surviving operators collapse to derivative-like (order-$1$) closures.
-In the current run, the Leibniz-gated filter produces \StencilLeibnizSurvivorsTotal\ survivors and all survivors are classified as best-fit order $k=1$
-(Table~\ref{tab:stencil-leibniz}).
-Figure~\ref{fig:stencil-leibniz} visualizes the selection outcome for the recorded run.
-
-These experiments do not prove uniqueness of the derivative in full generality.
-They serve as \emph{diagnostics} aligned with the \SBT program:
-when a closure is feasible, defects shrink under refinement; when it is not, defects persist or blow up.
-Here, enforcing multiplicative coherence is the decisive feasibility pressure that selects derivation-like operators from a large population of local discrete rules.
-
-% --- Auto-generated artifacts (tables/figure) ---
-\input{generated/stencil_stability_table}
-\input{generated/stencil_leibniz_table}
-\input{generated/stencil_leibniz_top_table}
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=0.5\linewidth]{stencil_flow_leibniz_last_run.png}
-  \caption{Leibniz-gated stencil selection under refinement. The gate filters local stencil operators by requiring a shrinking Leibniz defect under refinement, producing a concentrated set of derivative-like closures (see Table~\ref{tab:stencil-leibniz}).}
-  \label{fig:stencil-leibniz}
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth]{fig_stencil_matched.pdf}
+\caption{Matched stencil experiment. (a) Normalized Leibniz defect on three grids for the three declared orders (median, with the range over 100 candidates shaded). The defect of first-order stencils falls by roughly a factor of eight per halving of $h$, while identity-like and second-order stencils keep a defect that does not decay. (b) Survivors of each order under the stability gate alone (light) and with the Leibniz gate added (solid). Data in Table~\ref{tab:stencil-matched}.}
+\label{fig:stencil}
 \end{figure}
 
+The mechanism is visible in the limiting defects, independent of any fit.
+For an identity-like operator the product-rule residual tends to $fg-fg-fg=-fg$, whose normalized size is about $1/3$.
+For a second-derivative operator it tends to $(fg)''-f''g-fg''=2f'g'$, which on the pair $(x,x^2)$ gives exactly $1/2$ before the $10^{-12}$ denominator regularization.
+For a first-derivative operator the residual tends to zero, and with $M_2=M_3=0$ it decays like $h^3$.
+The Leibniz gate therefore discriminates between orders for a reason that is a theorem, not a tuning artifact.
+
+\paragraph{Why the population must be matched.}
+A tempting but unmatched comparison would contrast two different populations.
+In an unconstrained random population of $\StencilBaselineTotal$ stencils (half-widths $2$ and $3$), $\StencilBaselineSurvivors$ pass the stability gate and all of them fit order~$0$, as expected, because a generic stencil acts to leading order as multiplication by $\sum_jc_j$.
+In a population first projected onto the first-derivative moment conditions ($M_0=0$, $M_1=1$, and $M_2,M_3$ near zero), every one of the $\StencilLegacyTested$ candidates tested already fits order~$1$ before any gate, and the stability gate alone keeps the same $\StencilLegacySurvivors$ survivors as the stability and Leibniz gates together.
+Comparing these two populations would credit the Leibniz gate with a selection that the moment normalization had already made.
+The matched design holds the population fixed and varies only the gate.
+
+\paragraph{A sampled search for false positives.}
+We also searched for stencils that pass a Leibniz gate yet do not resemble any of $f$, $f'$, $f''$.
+This search uses a different, pointwise defect: for $L_hf=h^{-1}\sum_jc_jf(\cdot+jh)$, the maximum over interior points and over the three pairs $(x,x^2)$, $(\sin 2\pi x,e^x)$, $(x^2,e^x)$ of
+\[
+  \frac{|L_h(fg)-(L_hf)g-f(L_hg)|}{|L_h(fg)|+10^{-12}},
+\]
+A candidate passes if the $\ell^2$ norm of its $h^{-1}$-scaled finest-grid output exceeds $10^{-6}$ for at least one test function and the three values $\Def_0,\Def_1,\Def_2$ of this defect satisfy $\Def_2<\text{threshold}$, $\Def_2<\text{ratio}\cdot\Def_1$, and $\Def_1<\text{ratio}\cdot\Def_0$; no stability gate is applied.
+Among $\StencilHuntTested$ candidates ($\StencilHuntPerMode$ unconstrained and $\StencilHuntPerMode$ normalized to $M_0=0$, $M_1=1$), none passed the gate at thresholds $(0.10,0.75)$ for $(\Def_2,\text{ratio})$, so the search relaxed them to $(0.20,0.85)$.
+At the relaxed thresholds $\StencilHuntPassed$ candidates pass, all from the normalized population, and none has a best template-fit error above $\StencilHuntMinF$.
+This is a sampled negative result.
+It is not an exhaustive classification, and a three-grid stability test does not prove bounded operator norms on a function space.
+
 \subsection{Integration as a packaged closure of sums}
-The same closure lens applies to integration: cumulative sums are staged at grid size $h$, audited by differentiation and protocol mismatch defects, and accepted as packaged closures when those defects shrink under refinement.
-In the recorded run, the left-versus-trapezoid route mismatch at the finest grid is $\IntegrationRMAtSmallestH$, with fitted scaling exponent $\IntegrationRMExponent$ and fit quality $\IntegrationFitRtwo$.
-The fundamental-theorem defect for the trapezoid cumulative operator decays with fitted exponent $\IntegrationFTExponent$.
-(Here the reported norms are unweighted discrete $\ell^2$ norms over grid points, so pointwise $O(h)$ defects appear as $O(h^{1/2})$ in $\ell^2$.)
+\label{subsec:integration}
+The same audit applies to sums.
+On the grid $x_i=ih$ in $[0,1]$, consider the cumulative left rule $I_h(f)(x_i)=h\sum_{j<i}f_j$ and the cumulative trapezoid rule $T_h(f)(x_i)=h\sum_{j<i}(f_j+f_{j+1})/2$.
+They satisfy exact discrete identities:
+\[
+  \delta_hI_h(f)(x_i)=f_i,\qquad
+  \delta_hT_h(f)(x_i)=\tfrac12(f_i+f_{i+1}),\qquad
+  T_h(f)(x_i)-I_h(f)(x_i)=\tfrac h2\,(f_i-f_0),
+\]
+and both are exactly additive over a split of the interval.
+The left rule therefore satisfies a discrete fundamental theorem with zero defect, and its measured residual (about $\IntegrationFTLeftMax$ at most), like the additivity residuals (about $\IntegrationAddMax$ at most), is floating-point rounding.
+We do not fit power laws to such residuals.
+
+The informative diagnostics, maximized over the test family $\{\sin 2\pi x,\ e^x,\ 1,\ x,\ x^2\}$ on grids with $N\in\IntegrationNList$, are the following (Table~\ref{tab:integration}, Figure~\ref{fig:integration}).
+\begin{itemize}
+  \item \emph{Route mismatch.} The relative mismatch $\|I_h-T_h\|/(\|T_h\|+\varepsilon_0)$ falls to $\IntegrationRMAtSmallestH$ at the finest grid, with fitted slope $\IntegrationRMExponent$ in $h$. This matches the exact identity above: for a fixed nonzero antiderivative the relative mismatch is $O(h)$, since the grid-size factors of the two norms cancel.
+  \item \emph{Trapezoid fundamental theorem.} For $f\in C^1$ with $\|f'\|_\infty\le M$, the pointwise defect $|\tfrac12(f_i+f_{i+1})-f_i|$ is at most $Mh/2$. In the unweighted $\ell^2$ norm over $N=1/h$ points this is $O(h^{1/2})$, and the fitted slope is $\IntegrationFTExponent$; in the $\sqrt h$-weighted norm, which approximates the $L^2$ norm, it is $O(h)$.
+  \item \emph{Truth.} Agreement between two routes does not show that either computes an integral, so we also compare each rule with the exact antiderivative. The $\sqrt h$-weighted errors decrease to $\IntegrationLeftTruthFinest$ (left) and $\IntegrationTrapTruthFinest$ (trapezoid) at $N=1024$, consistent with the classical $O(h)$ and $O(h^2)$ error orders for $C^1$ and $C^2$ integrands.
+\end{itemize}
 
 \input{generated/integration_table}
 
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=0.5\linewidth]{integration_closure_last_run.png}
-  \caption{Integration closure diagnostics on staged grids. The route mismatch between left and trapezoid cumulative protocols and the differentiation-based defect both decay under refinement, consistent with stable packaged closure.}
-  \label{fig:integration-closure}
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.92\linewidth]{fig_integration.pdf}
+\caption{Integration diagnostics under refinement (log--log). Annotated slopes are the theoretical orders. The left-rule fundamental-theorem residual (grey) is rounding error around an exact identity and is shown only for contrast. Data in Table~\ref{tab:integration}.}
+\label{fig:integration}
 \end{figure}
