@@ -1,49 +1,30 @@
-\documentclass[apajournal,article,submit,moreauthors,pdftex]{Definitions/mdpi}
+\documentclass[11pt]{article}
 \input{preamble}
-% Pin the running-header date to the version date so rebuilds are reproducible.
-\renewcommand{\today}{October 4, 2026}
-% Zenodo DOI of this version (replaces the class's placeholder publisher DOI).
-\doinum{10.5281/zenodo.23131358}
 
-%=================================================================
-% MDPI internal commands
-\firstpage{1}
-\makeatletter
-\setcounter{page}{\@firstpage}
-\makeatother
-\pubvolume{1}
-\issuenum{1}
-\articlenumber{0}
-\pubyear{2026}
-\copyrightyear{2026}
-\datereceived{ }
-\daterevised{ }
-\dateaccepted{ }
-\datepublished{ }
+\title{To Count a Stone with Six Birds: A Mathematics is A Theory}
+\author{Ioannis Tsiokos\textsuperscript{1}\\[2pt]
+  \small\href{mailto:ioannis@automorph.io}{ioannis@automorph.io}}
+\date{Version 3: 4 October 2026 \quad (Version 1: 28 January 2026)}
 
-%=================================================================
-\Title{To Count a Stone with Six Birds: A Mathematics is A Theory}
+\newcommand{\printaffiliation}{%
+  \begin{center}
+    \small \textsuperscript{1}Automorph Inc., 1207 Delaware Ave \#4131, Wilmington, DE 19806, USA
+  \end{center}
+}
 
-\newcommand{\orcidauthorA}{0009-0009-7659-5964}
-
-\Author{Ioannis Tsiokos $^{1}$\orcidA{}}
-\AuthorNames{Ioannis Tsiokos}
-
-\address{%
-$^{1}$ \quad Automorph Inc., Wilmington, DE 19806, USA}
-
-\corres{Correspondence: ioannis@automorph.io}
-
-\firstnote{Version 3, 4 October 2026 (DOI: \href{https://doi.org/10.5281/zenodo.23131358}{10.5281/zenodo.23131358}). Version 1 was posted on 28 January 2026 (Zenodo, DOI: \href{https://doi.org/10.5281/zenodo.18402004}{10.5281/zenodo.18402004}). See Appendix~\ref{app:versions}.}
-
-\abstract{Limits, completions, and analytic continuations are usually introduced as definitions. This paper asks an operational question instead: when does a large discrete protocol, such as a difference quotient, a cumulative sum, or a truncated Euler product, admit a stable continuous closure, and how can that be tested without overclaiming? We instantiate the Six Birds framework as a closure-and-audit method for mathematics. A discrete object is staged by refinement, the cost of compressing it is tracked by an explicit defect ledger, and a packaged object is accepted only when the ledger is controlled under refinement and the relevant operations descend to the packaged layer. The formal core is machine-checked in Lean~4 with mathlib: the exact finite-difference product rule with its remainder term; a limit bridge showing that convergent factor quotients force the product quotient to converge to the Leibniz value; the classification of $R$-linear derivations of $R[X]$ by their value on $X$; and the two contracts that make packaging well defined, namely that vanishing distance in a pseudometric is an equivalence relation and that uniformly Lipschitz stage operators respect it. Four numerical exhibits then audit concrete closures. In a matched population of 300 candidate stencils, a stability gate alone retains identity-like, first-derivative, and second-derivative operators (100, 100, and 81 of 100 each), whereas adding a shrinking Leibniz defect retains only the 100 first-derivative stencils. Under a small change of coordinates, two routes for computing a derivative approach each other under refinement, with a fitted exponent of about 1.46 over four grids. For the zeta function, additive and multiplicative staged closures provably converge to a common limit when $\Re(s)>1$, and on the tested grid their route mismatch falls to 0.052 at cutoff 800; on a grid in the critical strip, with a symmetrized packaging map, the same naive truncations drift apart, reaching a mismatch of $5.0\times 10^{12}$ at the same cutoff. In an Ising partition polynomial, shrinking the negative couplings to zero reduces the mean distance of the zeros from the unit circle from 0.87 to rounding level, the endpoint being an instance of the Lee--Yang circle theorem. The diagnostics prove no new theorem about $\zeta$ or its zeros. Their value is a reproducible, failure-capable way to separate feasible closures from artifacts of the chosen protocol.}
-
-\keyword{emergence calculus; closure; audit; refinement; route mismatch; finite differences; derivations; lean}
-
-%=================================================================
 \begin{document}
+\maketitle
+\printaffiliation
+\thispagestyle{firstpage}
 
 \input{generated/macros}
+
+\begin{abstract}
+Limits, completions, and analytic continuations are usually introduced as definitions. This paper asks an operational question instead: when does a large discrete protocol, such as a difference quotient, a cumulative sum, or a truncated Euler product, admit a stable continuous closure, and how can that be tested without overclaiming? We instantiate the Six Birds framework as a closure-and-audit method for mathematics. A discrete object is staged by refinement, the cost of compressing it is tracked by an explicit defect ledger, and a packaged object is accepted only when the ledger is controlled under refinement and the relevant operations descend to the packaged layer. The formal core is machine-checked in Lean~4 with mathlib: the exact finite-difference product rule with its remainder term; a limit bridge showing that convergent factor quotients force the product quotient to converge to the Leibniz value; the classification of $R$-linear derivations of $R[X]$ by their value on $X$; and the two contracts that make packaging well defined, namely that vanishing distance in a pseudometric is an equivalence relation and that uniformly Lipschitz stage operators respect it. Four numerical exhibits then audit concrete closures. In a matched population of 300 candidate stencils, a stability gate alone retains identity-like, first-derivative, and second-derivative operators (100, 100, and 81 of 100 each), whereas adding a shrinking Leibniz defect retains only the 100 first-derivative stencils. Under a small change of coordinates, two routes for computing a derivative approach each other under refinement, with a fitted exponent of about 1.46 over four grids. For the zeta function, additive and multiplicative staged closures provably converge to a common limit when $\Re(s)>1$, and on the tested grid their route mismatch falls to 0.052 at cutoff 800; on a grid in the critical strip, with a symmetrized packaging map, the same naive truncations drift apart, reaching a mismatch of $5.0\times 10^{12}$ at the same cutoff. In an Ising partition polynomial, shrinking the negative couplings to zero reduces the mean distance of the zeros from the unit circle from 0.87 to rounding level, the endpoint being an instance of the Lee--Yang circle theorem. The diagnostics prove no new theorem about $\zeta$ or its zeros. Their value is a reproducible, failure-capable way to separate feasible closures from artifacts of the chosen protocol.
+\end{abstract}
+
+\vspace{1ex}
+\noindent\textbf{Keywords:} emergence calculus; closure; audit; refinement; route mismatch; finite differences; derivations; lean
 
 \input{sections/01_introduction}
 \input{sections/02_dictionary}
@@ -55,41 +36,20 @@ $^{1}$ \quad Automorph Inc., Wilmington, DE 19806, USA}
 \input{sections/08_reproducibility}
 \input{sections/09_discussion}
 
+\section*{Data availability}
+All code, data, Lean sources, and reproducibility artifacts are available in the companion repository at \url{https://github.com/ioannist/six-birds-mathematics}.
 
-%=================================================================
-\vspace{6pt}
+\section*{Acknowledgments}
+The author acknowledges the use of Lean~4, mathlib, and standard Python scientific libraries (NumPy, mpmath, Matplotlib).
 
-\authorcontributions{I.T.\ conceived the study, implemented experiments and formal verification, and wrote the manuscript.}
+\section*{Funding and conflicts of interest}
+This research received no external funding. The author declares no conflicts of interest.
 
-\funding{This research received no external funding.}
+\bibliographystyle{plainnat}
+\bibliography{bib/refs}
 
-\institutionalreview{Not applicable.}
-
-\informedconsent{Not applicable.}
-
-\dataavailability{All code, data, Lean sources, and reproducibility artifacts are available in the companion repository at \url{https://github.com/ioannist/six-birds-mathematics}.}
-
-\acknowledgments{The author acknowledges the use of Lean~4, mathlib, and standard Python scientific libraries (NumPy, mpmath, Matplotlib).}
-
-\conflictsofinterest{The author declares no conflicts of interest.}
-
-%=================================================================
-\appendixtitles{yes}
-\appendixstart
 \appendix
 \input{sections/A_formal_anchors}
 \input{sections/B_versions}
-
-%=================================================================
-\begin{adjustwidth}{-\extralength}{0cm}
-
-\reftitle{References}
-
-\externalbibliography{yes}
-\bibliography{bib/refs}
-
-\PublishersNote{}
-
-\end{adjustwidth}
 
 \end{document}

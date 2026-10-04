@@ -74,27 +74,12 @@ def main() -> int:
             raise SystemExit(f"[build_math_paper] ERROR: could not extract {name} from main.tex")
         return m.group(1).strip()
 
-    title = _extract(r"\\Title\{(.*?)\}", "title")
-
-    # Extract \abstract{...} with brace matching (abstract contains nested {})
-    abs_start = re.search(r"\\abstract\{", tex)
-    if not abs_start:
-        raise SystemExit("[build_math_paper] ERROR: could not extract abstract from main.tex")
-    depth, i = 1, abs_start.end()
-    while i < len(tex) and depth > 0:
-        if tex[i] == "{":
-            depth += 1
-        elif tex[i] == "}":
-            depth -= 1
-        i += 1
-    abstract = tex[abs_start.end() : i - 1].strip()
+    title = _extract(r"\\title\{(.*?)\}", "title")
+    abstract = _extract(r"\\begin\{abstract\}(.*?)\\end\{abstract\}", "abstract")
     if "\n" in abstract or "\r" in abstract:
         raise SystemExit("[build_math_paper] ERROR: abstract must be a single paragraph with no line breaks")
 
-    kw_match = re.search(r"\\keyword\{([^}]+)\}", tex)
-    if not kw_match:
-        raise SystemExit("[build_math_paper] ERROR: could not extract keywords line from main.tex")
-    keywords_line = kw_match.group(1).strip()
+    keywords_line = _extract(r"\\textbf\{Keywords:\}\s*([^\n]+)", "keywords line")
     keywords = [k.strip() for k in keywords_line.split(";") if k.strip()]
     if any(k != k.lower() for k in keywords):
         raise SystemExit("[build_math_paper] ERROR: keywords must be lowercase and semicolon-separated")

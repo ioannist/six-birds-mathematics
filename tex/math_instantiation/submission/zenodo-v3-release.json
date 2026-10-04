@@ -1,16 +1,16 @@
 {
   "action": "created new-version draft",
   "concept_record_id": "18402003",
-  "dashboard_url": "https://zenodo.org/uploads/23131358",
-  "doi": "10.5281/zenodo.23131358",
+  "dashboard_url": "https://zenodo.org/uploads/23131954",
+  "doi": "10.5281/zenodo.23131954",
   "doi_reservation": {
     "client": "datacite",
-    "identifier": "10.5281/zenodo.23131358",
+    "identifier": "10.5281/zenodo.23131954",
     "provider": "datacite",
     "verified_via": "rdm_pid_table"
   },
-  "draft_id": 23131358,
-  "recorded_at": "2026-10-04T05:00:09+00:00",
+  "draft_id": 23131954,
+  "recorded_at": "2026-10-04T05:33:17+00:00",
   "source_doi": "10.5281/zenodo.18402004",
   "source_record_id": 18402004,
   "source_title": "To Count a Stone with Six Birds: A Mathematics is A Theory"
